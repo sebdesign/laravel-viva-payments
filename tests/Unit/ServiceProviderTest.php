@@ -94,4 +94,20 @@ class ServiceProviderTest extends TestCase
 
         $url = app(Client::class)->getUrl();
     }
+
+    /**
+     * @test
+     */
+    public function it_doesnt_use_tlsv1_for_nss()
+    {
+        $client = app(Client::class);
+
+        $curl = $client->getClient()->getConfig('curl');
+
+        if (preg_match('/NSS/', curl_version()['ssl_version'])) {
+            $this->assertEmpty($curl);
+        } else {
+            $this->assertEquals([CURLOPT_SSL_CIPHER_LIST => 'TLSv1'], $curl);
+        }
+    }
 }

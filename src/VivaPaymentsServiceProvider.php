@@ -26,30 +26,42 @@ class VivaPaymentsServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(Client::class, function ($app) {
-            return new Client($this->bootGuzzleClient($app));
+            return new Client($this->buildGuzzleClient($app));
         });
     }
 
     /**
-     * Instantiate the Guzzlehttp client.
+     * Build the Guzzlehttp client.
      *
      * @param  \Illuminate\Contracts\Foundation\Application $app
      * @return GuzzleHttp\Client
      */
-    protected function bootGuzzleClient($app)
+    protected function buildGuzzleClient($app)
     {
         $config = $app['config']->get('services.viva');
 
         return new GuzzleClient([
             'base_uri' => $this->getUrl($config['environment']),
-            'curl' => [
-                CURLOPT_SSL_CIPHER_LIST => 'TLSv1',
-            ],
+            'curl' => $this->curlDoesntUseNss()
+                ? [CURLOPT_SSL_CIPHER_LIST => 'TLSv1']
+                : [],
             \GuzzleHttp\RequestOptions::AUTH => [
                 $config['merchant_id'],
                 $config['api_key'],
             ],
         ]);
+    }
+
+    /**
+     * Check if cURL doens't use NSS.
+     *
+     * @return bool
+     */
+    protected function curlDoesntUseNss()
+    {
+        $curl = curl_version();
+
+        return ! preg_match('/NSS/', $curl['ssl_version']);
     }
 
     /**
