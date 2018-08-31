@@ -32,9 +32,9 @@ class Source
      * @param  string $url     The primary domain of your site WITH protocol scheme (http/https)
      * @param  string $fail    The relative path url your client will end up to, after a failed transaction
      * @param  string $success The relative path url your client will end up to, after a successful transaction
-     * @return null
+     * @return object
      */
-    public function create($name, $code, $url, $fail, $success)
+    public function create(string $name, string $code, $url, string $fail, string $success)
     {
         $uri = new Uri($url);
 
@@ -56,7 +56,7 @@ class Source
      * @param  \Psr\Http\Message\UriInterface $uri
      * @return string
      */
-    protected function getDomain(UriInterface $uri)
+    protected function getDomain(UriInterface $uri) : string
     {
         return $uri->getHost();
     }
@@ -67,7 +67,7 @@ class Source
      * @param  \Psr\Http\Message\UriInterface  $uri
      * @return bool
      */
-    protected function isSecure(UriInterface $uri)
+    protected function isSecure(UriInterface $uri) : bool
     {
         return strtolower($uri->getScheme()) === 'https';
     }

@@ -7,15 +7,39 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 use Sebdesign\VivaPayments\Card;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\VivaPaymentsServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
+    /**
+     * Guzzle client
+     *
+     * @var \GuzzleHttp\Client
+     */
     protected $client;
+
+    /**
+     * Handler stack
+     *
+     * @var \GuzzleHttp\HandlerStack
+     */
     protected $handler;
-    protected $requests = [];
+
+    /**
+     * History of requests
+     *
+     * @var array
+     */
+    protected $history = [];
+
+    /**
+     * Responses
+     *
+     * @var array
+     */
     protected $responses = [];
 
     protected function getPackageProviders($app)
@@ -37,16 +61,22 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function mockRequests()
     {
-        $history = Middleware::history($this->requests);
+        $history = Middleware::history($this->history);
 
         $this->handler->push($history);
     }
 
-    protected function getLastRequest()
+    protected function getLastRequest() : RequestInterface
     {
-        return $this->requests[0]['request'];
+        return $this->history[0]['request'];
     }
 
+    /**
+     * Mock responses.
+     *
+     * @param \GuzzleHttp\Psr7\Response[] $responses
+     * @return void
+     */
     protected function mockResponses(array $responses)
     {
         $mock = new MockHandler($responses);
@@ -57,17 +87,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     /**
      * Make a client instance from a Guzzle handler.
-     *
-     * @param   GuzzleHttp\HandlerStack $handler
      */
     protected function makeClient()
     {
         $mockClient = new GuzzleClient([
             'handler' => $this->handler,
             'base_uri' => Client::DEMO_URL,
-            'curl' => [
-                CURLOPT_SSL_CIPHER_LIST => 'TLSv1',
-            ],
+            'curl' => [CURLOPT_SSL_CIPHER_LIST => 'TLSv1'],
             'auth' => [
                 $this->app['config']['merchant_id'],
                 $this->app['config']['api_key'],
@@ -86,55 +112,57 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $this->mockResponses($responses);
     }
 
-    public function assertPath($path, $request)
+    public function assertPath(string $path, RequestInterface $request)
     {
         $this->assertEquals($path, $request->getUri()->getPath());
 
         return $this;
     }
 
-    public function assertMethod($name, $request)
+    public function assertMethod(string $name, RequestInterface $request)
     {
         $this->assertEquals($name, $request->getMethod(), "The request method should be [{$name}].");
 
         return $this;
     }
 
-    public function assertQuery($name, $value, $request)
+    public function assertQuery(string $name, $value, RequestInterface $request)
     {
         $query = $request->getUri()->getQuery();
 
         parse_str($query, $output);
 
         $this->assertArrayHasKey(
-            $name, $output,
+            $name,
+            $output,
             "Did not see expected query string parameter [{$name}] in [{$query}]."
          );
 
         $this->assertEquals(
-            $value, $output[$name],
+            $value,
+            $output[$name],
             "Query string parameter [{$name}] had value [{$output[$name]}], but expected [{$value}]."
         );
 
         return $this;
     }
 
-    public function assertBody($name, $value, $request)
+    public function assertBody(string $name, $value, RequestInterface $request)
     {
         parse_str($request->getBody(), $body);
 
         $this->assertArrayHasKey($name, $body);
 
-        $this->assertEquals($value, $body[$name]);
+        $this->assertSame($value, $body[$name]);
 
         return $this;
     }
 
-    public function assertHeader($name, $value, $request)
+    public function assertHeader(string $name, $value, RequestInterface $request)
     {
         $this->assertTrue($request->hasHeader($name), "The header [{$name}] should be passed as a header.");
 
-        $this->assertEquals($value, $request->getHeader($name)[0], "The header [{$name}] card number should be [{$value}].");
+        $this->assertEquals($value, $request->getHeader($name)[0], "The header [{$name}] should be [{$value}].");
 
         return $this;
     }

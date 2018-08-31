@@ -39,7 +39,7 @@ class ClientTest extends TestCase
 
         $order = new Order($this->client);
 
-        $response = $order->get('foo');
+        $response = $order->get(42);
 
         $this->assertEquals(json_decode($json), $response, 'The JSON response was not decoded.');
     }
@@ -64,10 +64,10 @@ class ClientTest extends TestCase
 
         $order = new Order($this->client);
 
-        $order->get('foo');
+        $order->get(42);
 
         $this->expectException(VivaException::class);
 
-        $order->get('bar');
+        $order->get(43);
     }
 }

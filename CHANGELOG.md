@@ -2,6 +2,10 @@
 
 All notable changes to `sebdesign/laravel-viva-payments` will be documented in this file
 
+## 3.1.0 - 2018-07-31
+
+- Add support for Laravel 5.7
+
 ## 3.0.1 - 2018-06-01
 
 - Use TLSv1 cipher list if cURL doesn't use NSS

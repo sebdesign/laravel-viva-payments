@@ -2,8 +2,9 @@
 
 namespace Sebdesign\VivaPayments;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Client as GuzzleClient;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 
 class Client
 {
@@ -18,16 +19,17 @@ class Client
     const PRODUCTION_URL = 'https://www.vivapayments.com';
 
     /**
-     * @var \GuzzleHttp\ClientInterface
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
     /**
      * Constructor.
      *
-     * @param \GuzzleHttp\ClientInterface   $client
+     * @param  \GuzzleHttp\Client   $client
+     * @return void
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
     }
@@ -39,7 +41,7 @@ class Client
      * @param  array  $options
      * @return object
      */
-    public function get($url, array $options = [])
+    public function get(string $url, array $options = [])
     {
         $response = $this->client->get($url, $options);
 
@@ -53,7 +55,7 @@ class Client
      * @param  array  $options
      * @return object
      */
-    public function post($url, array $options = [])
+    public function post(string $url, array $options = [])
     {
         $response = $this->client->post($url, $options);
 
@@ -67,7 +69,7 @@ class Client
      * @param  array  $options
      * @return object
      */
-    public function patch($url, array $options = [])
+    public function patch(string $url, array $options = [])
     {
         $response = $this->client->patch($url, $options);
 
@@ -81,7 +83,7 @@ class Client
      * @param  array  $options
      * @return object
      */
-    public function delete($url, array $options = [])
+    public function delete(string $url, array $options = [])
     {
         $response = $this->client->delete($url, $options);
 
@@ -91,12 +93,12 @@ class Client
     /**
      * Get the response body.
      *
-     * @param  \GuzzleHttp\Psr7\Response $response
-     * @return mixed
+     * @param  \Psr\Http\Message\ResponseInterface $response
+     * @return object
      *
      * @throws \Sebdesign\VivaPayments\VivaException
      */
-    protected function getBody(Response $response)
+    protected function getBody(ResponseInterface $response)
     {
         $body = json_decode($response->getBody(), false, 512, JSON_BIGINT_AS_STRING);
 
@@ -110,9 +112,9 @@ class Client
     /**
      * Get the URL.
      *
-     * @return \GuzzleHttp\Psr7\Uri
+     * @return \Psr\Http\Message\UriInterface
      */
-    public function getUrl()
+    public function getUrl() : UriInterface
     {
         return $this->client->getConfig('base_uri');
     }

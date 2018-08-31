@@ -35,7 +35,7 @@ class Order
      * @param  array $parameters optional parameters (Full list available here: https://github.com/VivaPayments/API/wiki/Optional-Parameters)
      * @return int
      */
-    public function create($amount, array $parameters = [])
+    public function create(int $amount, array $parameters = [])
     {
         $response = $this->client->post(self::ENDPOINT, [
             \GuzzleHttp\RequestOptions::FORM_PARAMS => array_merge(['Amount' => $amount], $parameters),
@@ -60,7 +60,7 @@ class Order
      *
      * @param  int    $orderCode   The unique Payment Order ID.
      * @param  array  $parameters
-     * @return null
+     * @return object
      */
     public function update($orderCode, array $parameters)
     {
@@ -83,13 +83,15 @@ class Order
     /**
      * Get the checkout URL for an order.
      *
-     * @param  int $orderCode  The unique Payment Order ID.
+     * @param  $orderCode  The unique Payment Order ID.
      * @return \GuzzleHttp\Psr7\Uri
      */
     public function getCheckoutUrl($orderCode)
     {
         return Uri::withQueryValue(
-            $this->client->getUrl()->withPath('web/checkout'), 'ref', $orderCode
+            $this->client->getUrl()->withPath('web/checkout'),
+            'ref',
+            $orderCode
         );
     }
 }

@@ -128,7 +128,7 @@ class Transaction
      * @param  array    $parameters
      * @return object
      */
-    public function createRecurring($id, $amount, array $parameters = [])
+    public function createRecurring(string $id, int $amount, array $parameters = [])
     {
         return $this->client->post(self::ENDPOINT.$id, [
             \GuzzleHttp\RequestOptions::FORM_PARAMS => array_merge(['Amount' => $amount], $parameters),
@@ -136,12 +136,12 @@ class Transaction
     }
 
     /**
-     * Get the transactions for an order code, a transaction id, or a date.
+     * Get the transactions for an id.
      *
-     * @param  mixed $id
+     * @param  string $id
      * @return array
      */
-    public function get($id)
+    public function get(string $id) : array
     {
         $response = $this->client->get(self::ENDPOINT.$id);
 
@@ -154,7 +154,7 @@ class Transaction
      * @param  int $ordercode
      * @return array
      */
-    public function getByOrder($ordercode)
+    public function getByOrder($ordercode) : array
     {
         $response = $this->client->get(self::ENDPOINT, [
             \GuzzleHttp\RequestOptions::QUERY => compact('ordercode'),
@@ -169,7 +169,7 @@ class Transaction
      * @param  \DateTimeInterface|string $date
      * @return array
      */
-    public function getByDate($date)
+    public function getByDate($date) : array
     {
         $date = $this->formatDate($date);
 
@@ -183,10 +183,10 @@ class Transaction
     /**
      * Get the transactions that were cleared on a given date.
      *
-     * @param  \DateTimeInterface|string $date
+     * @param  \DateTimeInterface|string $clearancedate
      * @return array
      */
-    public function getByClearanceDate($clearancedate)
+    public function getByClearanceDate($clearancedate) : array
     {
         $clearancedate = $this->formatDate($clearancedate);
 
@@ -203,7 +203,7 @@ class Transaction
      * @param  \DateTimeInterface|string $date
      * @return string
      */
-    protected function formatDate($date)
+    protected function formatDate($date) : string
     {
         if ($date instanceof \DateTimeInterface) {
             return $date->format('Y-m-d');
@@ -220,7 +220,7 @@ class Transaction
      * @param  string|null  $actionUser
      * @return object
      */
-    public function cancel($id, $amount, $actionUser = null)
+    public function cancel(string $id, int $amount, $actionUser = null)
     {
         $query = ['Amount' => $amount];
         $actionUser = $actionUser ? ['ActionUser' => $actionUser] : [];
@@ -231,11 +231,11 @@ class Transaction
     }
 
     /**
-     * Get the public key as query string.
+     * Get the public key.
      *
      * @return string
      */
-    protected function getKey()
+    protected function getKey() : string
     {
         return config('services.viva.public_key');
     }

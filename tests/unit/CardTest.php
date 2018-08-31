@@ -26,8 +26,8 @@ class CardTest extends TestCase
         $this->assertMethod('POST', $request);
         $this->assertQuery('key', $this->app['config']->get('services.viva.public_key'), $request);
         $this->assertBody('CardHolderName', 'Customer name', $request);
-        $this->assertBody('Number', 4111111111111111, $request);
-        $this->assertBody('CVC', 111, $request);
+        $this->assertBody('Number', '4111111111111111', $request);
+        $this->assertBody('CVC', '111', $request);
         $this->assertBody('ExpirationDate', '2016-06-15', $request);
     }
 

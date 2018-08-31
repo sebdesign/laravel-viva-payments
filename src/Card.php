@@ -27,14 +27,19 @@ class Card
      * Get a token for the credit card.
      *
      * @param  string $name   The cardholder's name
-     * @param  mixed  $number The credit card number
+     * @param  string $number The credit card number
      * @param  int    $cvc    The CVC number
      * @param  int    $month  The expiration month
      * @param  int    $year   The expiration year
      * @return string
      */
-    public function token($name, $number, $cvc, $month, $year)
-    {
+    public function token(
+        string $name,
+        string $number,
+        int $cvc,
+        int $month,
+        int $year
+    ) : string {
         $token = $this->client->post(self::ENDPOINT, [
             \GuzzleHttp\RequestOptions::FORM_PARAMS => [
                 'CardHolderName'    => $name,
@@ -53,10 +58,10 @@ class Card
     /**
      * Strip non-numeric characters.
      *
-     * @param  mixed $number  The credit card number
-     * @return int
+     * @param  string $number  The credit card number
+     * @return string
      */
-    protected function normalizeNumber($number)
+    protected function normalizeNumber(string $number) : string
     {
         return preg_replace('/\D/', '', $number);
     }
@@ -66,7 +71,7 @@ class Card
      *
      * @return string
      */
-    protected function getKey()
+    protected function getKey() : string
     {
         return config('services.viva.public_key');
     }
@@ -78,7 +83,7 @@ class Card
      * @param  int $year
      * @return string
      */
-    protected function getExpirationDate($month, $year)
+    protected function getExpirationDate(int $month, int $year) : string
     {
         return Carbon::createFromDate($year, $month, 15)->toDateString();
     }
@@ -86,10 +91,10 @@ class Card
     /**
      * Check for installments support.
      *
-     * @param  mixed $number  The credit card number
+     * @param  string $number  The credit card number
      * @return int
      */
-    public function installments($number)
+    public function installments(string $number)
     {
         $response = $this->client->get(self::ENDPOINT.'/installments', [
             \GuzzleHttp\RequestOptions::HEADERS => [

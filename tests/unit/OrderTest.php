@@ -23,9 +23,9 @@ class OrderTest extends TestCase
         $request = $this->getLastRequest();
 
         $this->assertMethod('POST', $request);
-        $this->assertBody('Amount', 30, $request);
+        $this->assertBody('Amount', '30', $request);
         $this->assertBody('CustomerTrns', 'Your reference', $request);
-        $this->assertEquals(175936509216, $orderCode, 'The order code should be 175936509216');
+        $this->assertEquals('175936509216', $orderCode, 'The order code should be 175936509216');
     }
 
     /**
@@ -64,7 +64,7 @@ class OrderTest extends TestCase
 
         $this->assertMethod('PATCH', $request);
         $this->assertPath('/api/orders/175936509216', $request);
-        $this->assertBody('Amount', 50, $request);
+        $this->assertBody('Amount', '50', $request);
     }
 
     /**
