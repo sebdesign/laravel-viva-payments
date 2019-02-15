@@ -48,7 +48,7 @@ class Order
      * Retrieve information about an order.
      *
      * @param  int $orderCode  The unique Payment Order ID.
-     * @return object
+     * @return \stdClass
      */
     public function get($orderCode)
     {
@@ -60,7 +60,7 @@ class Order
      *
      * @param  int    $orderCode   The unique Payment Order ID.
      * @param  array  $parameters
-     * @return object
+     * @return \stdClass
      */
     public function update($orderCode, array $parameters)
     {
@@ -73,7 +73,7 @@ class Order
      * Cancel an order.
      *
      * @param  int $orderCode  The unique Payment Order ID.
-     * @return object
+     * @return \stdClass
      */
     public function cancel($orderCode)
     {
@@ -83,7 +83,7 @@ class Order
     /**
      * Get the checkout URL for an order.
      *
-     * @param  $orderCode  The unique Payment Order ID.
+     * @param  int $orderCode  The unique Payment Order ID.
      * @return \GuzzleHttp\Psr7\Uri
      */
     public function getCheckoutUrl($orderCode)

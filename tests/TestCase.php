@@ -15,9 +15,9 @@ use Sebdesign\VivaPayments\VivaPaymentsServiceProvider;
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
-     * Guzzle client
+     * Client
      *
-     * @var \GuzzleHttp\Client
+     * @var \Sebdesign\VivaPayments\Client
      */
     protected $client;
 
