@@ -8,35 +8,34 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
-use Sebdesign\VivaPayments\Card;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\VivaPaymentsServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
-     * Client
+     * Client.
      *
      * @var \Sebdesign\VivaPayments\Client
      */
     protected $client;
 
     /**
-     * Handler stack
+     * Handler stack.
      *
      * @var \GuzzleHttp\HandlerStack
      */
     protected $handler;
 
     /**
-     * History of requests
+     * History of requests.
      *
      * @var array
      */
     protected $history = [];
 
     /**
-     * Responses
+     * Responses.
      *
      * @var array
      */
