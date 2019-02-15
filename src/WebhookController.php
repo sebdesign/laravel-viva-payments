@@ -19,7 +19,7 @@ abstract class WebhookController extends Controller
      *
      * Handle a GET verification request or a POST notification.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return mixed
      */
     public function handle(Request $request)
@@ -34,7 +34,7 @@ abstract class WebhookController extends Controller
     /**
      * Handle a POST notification.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return mixed
      */
     protected function handleTransaction(Request $request)

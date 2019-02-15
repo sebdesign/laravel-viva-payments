@@ -35,7 +35,7 @@ class VivaPaymentsServiceProvider extends ServiceProvider
      * Build the Guzzlehttp client.
      *
      * @param  \Illuminate\Contracts\Foundation\Application $app
-     * @return GuzzleHttp\Client
+     * @return \GuzzleHttp\Client
      */
     protected function buildGuzzleClient($app)
     {

@@ -39,7 +39,7 @@ class Client
      *
      * @param  string $url
      * @param  array  $options
-     * @return object
+     * @return \stdClass
      */
     public function get(string $url, array $options = [])
     {
@@ -53,7 +53,7 @@ class Client
      *
      * @param  string $url
      * @param  array  $options
-     * @return object
+     * @return \stdClass
      */
     public function post(string $url, array $options = [])
     {
@@ -67,7 +67,7 @@ class Client
      *
      * @param  string $url
      * @param  array  $options
-     * @return object
+     * @return \stdClass
      */
     public function patch(string $url, array $options = [])
     {
@@ -81,7 +81,7 @@ class Client
      *
      * @param  string $url
      * @param  array  $options
-     * @return object
+     * @return \stdClass
      */
     public function delete(string $url, array $options = [])
     {
@@ -94,7 +94,7 @@ class Client
      * Get the response body.
      *
      * @param  \Psr\Http\Message\ResponseInterface $response
-     * @return object
+     * @return \stdClass
      *
      * @throws \Sebdesign\VivaPayments\VivaException
      */

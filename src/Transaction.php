@@ -108,7 +108,7 @@ class Transaction
      * Create a new transaction.
      *
      * @param  array   $parameters
-     * @return object
+     * @return \stdClass
      */
     public function create(array $parameters)
     {
@@ -126,7 +126,7 @@ class Transaction
      * @param  string   $id
      * @param  int      $amount
      * @param  array    $parameters
-     * @return object
+     * @return \stdClass
      */
     public function createRecurring(string $id, int $amount, array $parameters = [])
     {
@@ -218,7 +218,7 @@ class Transaction
      * @param  string       $id
      * @param  int          $amount
      * @param  string|null  $actionUser
-     * @return object
+     * @return \stdClass
      */
     public function cancel(string $id, int $amount, $actionUser = null)
     {

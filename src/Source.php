@@ -32,7 +32,7 @@ class Source
      * @param  string $url     The primary domain of your site WITH protocol scheme (http/https)
      * @param  string $fail    The relative path url your client will end up to, after a failed transaction
      * @param  string $success The relative path url your client will end up to, after a successful transaction
-     * @return object
+     * @return \stdClass
      */
     public function create(string $name, string $code, $url, string $fail, string $success)
     {

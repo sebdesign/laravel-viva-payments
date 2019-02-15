@@ -34,7 +34,7 @@ class Webhook
     /**
      * Get a webhook authorization code.
      *
-     * @return object
+     * @return \stdClass
      */
     public function getAuthorizationCode()
     {
