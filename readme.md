@@ -7,13 +7,11 @@
 
 [![VivaPayments logo](https://camo.githubusercontent.com/7f0b41d204f5c27c416a83fa0bc8d1d1e45cf495/68747470733a2f2f7777772e766976617061796d656e74732e636f6d2f436f6e74656e742f696d672f6c6f676f2e737667 "VivaPayments logo")](https://www.vivapayments.com/)
 
-This package provides an interface for the [Viva Payments](https://www.vivapayments.com/) API. It handles the **Redirect Checkout**, **Native Checkout**, and **Mobile Checkout** payment methods, as well as **Webhooks**.
+This package provides an interface for the Viva Wallet API. It handles the **Redirect Checkout**, **Native Checkout**, and **Mobile Checkout** payment methods, as well as **Webhooks**.
 
-Check out the official repository for more information: https://github.com/VivaPayments/API
+Check out the official Viva Wallet Developer Portal for detailed instructions on the APIs and more: https://developer.vivawallet.com
 
-Also the Wiki has detailed instructions on the APIs: https://github.com/VivaPayments/API/wiki
-
-**Note:** This project is not an official package, and I'm not affiliated with Viva Payments in any way.
+**Note:** This project is not a certified package, and I'm not affiliated with Viva Payments in any way.
 
 ## Table of Contents
 
@@ -104,7 +102,7 @@ Add the following array in your `config/services.php`.
 
 The `api_key` and `merchant_id` can be found in the *Settings > API Access* section of your profile.
 
-> Read more about API authentication on the wiki: https://github.com/VivaPayments/API/wiki/API%20Authentication
+> Read more about API authentication on the Developer Portal: https://developer.vivawallet.com/authentication-methods
 
 The `public_key` is only needed for the *Native Checkout* and the *Mobile Checkout*.
 
@@ -116,13 +114,13 @@ The `environment` can be either `production` or `demo`.
 
 Redirect checkout is a simple 3 step process, where you create the Payment Order, redirect the customer to Viva Payments secure environment and then confirm the transaction.
 
-> Read more about the redirect checkout process on the wiki: https://github.com/VivaPayments/API/wiki/Redirect-Checkout
+> Read more about the redirect checkout process on the Developer Portal: https://developer.vivawallet.com/online-checkouts/redirect-checkout
 
 The following guide will walk you through the necessary steps:
 
 #### Create the payment order
 
-The first argument is the amount requested in cents. All the parameters in the second argument are optional. Check out all the supported [Optional Parameters](https://github.com/VivaPayments/API/wiki/Optional-Parameters).
+The first argument is the amount requested in cents. All the parameters in the second argument are optional. Check out all the supported [optional parameters](hhttps://developer.vivawallet.com/api-reference-guide/payment-api/create-order/#optional-parameters).
 
 ```php
 $order = app(Sebdesign\VivaPayments\Order::class);
@@ -228,7 +226,7 @@ class CheckoutController extends Controller
 
 ## Native Checkout
 
-Follow the **steps 1 through 7** described in the wiki page: https://github.com/VivaPayments/API/wiki/Native-Checkout
+Follow the **steps 1 through 7** described in the Developer Portal: https://developer.vivawallet.com/online-checkouts/native-checkout-v1
 
 Below is an example of the last step using this package.
 
@@ -375,8 +373,6 @@ class CheckoutController extends Controller
 
 ## Mobile Checkout
 
-> Read more about the Mobile Checkout on the wiki: https://github.com/VivaPayments/API/wiki/Mobile-API
-
 ### Create a payment order
 
 ```php
@@ -426,7 +422,7 @@ $response = $transaction->create([
 
 Viva Payments supports Webhooks, and this package offers a controller which can be extended to handle incoming notification events.
 
-> Read more about the Webhooks on the wiki: https://github.com/VivaPayments/API/wiki/Webhooks
+> Read more about the Webhooks on the Developer Portal: https://developer.vivawallet.com/api-reference-guide/payment-api/webhooks
 
 ### Extend the controller
 
@@ -514,7 +510,7 @@ class VerifyCsrfToken extends Middleware
 
 ##### Create a payment order
 
-> See: https://github.com/VivaPayments/API/wiki/CreateOrder
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/create-order
 
 ```php
 $order = app(Sebdesign\VivaPayments\Order::class);
@@ -524,7 +520,7 @@ $orderCode = $order->create(100, [...]);
 
 ##### Get an order
 
-> See: https://github.com/VivaPayments/API/wiki/GetOrder
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/retrieve-order
 
 ```php
 $response = $order->get(175936509216);
@@ -532,7 +528,7 @@ $response = $order->get(175936509216);
 
 ##### Update an order
 
-> See: https://github.com/VivaPayments/API/wiki/UpdateOrder
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/update-order
 
 ```php
 $order->update(175936509216, ['Amount' => 50]);
@@ -540,7 +536,7 @@ $order->update(175936509216, ['Amount' => 50]);
 
 ##### Cancel an order
 
-> See: https://github.com/VivaPayments/API/wiki/CancelOrder
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/cancel-order
 
 ```php
 $response = $order->cancel(175936509216);
@@ -550,7 +546,7 @@ $response = $order->cancel(175936509216);
 
 ##### Create a new transaction
 
-> See: https://github.com/VivaPayments/API/wiki/Native-Checkout
+> See: https://developer.vivawallet.com/online-checkouts/native-checkout-v1
 
 ```php
 $transaction = app(Sebdesign\VivaPayments\Transaction::class);
@@ -566,7 +562,7 @@ $response = $transaction->create([
 
 ##### Create a recurring transaction
 
-> See: https://github.com/VivaPayments/API/wiki/CreateRecurringTransaction
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/create-recurring-transaction
 
 ```php
 $transaction = app(Sebdesign\VivaPayments\Transaction::class);
@@ -576,7 +572,7 @@ $response = $transaction->createRecurring('252b950e-27f2-4300-ada1-4dedd7c17904'
 
 ##### Get transactions
 
-> See: https://github.com/VivaPayments/API/wiki/GetTransactions
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/retrieve-transactions
 
 ```php
 // By transaction ID
@@ -602,7 +598,7 @@ $transactions = $transaction->getByClearanceDate('2016-03-11');
 
 ##### Cancel a card payment / Make a refund
 
-> See: https://github.com/VivaPayments/API/wiki/CancelTransaction
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/cancel-transaction
 
 ```php
 $response = $transaction->cancel('252b950e-27f2-4300-ada1-4dedd7c17904', 100, 'username');
@@ -612,7 +608,7 @@ $response = $transaction->cancel('252b950e-27f2-4300-ada1-4dedd7c17904', 100, 'u
 
 #### Create a token
 
-> See: https://github.com/VivaPayments/API/wiki/Mobile-API#card-tokenization
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/tokenize-card
 
 ```php
 $card = app(Sebdesign\VivaPayments\Card::class);
@@ -622,7 +618,7 @@ $token = $card->token('Customer Name', '4111 1111 1111 1111', 111, 03, 2016);
 
 #### Check installments
 
-> See: https://github.com/VivaPayments/API/wiki/Mobile-API#installments-check
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/installments-check
 
 ```php
 $maxInstallments = $card->installments('4111 1111 1111 1111');
@@ -632,7 +628,7 @@ $maxInstallments = $card->installments('4111 1111 1111 1111');
 
 ##### Add a payment source
 
-> See: https://github.com/VivaPayments/API/wiki/Payment-Sources:-AddSource
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/add-source
 
 ```php
 $source = app(Sebdesign\VivaPayments\Source::class);
@@ -644,7 +640,7 @@ $source->create('Site 1', 'site1', 'https://www.domain.com', 'order/failure', 'o
 
 ##### Get an authorization code
 
-> See: https://github.com/VivaPayments/API/wiki/Webhooks#webhook-url-verification
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/webhooks/#webhook-url-verification
 
 ```php
 $webhook = app(Sebdesign\VivaPayments\Webhook::class);
