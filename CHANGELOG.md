@@ -2,6 +2,11 @@
 
 All notable changes to `sebdesign/laravel-viva-payments` will be documented in this file
 
+## 4.0.0 - 2019-09-02
+
+- Add support for Laravel 6.0
+- Drop support for Laravel <5.5 and PHP <7.1
+
 ## 3.2.0 - 2019-02-15
 
 - Add support for Laravel 5.8

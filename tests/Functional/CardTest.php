@@ -24,7 +24,7 @@ class CardTest extends TestCase
 
         // assert
 
-        $this->assertInternalType('string', $token);
+        $this->assertIsString($token);
     }
 
     /**
@@ -35,6 +35,6 @@ class CardTest extends TestCase
     {
         $installments = app(Card::class)->installments('4111 1111 1111 1111');
 
-        $this->assertInternalType('integer', $installments);
+        $this->assertIsInt($installments);
     }
 }

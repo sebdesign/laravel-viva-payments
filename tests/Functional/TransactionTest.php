@@ -30,8 +30,8 @@ class TransactionTest extends TestCase
             ],
         ]);
 
-        $this->assertAttributeEquals(Transaction::COMPLETED, 'StatusId', $original, 'The transaction was not completed.');
-        $this->assertAttributeEquals(15, 'Amount', $original);
+        $this->assertEquals(Transaction::COMPLETED, $original->StatusId, 'The transaction was not completed.');
+        $this->assertEquals(15, $original->Amount);
 
         return $original;
     }
@@ -53,8 +53,8 @@ class TransactionTest extends TestCase
             'Installments'  => $installments,
         ]);
 
-        $this->assertAttributeEquals(Transaction::COMPLETED, 'StatusId', $recurring, 'The transaction was not completed.');
-        $this->assertAttributeEquals(15, 'Amount', $recurring);
+        $this->assertEquals(Transaction::COMPLETED, $recurring->StatusId, 'The transaction was not completed.');
+        $this->assertEquals(15, $recurring->Amount);
     }
 
     /**
@@ -68,8 +68,8 @@ class TransactionTest extends TestCase
 
         $this->assertNotEmpty($transactions);
         $this->assertCount(1, $transactions, 'There should be 1 transaction.');
-        $this->assertAttributeEquals(Transaction::COMPLETED, 'StatusId', $transactions[0], 'The transaction was not completed.');
-        $this->assertAttributeEquals($original->TransactionId, 'TransactionId', $transactions[0], "The transaction ID should be {$original->TransactionId}.");
+        $this->assertEquals(Transaction::COMPLETED, $transactions[0]->StatusId, 'The transaction was not completed.');
+        $this->assertEquals($original->TransactionId, $transactions[0]->TransactionId, "The transaction ID should be {$original->TransactionId}.");
 
         return $transactions[0];
     }
@@ -88,7 +88,7 @@ class TransactionTest extends TestCase
         $this->assertNotEmpty($transactions);
 
         foreach ($transactions as $key => $trns) {
-            $this->assertAttributeEquals($orderCode, 'OrderCode', $trns->Order, "Transaction #{$key} should have order code {$orderCode}");
+            $this->assertEquals($orderCode, $trns->Order->OrderCode, "Transaction #{$key} should have order code {$orderCode}");
         }
     }
 
@@ -141,15 +141,15 @@ class TransactionTest extends TestCase
 
         $response = $transaction->cancel($original->TransactionId, 1500);
 
-        $this->assertAttributeEquals(Transaction::COMPLETED, 'StatusId', $response, 'The cancel transaction was not completed.');
-        $this->assertAttributeEquals(15, 'Amount', $response);
+        $this->assertEquals(Transaction::COMPLETED, $response->StatusId, 'The cancel transaction was not completed.');
+        $this->assertEquals(15, $response->Amount);
 
         $transactions = $transaction->get($original->TransactionId);
 
         $this->assertNotEmpty($transactions);
         $this->assertCount(1, $transactions, 'There should be 1 transaction.');
-        $this->assertAttributeEquals(Transaction::CANCELED, 'StatusId', $transactions[0], 'The original transaction should be canceled.');
-        $this->assertAttributeEquals(15, 'Amount', $transactions[0]);
+        $this->assertEquals(Transaction::CANCELED, $transactions[0]->StatusId, 'The original transaction should be canceled.');
+        $this->assertEquals(15, $transactions[0]->Amount);
     }
 
     protected function getOrderCode()

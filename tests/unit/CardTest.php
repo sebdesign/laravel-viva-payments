@@ -21,7 +21,7 @@ class CardTest extends TestCase
         $token = $card->token('Customer name', '4111 1111 1111 1111', 111, 06, 2016);
         $request = $this->getLastRequest();
 
-        $this->assertInternalType('string', $token);
+        $this->assertIsString($token);
         $this->assertEquals('foo', $token, 'The token should be foo');
         $this->assertMethod('POST', $request);
         $this->assertQuery('key', $this->app['config']->get('services.viva.public_key'), $request);

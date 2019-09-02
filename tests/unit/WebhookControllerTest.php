@@ -49,7 +49,8 @@ class WebhookControllerTest extends TestCase
         $response = $controller->handle($request);
 
         $this->assertStringEndsWith('handleEventNotification', $response['handler']);
-        $this->assertArraySubset($event, $response);
+        $this->assertEquals(1795, $response['EventTypeId']);
+        $this->assertEquals('bar', $response['foo']);
     }
 
     /**
@@ -71,7 +72,8 @@ class WebhookControllerTest extends TestCase
         $response = $controller->handle($request);
 
         $this->assertStringEndsWith('handleCreateTransaction', $response['handler']);
-        $this->assertArraySubset($event, $response);
+        $this->assertEquals(Webhook::CREATE_TRANSACTION, $response['EventTypeId']);
+        $this->assertEquals('bar', $response['foo']);
     }
 
     /**
@@ -93,7 +95,8 @@ class WebhookControllerTest extends TestCase
         $response = $controller->handle($request);
 
         $this->assertStringEndsWith('handleRefundTransaction', $response['handler']);
-        $this->assertArraySubset($event, $response);
+        $this->assertEquals(Webhook::REFUND_TRANSACTION, $response['EventTypeId']);
+        $this->assertEquals('bar', $response['foo']);
     }
 }
 

@@ -21,7 +21,7 @@ class OrderTest extends TestCase
             'AllowRecurring' => true,
         ]);
 
-        $this->assertInternalType('integer', $orderCode);
+        $this->assertIsInt($orderCode);
 
         return $orderCode;
     }
@@ -35,9 +35,9 @@ class OrderTest extends TestCase
     {
         $response = app(Order::class)->get($orderCode);
 
-        $this->assertAttributeEquals(Order::PENDING, 'StateId', $response);
-        $this->assertAttributeEquals(15, 'RequestAmount', $response);
-        $this->assertAttributeEquals('Test Transaction', 'CustomerTrns', $response);
+        $this->assertEquals(Order::PENDING, $response->StateId);
+        $this->assertEquals(15, $response->RequestAmount);
+        $this->assertEquals('Test Transaction', $response->CustomerTrns);
     }
 
     /**
@@ -51,7 +51,7 @@ class OrderTest extends TestCase
 
         $response = app(Order::class)->get($orderCode);
 
-        $this->assertAttributeEquals(0.5, 'RequestAmount', $response);
+        $this->assertEquals(0.5, $response->RequestAmount);
     }
 
     /**
@@ -65,6 +65,6 @@ class OrderTest extends TestCase
 
         $response = app(Order::class)->get($orderCode);
 
-        $this->assertAttributeEquals(Order::CANCELED, 'StateId', $response);
+        $this->assertEquals(Order::CANCELED, $response->StateId);
     }
 }
