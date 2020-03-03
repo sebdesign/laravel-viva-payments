@@ -8,13 +8,6 @@ use Illuminate\Support\ServiceProvider;
 class VivaPaymentsServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
-    /**
      * Register the application services.
      *
      * @return void
@@ -82,6 +75,16 @@ class VivaPaymentsServiceProvider extends ServiceProvider
         }
 
         throw new \InvalidArgumentException('The Viva Payments environment must be demo or production.');
+    }
+
+    /**
+     * Determine if the provider is deferred.
+     *
+     * @return bool
+     */
+    public function isDeferred()
+    {
+        return true;
     }
 
     /**

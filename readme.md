@@ -71,6 +71,7 @@ This package requires Laravel 5.0 or higher, and uses Guzzle to make API calls. 
 | ~2.0                        | ~6.0    | ~5.0    |
 | ~3.0                        | ~6.0    | ~5.5    |
 | ~4.0                        | ~6.0    | ~6.0    |
+| ~4.1                        | ~6.0    | ~7.0    |
 
 ```
 composer require sebdesign/laravel-viva-payments
