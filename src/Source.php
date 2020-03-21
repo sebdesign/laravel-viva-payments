@@ -56,7 +56,7 @@ class Source
      * @param  \Psr\Http\Message\UriInterface $uri
      * @return string
      */
-    protected function getDomain(UriInterface $uri) : string
+    protected function getDomain(UriInterface $uri): string
     {
         return $uri->getHost();
     }
@@ -67,7 +67,7 @@ class Source
      * @param  \Psr\Http\Message\UriInterface  $uri
      * @return bool
      */
-    protected function isSecure(UriInterface $uri) : bool
+    protected function isSecure(UriInterface $uri): bool
     {
         return strtolower($uri->getScheme()) === 'https';
     }

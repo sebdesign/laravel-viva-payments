@@ -39,7 +39,7 @@ class Card
         int $cvc,
         int $month,
         int $year
-    ) : string {
+    ): string {
         $token = $this->client->post(self::ENDPOINT, [
             \GuzzleHttp\RequestOptions::FORM_PARAMS => [
                 'CardHolderName'    => $name,
@@ -61,7 +61,7 @@ class Card
      * @param  string $number  The credit card number
      * @return string
      */
-    protected function normalizeNumber(string $number) : string
+    protected function normalizeNumber(string $number): string
     {
         return preg_replace('/\D/', '', $number);
     }
@@ -71,7 +71,7 @@ class Card
      *
      * @return string
      */
-    protected function getKey() : string
+    protected function getKey(): string
     {
         return config('services.viva.public_key');
     }
@@ -83,7 +83,7 @@ class Card
      * @param  int $year
      * @return string
      */
-    protected function getExpirationDate(int $month, int $year) : string
+    protected function getExpirationDate(int $month, int $year): string
     {
         return Carbon::createFromDate($year, $month, 15)->toDateString();
     }

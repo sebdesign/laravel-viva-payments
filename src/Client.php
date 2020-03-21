@@ -114,7 +114,7 @@ class Client
      *
      * @return \Psr\Http\Message\UriInterface
      */
-    public function getUrl() : UriInterface
+    public function getUrl(): UriInterface
     {
         return $this->client->getConfig('base_uri');
     }
