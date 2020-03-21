@@ -2,6 +2,10 @@
 
 All notable changes to `sebdesign/laravel-viva-payments` will be documented in this file
 
+## 4.1.1 - 2020-03-21
+
+- Change `orderCode` parameter to `s` after redirect in documentation
+
 ## 4.1.0 - 2020-03-03
 
 - Add support for Laravel 7

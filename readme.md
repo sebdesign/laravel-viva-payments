@@ -26,7 +26,7 @@ Check out the official Viva Wallet Developer Portal for detailed instructions on
     - [Full example](#full-example)
 - [Native Checkout](#native-checkout)
     - [Display the payment form](#display-the-payment-form)
-    - [Process the payment](#process the payment)
+    - [Process the payment](#process-the-payment)
 - [Mobile Checkout](#mobile-checkout)
     - [Create a payment order](#create-a-payment-order)
     - [Card Tokenization](#card-tokenization)
@@ -149,7 +149,7 @@ return redirect($checkoutUrl);
 ```php
 $order = app(Sebdesign\VivaPayments\Order::class);
 
-$response = $order->get(request('orderCode'));
+$response = $order->get(request('s'));
 ```
 
 ### Full example
@@ -183,12 +183,14 @@ class CheckoutController extends Controller
                 'CustomerTrns'  => 'Description that the customer sees',
             ]);
         } catch (VivaException $e) {
+            report($e);
+
             return back()->withErrors($e->getMessage());
         }
 
         $checkoutUrl = $order->getCheckoutUrl($orderCode);
 
-        return redirect($checkoutUrl);
+        return redirect()->away($checkoutUrl);
     }
 
     /**
@@ -201,8 +203,10 @@ class CheckoutController extends Controller
     public function confirm(Request $request, Order $order)
     {
         try {
-            $response = $order->get($request->get('orderCode'));
+            $response = $order->get($request->get('s'));
         } catch (VivaException $e) {
+            report($e);
+
             return back()->withErrors($e->getMessage());
         }
 
@@ -361,6 +365,8 @@ class CheckoutController extends Controller
                 ]
             ]);
         } catch (VivaException $e) {
+            report($e);
+
             return back()->withErrors($e->getMessage());
         }
 
