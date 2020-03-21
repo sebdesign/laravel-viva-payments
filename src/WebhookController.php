@@ -78,7 +78,7 @@ abstract class WebhookController extends Controller
      *
      * @return array
      */
-    protected function verify() : array
+    protected function verify(): array
     {
         return (array) $this->webhook->getAuthorizationCode();
     }

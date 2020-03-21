@@ -158,7 +158,7 @@ class TransactionTest extends TestCase
         $this->assertEquals([(object) ['foo' => 'bar']], $transactions);
     }
 
-    public function dates() : array
+    public function dates(): array
     {
         return [
             'string' => ['2016-03-12'],
@@ -192,7 +192,7 @@ class TransactionTest extends TestCase
         $this->assertEquals([(object) ['foo' => 'bar']], $transactions);
     }
 
-    public function clearanceDates() : array
+    public function clearanceDates(): array
     {
         return [
             'string' => ['2016-03-12'],

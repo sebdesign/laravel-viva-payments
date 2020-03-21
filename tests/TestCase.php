@@ -65,7 +65,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $this->handler->push($history);
     }
 
-    protected function getLastRequest() : RequestInterface
+    protected function getLastRequest(): RequestInterface
     {
         return $this->history[0]['request'];
     }
