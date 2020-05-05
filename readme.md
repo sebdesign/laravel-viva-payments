@@ -128,11 +128,11 @@ The first argument is the amount requested in cents. All the parameters in the s
 $order = app(Sebdesign\VivaPayments\Order::class);
 
 $orderCode = $order->create(100, [
-    'FullName'      => 'Customer Name',
-    'Email'         => 'customer@domain.com',
-    'SourceCode'    => 'Default',
-    'MerchantTrns'  => 'Order reference',
-    'CustomerTrns'  => 'Description that the customer sees',
+    'fullName'      => 'Customer Name',
+    'email'         => 'customer@domain.com',
+    'sourceCode'    => 'Default',
+    'merchantTrns'  => 'Order reference',
+    'customerTrns'  => 'Description that the customer sees',
 ]);
 ```
 
@@ -176,11 +176,11 @@ class CheckoutController extends Controller
     {
         try {
             $orderCode = $order->create(100, [
-                'FullName'      => 'Customer Name',
-                'Email'         => 'customer@domain.com',
-                'SourceCode'    => 'Default',
-                'MerchantTrns'  => 'Order reference',
-                'CustomerTrns'  => 'Description that the customer sees',
+                'fullName'      => 'Customer Name',
+                'email'         => 'customer@domain.com',
+                'sourceCode'    => 'Default',
+                'merchantTrns'  => 'Order reference',
+                'customerTrns'  => 'Description that the customer sees',
             ]);
         } catch (VivaException $e) {
             report($e);
@@ -350,18 +350,18 @@ class CheckoutController extends Controller
     {
         try {
             $orderCode = $order->create(100, [
-                'FullName'      => 'Customer Name',
-                'Email'         => 'customer@domain.com',
-                'SourceCode'    => 'Default',
-                'MerchantTrns'  => 'Order reference',
-                'CustomerTrns'  => 'Description that the customer sees',
+                'fullName'      => 'Customer Name',
+                'email'         => 'customer@domain.com',
+                'sourceCode'    => 'Default',
+                'merchantTrns'  => 'Order reference',
+                'customerTrns'  => 'Description that the customer sees',
             ]);
 
             $response = $transaction->create([
-                'OrderCode'     => $orderCode,
-                'SourceCode'    => 'Default',
-                'CreditCard'    => [
-                    'Token'     => $request->get('token'),
+                'orderCode'     => $orderCode,
+                'sourceCode'    => 'Default',
+                'creditCard'    => [
+                    'token'     => $request->get('token'),
                 ]
             ]);
         } catch (VivaException $e) {
@@ -387,11 +387,11 @@ class CheckoutController extends Controller
 $order = app(Sebdesign\VivaPayments\Order::class);
 
 $orderCode = $order->create(100, [
-    'FullName'      => 'Customer Name',
-    'Email'         => 'customer@domain.com',
-    'SourceCode'    => 'Default',
-    'MerchantTrns'  => 'Order reference',
-    'CustomerTrns'  => 'Description that the customer sees',
+    'fullName'      => 'Customer Name',
+    'email'         => 'customer@domain.com',
+    'sourceCode'    => 'Default',
+    'merchantTrns'  => 'Order reference',
+    'customerTrns'  => 'Description that the customer sees',
 ]);
 ```
 
@@ -417,11 +417,11 @@ $maxInstallments = $card->installments('4111 1111 1111 1111');
 $transaction = app(Sebdesign\VivaPayments\Transaction::class);
 
 $response = $transaction->create([
-    'OrderCode'     => $orderCode,
-    'SourceCode'    => 'Default',
-    'Installments'  => $maxInstallments,
-    'CreditCard'    => [
-        'Token'     => $token,
+    'orderCode'     => $orderCode,
+    'sourceCode'    => 'Default',
+    'installments'  => $maxInstallments,
+    'creditCard'    => [
+        'token'     => $token,
     ]
 ]);
 ```
@@ -560,10 +560,10 @@ $response = $order->cancel(175936509216);
 $transaction = app(Sebdesign\VivaPayments\Transaction::class);
 
 $response = $transaction->create([
-    'OrderCode'     => 175936509216,
-    'SourceCode'    => 'Default',
-    'CreditCard'    => [
-        'Token'     => 'A generated token',
+    'orderCode'     => 175936509216,
+    'sourceCode'    => 'Default',
+    'creditCard'    => [
+        'token'     => 'A generated token',
     ]
 ]);
 ```
@@ -575,7 +575,7 @@ $response = $transaction->create([
 ```php
 $transaction = app(Sebdesign\VivaPayments\Transaction::class);
 
-$response = $transaction->createRecurring('252b950e-27f2-4300-ada1-4dedd7c17904', [...]);
+$response = $transaction->createRecurring('252b950e-27f2-4300-ada1-4dedd7c17904', 1500, [...]);
 ```
 
 ##### Get transactions

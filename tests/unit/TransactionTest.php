@@ -21,11 +21,11 @@ class TransactionTest extends TestCase
         $transaction = new Transaction($this->client);
 
         $parameters = [
-            'OrderCode'     => 175936509216,
-            'SourceCode'    => 'Default',
-            'Installments'  => 36,
-            'CreditCard'    => [
-                'Token'     => 'foo',
+            'orderCode'     => 175936509216,
+            'sourceCode'    => 'Default',
+            'installments'  => 36,
+            'creditCard'    => [
+                'token'     => 'foo',
             ],
         ];
 
@@ -34,10 +34,10 @@ class TransactionTest extends TestCase
 
         $this->assertMethod('POST', $request);
         $this->assertQuery('key', $this->app['config']->get('services.viva.public_key'), $request);
-        $this->assertBody('OrderCode', '175936509216', $request);
-        $this->assertBody('SourceCode', 'Default', $request);
-        $this->assertBody('Installments', '36', $request);
-        $this->assertBody('CreditCard', ['Token' => 'foo'], $request);
+        $this->assertJsonBody('orderCode', 175936509216, $request);
+        $this->assertJsonBody('sourceCode', 'Default', $request);
+        $this->assertJsonBody('installments', 36, $request);
+        $this->assertJsonBody('creditCard', ['token' => 'foo'], $request);
         $this->assertEquals(['foo' => 'bar'], (array) $response);
     }
 
@@ -53,15 +53,15 @@ class TransactionTest extends TestCase
         $transaction = new Transaction($this->client);
 
         $response = $transaction->createRecurring('252b950e-27f2-4300-ada1-4dedd7c17904', 30, [
-            'MerchantTrns' => 'Your reference',
+            'merchantTrns' => 'Your reference',
         ]);
 
         $request = $this->getLastRequest();
 
         $this->assertMethod('POST', $request);
         $this->assertPath('/api/transactions/252b950e-27f2-4300-ada1-4dedd7c17904', $request);
-        $this->assertBody('Amount', '30', $request);
-        $this->assertBody('MerchantTrns', 'Your reference', $request);
+        $this->assertJsonBody('amount', 30, $request);
+        $this->assertJsonBody('merchantTrns', 'Your reference', $request);
         $this->assertEquals(['foo' => 'bar'], (array) $response);
     }
 
@@ -81,8 +81,8 @@ class TransactionTest extends TestCase
 
         $this->assertMethod('DELETE', $request);
         $this->assertPath('/api/transactions/252b950e-27f2-4300-ada1-4dedd7c17904', $request);
-        $this->assertQuery('Amount', '30', $request);
-        $this->assertQuery('ActionUser', 'Customer name', $request);
+        $this->assertQuery('amount', '30', $request);
+        $this->assertQuery('actionUser', 'Customer name', $request);
         $this->assertEquals(['foo' => 'bar'], (array) $response);
     }
 

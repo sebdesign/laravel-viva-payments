@@ -135,7 +135,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             $name,
             $output,
             "Did not see expected query string parameter [{$name}] in [{$query}]."
-         );
+        );
 
         $this->assertEquals(
             $value,
@@ -149,6 +149,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     public function assertBody(string $name, $value, RequestInterface $request)
     {
         parse_str($request->getBody(), $body);
+
+        $this->assertArrayHasKey($name, $body);
+
+        $this->assertSame($value, $body[$name]);
+
+        return $this;
+    }
+
+    public function assertJsonBody(string $name, $value, RequestInterface $request)
+    {
+        $body = json_decode($request->getBody(), true);
 
         $this->assertArrayHasKey($name, $body);
 

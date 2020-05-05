@@ -113,7 +113,7 @@ class Transaction
     public function create(array $parameters)
     {
         return $this->client->post(self::ENDPOINT, [
-            \GuzzleHttp\RequestOptions::FORM_PARAMS => $parameters,
+            \GuzzleHttp\RequestOptions::JSON => $parameters,
             \GuzzleHttp\RequestOptions::QUERY => [
                 'key' => $this->getKey(),
             ],
@@ -131,7 +131,7 @@ class Transaction
     public function createRecurring(string $id, int $amount, array $parameters = [])
     {
         return $this->client->post(self::ENDPOINT.$id, [
-            \GuzzleHttp\RequestOptions::FORM_PARAMS => array_merge(['Amount' => $amount], $parameters),
+            \GuzzleHttp\RequestOptions::JSON => array_merge(['amount' => $amount], $parameters),
         ]);
     }
 
@@ -222,8 +222,8 @@ class Transaction
      */
     public function cancel(string $id, int $amount, $actionUser = null)
     {
-        $query = ['Amount' => $amount];
-        $actionUser = $actionUser ? ['ActionUser' => $actionUser] : [];
+        $query = ['amount' => $amount];
+        $actionUser = $actionUser ? ['actionUser' => $actionUser] : [];
 
         return $this->client->delete(self::ENDPOINT.$id, [
             \GuzzleHttp\RequestOptions::QUERY => array_merge($query, $actionUser),

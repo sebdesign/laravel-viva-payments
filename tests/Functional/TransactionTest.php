@@ -21,12 +21,12 @@ class TransactionTest extends TestCase
         $installments = $this->getInstallments();
 
         $original = app(Transaction::class)->create([
-            'OrderCode'       => $orderCode,
-            'SourceCode'      => env('VIVA_SOURCE_CODE'),
-            'Installments'    => $installments,
-            'AllowsRecurring' => true,
-            'CreditCard'      => [
-                'Token'       => $token,
+            'orderCode'       => $orderCode,
+            'sourceCode'      => env('VIVA_SOURCE_CODE'),
+            'installments'    => $installments,
+            'allowsRecurring' => true,
+            'creditCard'      => [
+                'token'       => $token,
             ],
         ]);
 
@@ -43,14 +43,11 @@ class TransactionTest extends TestCase
      */
     public function createRecurringTransaction($original)
     {
-        $this->markTestSkipped('Error 400: Negative or zero amount');
-
         $installments = $this->getInstallments();
 
-        $recurring = app(Transaction::class)->createRecurring($original->TransactionId, [
-            'Amount'        => 1500,
-            'SourceCode'    => env('VIVA_SOURCE_CODE'),
-            'Installments'  => $installments,
+        $recurring = app(Transaction::class)->createRecurring($original->TransactionId, 1500, [
+            'sourceCode'    => env('VIVA_SOURCE_CODE'),
+            'installments'  => $installments,
         ]);
 
         $this->assertEquals(Transaction::COMPLETED, $recurring->StatusId, 'The transaction was not completed.');
@@ -155,9 +152,9 @@ class TransactionTest extends TestCase
     protected function getOrderCode()
     {
         return app(Order::class)->create(1500, [
-            'CustomerTrns' => 'Test Transaction',
-            'SourceCode' => env('VIVA_SOURCE_CODE'),
-            'AllowRecurring' => true,
+            'customerTrns' => 'Test Transaction',
+            'sourceCode' => env('VIVA_SOURCE_CODE'),
+            'allowRecurring' => true,
         ]);
     }
 

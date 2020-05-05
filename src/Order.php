@@ -38,7 +38,7 @@ class Order
     public function create(int $amount, array $parameters = [])
     {
         $response = $this->client->post(self::ENDPOINT, [
-            \GuzzleHttp\RequestOptions::FORM_PARAMS => array_merge(['Amount' => $amount], $parameters),
+            \GuzzleHttp\RequestOptions::JSON => array_merge(['amount' => $amount], $parameters),
         ]);
 
         return $response->OrderCode;
@@ -65,7 +65,7 @@ class Order
     public function update($orderCode, array $parameters)
     {
         return $this->client->patch(self::ENDPOINT.$orderCode, [
-            \GuzzleHttp\RequestOptions::FORM_PARAMS => $parameters,
+            \GuzzleHttp\RequestOptions::JSON => $parameters,
         ]);
     }
 
