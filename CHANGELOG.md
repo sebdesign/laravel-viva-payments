@@ -5,6 +5,7 @@ All notable changes to `sebdesign/laravel-viva-payments` will be documented in t
 ## 4.2.0 - 2020-05-05
 
 - Allow recurring payments when creating orders
+- Fix documentation links
 
 ## 4.1.1 - 2020-03-21
 

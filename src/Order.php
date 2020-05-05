@@ -32,7 +32,7 @@ class Order
      * Create a payment order.
      *
      * @param  int   $amount     amount in cents
-     * @param  array $parameters optional parameters (Full list available here: https://github.com/VivaPayments/API/wiki/Optional-Parameters)
+     * @param  array $parameters optional parameters (Full list available here: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders/post)
      * @return int
      */
     public function create(int $amount, array $parameters = [])

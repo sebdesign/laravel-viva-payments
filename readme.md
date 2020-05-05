@@ -122,7 +122,7 @@ The following guide will walk you through the necessary steps:
 
 #### Create the payment order
 
-The first argument is the amount requested in cents. All the parameters in the second argument are optional. Check out all the supported [optional parameters](hhttps://developer.vivawallet.com/api-reference-guide/payment-api/create-order/#optional-parameters).
+The first argument is the amount requested in cents. All the parameters in the second argument are optional. Check out the [request body schema](https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders/post).
 
 ```php
 $order = app(Sebdesign\VivaPayments\Order::class);
@@ -518,7 +518,7 @@ class VerifyCsrfToken extends Middleware
 
 ##### Create a payment order
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/create-order
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders~1{orderCode}/get
 
 ```php
 $order = app(Sebdesign\VivaPayments\Order::class);
@@ -528,7 +528,7 @@ $orderCode = $order->create(100, [...]);
 
 ##### Get an order
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/retrieve-order
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders~1{orderCode}/get
 
 ```php
 $response = $order->get(175936509216);
@@ -536,7 +536,7 @@ $response = $order->get(175936509216);
 
 ##### Update an order
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/update-order
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders~1{orderCode}/patch
 
 ```php
 $order->update(175936509216, ['Amount' => 50]);
@@ -544,7 +544,7 @@ $order->update(175936509216, ['Amount' => 50]);
 
 ##### Cancel an order
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/cancel-order
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders~1{orderCode}/delete
 
 ```php
 $response = $order->cancel(175936509216);
@@ -554,7 +554,7 @@ $response = $order->cancel(175936509216);
 
 ##### Create a new transaction
 
-> See: https://developer.vivawallet.com/online-checkouts/native-checkout-v1
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Transactions/paths/~1api~1transactions~1{Id}/post
 
 ```php
 $transaction = app(Sebdesign\VivaPayments\Transaction::class);
@@ -580,7 +580,7 @@ $response = $transaction->createRecurring('252b950e-27f2-4300-ada1-4dedd7c17904'
 
 ##### Get transactions
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/retrieve-transactions
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Transactions/paths/~1api~1transactions~1{Id}/get
 
 ```php
 // By transaction ID
@@ -606,7 +606,7 @@ $transactions = $transaction->getByClearanceDate('2016-03-11');
 
 ##### Cancel a card payment / Make a refund
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/cancel-transaction
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Transactions/paths/~1api~1transactions~1{Id}/delete
 
 ```php
 $response = $transaction->cancel('252b950e-27f2-4300-ada1-4dedd7c17904', 100, 'username');
@@ -636,7 +636,7 @@ $maxInstallments = $card->installments('4111 1111 1111 1111');
 
 ##### Add a payment source
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/add-source
+> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Sources/paths/~1api~1sources/post
 
 ```php
 $source = app(Sebdesign\VivaPayments\Source::class);
