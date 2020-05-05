@@ -22,11 +22,11 @@ class SourceTest extends TestCase
         $request = $this->getLastRequest();
 
         $this->assertMethod('POST', $request);
-        $this->assertBody('Name', 'Site 1', $request);
-        $this->assertBody('SourceCode', 'site1', $request);
-        $this->assertBody('Domain', 'www.domain.com', $request);
-        $this->assertBody('isSecure', '1', $request);
-        $this->assertBody('PathFail', 'order/failure', $request);
-        $this->assertBody('PathSuccess', 'order/success', $request);
+        $this->assertJsonBody('name', 'Site 1', $request);
+        $this->assertJsonBody('sourceCode', 'site1', $request);
+        $this->assertJsonBody('domain', 'www.domain.com', $request);
+        $this->assertJsonBody('isSecure', true, $request);
+        $this->assertJsonBody('pathFail', 'order/failure', $request);
+        $this->assertJsonBody('pathSuccess', 'order/success', $request);
     }
 }

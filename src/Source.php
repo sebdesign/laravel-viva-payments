@@ -39,13 +39,13 @@ class Source
         $uri = new Uri($url);
 
         return $this->client->post(self::ENDPOINT, [
-            \GuzzleHttp\RequestOptions::FORM_PARAMS => [
-                'Name'          => $name,
-                'SourceCode'    => $code,
-                'Domain'        => $this->getDomain($uri),
+            \GuzzleHttp\RequestOptions::JSON => [
+                'name'          => $name,
+                'sourceCode'    => $code,
+                'domain'        => $this->getDomain($uri),
                 'isSecure'      => $this->isSecure($uri),
-                'PathFail'      => $fail,
-                'PathSuccess'   => $success,
+                'pathFail'      => $fail,
+                'pathSuccess'   => $success,
             ],
         ]);
     }
