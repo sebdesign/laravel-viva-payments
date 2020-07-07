@@ -2,6 +2,10 @@
 
 All notable changes to `sebdesign/laravel-viva-payments` will be documented in this file
 
+## 4.3.0 - 2020-07-08
+
+- Allow Guzzle 7
+
 ## 4.2.0 - 2020-05-05
 
 - Allow recurring payments when creating orders

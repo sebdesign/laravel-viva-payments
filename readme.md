@@ -65,13 +65,14 @@ Install the package through Composer.
 
 This package requires Laravel 5.0 or higher, and uses Guzzle to make API calls. Use the appropriate version according to your dependencies.
 
-| Viva Payments for Laravel   | Guzzle  | Laravel |
-|-----------------------------|---------|---------|
-| ~1.0                        | ~5.0    | ~5.0    |
-| ~2.0                        | ~6.0    | ~5.0    |
-| ~3.0                        | ~6.0    | ~5.5    |
-| ~4.0                        | ~6.0    | ~6.0    |
-| ~4.1                        | ~6.0    | ~7.0    |
+| Viva Payments for Laravel   | Guzzle     | Laravel |
+|-----------------------------|------------|---------|
+| ~1.0                        | ~5.0       | ~5.0    |
+| ~2.0                        | ~6.0       | ~5.0    |
+| ~3.0                        | ~6.0       | ~5.5    |
+| ~4.0                        | ~6.0       | ~6.0    |
+| ~4.1                        | ~6.0       | ~7.0    |
+| ^4.3                        | ^6.0\|^7.0 | ^7.0    |
 
 ```
 composer require sebdesign/laravel-viva-payments
