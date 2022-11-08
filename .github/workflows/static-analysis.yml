@@ -38,6 +38,7 @@ jobs:
           php-version: '${{ matrix.php }}'
           extensions: dom, curl, libxml, mbstring, zip
           tools: composer:v2
+          coverage: none
 
       - name: Install Composer dependencies
         run: composer update --${{ matrix.stability }} --no-interaction --prefer-dist
