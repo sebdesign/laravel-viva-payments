@@ -66,4 +66,5 @@ jobs:
       - name: Upload coverage
         uses: sudo-bot/action-scrutinizer@latest
         with:
+          fetch-depth: 10
           cli-args: "--format=php-clover build/coverage/coverage.clover"
