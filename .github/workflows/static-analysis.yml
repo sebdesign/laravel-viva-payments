@@ -11,8 +11,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: [8.1, 8.2]
+        stability: [prefer-stable]
 
-    name: Static Analysis P${{ matrix.php }} - ${{ matrix.os }}
+    name: Static Analysis P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.stability }}
 
     steps:
       - name: Checkout
@@ -42,4 +43,4 @@ jobs:
         run: composer update --${{ matrix.stability }} --no-interaction --prefer-dist
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyze --ansi --error-format=github
+        run: ./vendor/bin/phpstan analyse --ansi --error-format=github
