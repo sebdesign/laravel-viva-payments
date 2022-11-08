@@ -13,34 +13,34 @@ jobs:
         php: [8.1]
         stability: [prefer-lowest, prefer-stable]
 
-      name: Formats P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.stability }}
+    name: Formats P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.stability }}
 
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        - name: Get Composer Cache Directory
-          id: composer-cache
-          run: |
-            echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-        - name: Cache dependencies
-          uses: actions/cache@v3
-          with:
-            path: ${{ steps.composer-cache.outputs.dir }}
-            key: ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-${{ hashFiles('**/composer.lock') }}
-            restore-keys: |
-              ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-
 
-        - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: '${{ matrix.php }}'
-            extensions: dom, curl, libxml, mbstring, zip
-            tools: composer:v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
 
-        - name: Install Composer dependencies
-          run: composer update --${{ matrix.stability }} --no-interaction --prefer-dist
+      - name: Install Composer dependencies
+        run: composer update --${{ matrix.stability }} --no-interaction --prefer-dist
 
-        - name: Run Laravel Pint
-          run: ./vendor/bin/pint
+      - name: Run Laravel Pint
+        run: ./vendor/bin/pint
