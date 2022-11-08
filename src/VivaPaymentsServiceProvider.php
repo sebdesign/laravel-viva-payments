@@ -3,9 +3,11 @@
 namespace Sebdesign\VivaPayments;
 
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Sebdesign\VivaPayments\Enums\Environment;
 
-class VivaPaymentsServiceProvider extends ServiceProvider
+class VivaPaymentsServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register the application services.
@@ -14,15 +16,24 @@ class VivaPaymentsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/services.php',
-            'services'
-        );
+        $this->mergeConfigFrom(__DIR__.'/../config/services.php', 'services');
 
         $this->app->singleton(Client::class, function ($app) {
             return new Client(
                 $this->buildGuzzleClient(),
-                $app->make('config')->get('services.viva.environment')
+                Environment::from($app->make('config')->get('services.viva.environment')),
+                merchantId: strval($app->make('config')->get('services.viva.merchant_id')),
+                apiKey: strval($app->make('config')->get('services.viva.api_key')),
+                clientId: strval($app->make('config')->get('services.viva.client_id')),
+                clientSecret: strval($app->make('config')->get('services.viva.client_secret')),
+            );
+        });
+
+        $this->app->bind(OAuth::class, function ($app) {
+            return new OAuth(
+                client: $app->make(Client::class),
+                clientId: strval($app->make('config')->get('services.viva.client_id')),
+                clientSecret: strval($app->make('config')->get('services.viva.client_secret')),
             );
         });
     }
@@ -41,33 +52,27 @@ class VivaPaymentsServiceProvider extends ServiceProvider
 
     /**
      * Check if cURL doens't use NSS.
-     *
-     * @return bool
      */
-    protected function curlDoesntUseNss()
+    protected function curlDoesntUseNss(): bool
     {
         $curl = curl_version();
 
-        return ! preg_match('/NSS/', $curl['ssl_version']);
-    }
+        // @codeCoverageIgnoreStart
+        if (! isset($curl['ssl_version'])) {
+            return true;
+        }
+        // @codeCoverageIgnoreEnd
 
-    /**
-     * Determine if the provider is deferred.
-     *
-     * @return bool
-     */
-    public function isDeferred()
-    {
-        return true;
+        return preg_match('/NSS/', $curl['ssl_version']) !== 1;
     }
 
     /**
      * Get the services provided by the provider.
      *
-     * @return array
+     * @return array<int,string>
      */
     public function provides()
     {
-        return [Client::class];
+        return [Client::class, OAuth::class];
     }
 }

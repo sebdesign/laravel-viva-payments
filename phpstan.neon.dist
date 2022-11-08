@@ -1,0 +1,29 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/phpstan/phpstan-phpunit/extension.neon
+    - ./vendor/phpstan/phpstan-phpunit/rules.neon
+
+parameters:
+
+    paths:
+        - src/
+        - tests/
+
+    # Level 9 is the highest level
+    level: 9
+
+    typeAliases:
+        RecurringTransactionArray: 'array{Emv:?string, Amount:float, StatusId:string, RedirectUrl:?string, CurrencyCode:string, TransactionId:string, ReferenceNumber:int, AuthorizationId:string, RetrievalReferenceNumber:string, Loyalty:?string, ThreeDSecureStatusId:int, ErrorCode:int, ErrorText:?string, TimeStamp:string, CorrelationId:?string, EventId:int, Success:bool}'
+        TransactionFailedArray: 'array{Moto:bool, Email:string, Phone:string, BankId:string, Systemic:bool, Switching:bool, ParentId:?string, Amount:float, ChannelId:string, TerminalId:int, MerchantId:string, OrderCode:string, ProductId:?string, StatusId:string, FullName:string, ResellerId:?string, InsDate:string, TotalFee:float, CardUniqueReference:string, CardToken:string, CardNumber:string, TipAmount:float, SourceCode:string, SourceName:string, Latitude:?float, Longitude:?float, CompanyName:String, TransactionId:string, CompanyTitle:string, PanEntryMode:string, ReferenceNumber:int, ResponseCode:?string, CurrencyCode:string, OrderCulture:string, MerchantTrns:?string, CustomerTrns:string, IsManualRefund:bool, TargetPersonId:?string, TargetWalletId:?string, LoyaltyTriggered:bool, TransactionTypeId:int, TotalInstallments:int, CardCountryCode:?string, CardIssuingBank:?string, RedeemedAmount:int, ClearanceDate:?int, CurrentInstallment:?int, Tags:string[], BillId:?string, ResellerSourceCode:?string, ResellerSourceName:?string, ResellerCompanyName:?string, ResellerSourceAddress:?string, CardExpirationDate:string, RetrievalReferenceNumber:?string, AssignedMerchantUsers:string[], AssignedResellerUsers:string[], CardTypeId:int, DigitalWalletId:?int, ResponseEventId:?string, ElectronicCommerceIndicator:?string}'
+        TransactionPaymentCreatedArray: 'array{Moto:bool, Email:string, Phone:string, BankId:string, Systemic:bool, Switching:bool, ParentId:?string, Amount:float, ChannelId:string, TerminalId:int, MerchantId:string, OrderCode:string, ProductId:?string, StatusId:string, FullName:string, ResellerId:?string, InsDate:string, TotalFee:float, CardUniqueReference:string, CardToken:string, CardNumber:string, TipAmount:float, SourceCode:string, SourceName:string, Latitude:?float, Longitude:?float, CompanyName:String, TransactionId:string, CompanyTitle:string, PanEntryMode:string, ReferenceNumber:int, ResponseCode:?string, CurrencyCode:string, OrderCulture:string, MerchantTrns:?string, CustomerTrns:string, IsManualRefund:bool, TargetPersonId:?string, TargetWalletId:?string, LoyaltyTriggered:bool, TransactionTypeId:int, TotalInstallments:int, CardCountryCode:?string, CardIssuingBank:?string, RedeemedAmount:int, ClearanceDate:?int, CurrentInstallment:?int, Tags:string[], BillId:?string, ResellerSourceCode:?string, ResellerSourceName:?string, ResellerCompanyName:?string, ResellerSourceAddress:?string, CardExpirationDate:string, RetrievalReferenceNumber:?string, AssignedMerchantUsers:string[], AssignedResellerUsers:string[], CardTypeId:int, DigitalWalletId:?int, ResponseEventId:?string, ElectronicCommerceIndicator:?string}'
+        TransactionArray: 'array{email:string, amount:int, orderCode:string, statusId:string, fullName:string, insDate:string, cardNumber:string, currencyCode:string, customerTrns:string, merchantTrns:string, transactionTypeId:int, recurringSupport:bool, totalInstallments:int, cardCountryCode:?string, cardIssuingBank:?string, currentInstallment:int, cardUniqueReference:string, cardTypeId:int, digitalWalletId:?int}'
+        WebhookEventDataArray: 'TransactionPaymentCreatedArray|TransactionFailedArray|array<string,mixed>'
+        WebhookEventArray: 'array{Url:string, EventData:WebhookEventDataArray, Created:string, CorrelationId:string, EventTypeId:int, Delay:?string, MessageId:string, RecipientId:string, MessageTypeId:int}'
+
+#    ignoreErrors:
+#        - '#PHPDoc tag @var#'
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
+#
+#    checkMissingIterableValueType: false

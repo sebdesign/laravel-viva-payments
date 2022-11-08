@@ -8,56 +8,38 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Sebdesign\VivaPayments\Client;
+use Sebdesign\VivaPayments\Enums\Environment;
 use Sebdesign\VivaPayments\VivaPaymentsServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    /**
-     * Client.
-     *
-     * @var \Sebdesign\VivaPayments\Client
-     */
-    protected $client;
+    protected Client $client;
 
-    /**
-     * Handler stack.
-     *
-     * @var \GuzzleHttp\HandlerStack
-     */
-    protected $handler;
+    protected HandlerStack $handler;
+
+    protected $loadEnvironmentVariables = true;
 
     /**
      * History of requests.
      *
-     * @var array
+     * @var array<int,array{request:RequestInterface,response:ResponseInterface}>
      */
-    protected $history = [];
+    protected array $history = [];
 
     /**
-     * Responses.
+     * Get package providers.
      *
-     * @var array
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array<int, string>
      */
-    protected $responses = [];
-
     protected function getPackageProviders($app)
     {
         return [VivaPaymentsServiceProvider::class];
     }
 
-    /**
-     * Define environment setup.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app)
-    {
-        // Define your environment setup.
-    }
-
-    protected function mockRequests()
+    protected function mockRequests(): void
     {
         $history = Middleware::history($this->history);
 
@@ -73,9 +55,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      * Mock responses.
      *
      * @param  \GuzzleHttp\Psr7\Response[]  $responses
-     * @return void
      */
-    protected function mockResponses(array $responses)
+    protected function mockResponses(array $responses): void
     {
         $mock = new MockHandler($responses);
         $this->handler = HandlerStack::create($mock);
@@ -86,40 +67,48 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Make a client instance from a Guzzle handler.
      */
-    protected function makeClient()
+    protected function makeClient(): void
     {
         $mockClient = new GuzzleClient([
             'handler' => $this->handler,
             'curl' => [CURLOPT_SSL_CIPHER_LIST => 'TLSv1'],
         ]);
 
-        $this->client = new Client($mockClient, 'demo');
+        $this->client = new Client(
+            $mockClient,
+            Environment::Demo,
+            strval(config('services.viva.merchant_id')),
+            strval(config('services.viva.api_key')),
+            strval(config('services.viva.client_id')),
+            strval(config('services.viva.client_secret')),
+        );
     }
 
-    protected function mockJsonResponses(array $bodies)
+    /** @param  array<mixed>  ...$bodies */
+    protected function mockJsonResponses(array ...$bodies): void
     {
-        $responses = array_map(function ($body) {
-            return new Response(200, [], json_encode($body));
+        $responses = array_map(function (array $body) {
+            return new Response(body: json_encode($body, JSON_THROW_ON_ERROR));
         }, $bodies);
 
         $this->mockResponses($responses);
     }
 
-    public function assertPath(string $path, RequestInterface $request)
+    public function assertPath(string $path, RequestInterface $request): self
     {
         $this->assertEquals($path, $request->getUri()->getPath());
 
         return $this;
     }
 
-    public function assertMethod(string $name, RequestInterface $request)
+    public function assertMethod(string $name, RequestInterface $request): self
     {
         $this->assertEquals($name, $request->getMethod(), "The request method should be [{$name}].");
 
         return $this;
     }
 
-    public function assertQuery(string $name, $value, RequestInterface $request)
+    public function assertQuery(string $name, string $value, RequestInterface $request): self
     {
         $query = $request->getUri()->getQuery();
 
@@ -131,6 +120,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             "Did not see expected query string parameter [{$name}] in [{$query}]."
         );
 
+        $this->assertIsString($output[$name]);
+
         $this->assertEquals(
             $value,
             $output[$name],
@@ -140,7 +131,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return $this;
     }
 
-    public function assertBody(string $name, $value, RequestInterface $request)
+    public function assertBody(string $name, string $value, RequestInterface $request): self
     {
         parse_str($request->getBody(), $body);
 
@@ -151,9 +142,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return $this;
     }
 
-    public function assertJsonBody(string $name, $value, RequestInterface $request)
+    /** @param  array<mixed>|string|int|bool  $value */
+    public function assertJsonBody(string $name, mixed $value, RequestInterface $request): self
     {
-        $body = json_decode($request->getBody(), true);
+        $body = json_decode($request->getBody(), associative: true);
+
+        $this->assertIsArray($body);
 
         $this->assertArrayHasKey($name, $body);
 
@@ -162,7 +156,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return $this;
     }
 
-    public function assertHeader(string $name, $value, RequestInterface $request)
+    public function assertHeader(string $name, string $value, RequestInterface $request): self
     {
         $this->assertTrue($request->hasHeader($name), "The header [{$name}] should be passed as a header.");
 

@@ -2,193 +2,59 @@
 
 namespace Sebdesign\VivaPayments\Test\Functional;
 
-use Illuminate\Support\Carbon;
-use Sebdesign\VivaPayments\NativeCheckout;
-use Sebdesign\VivaPayments\OAuth;
-use Sebdesign\VivaPayments\Order;
+use GuzzleHttp\Exception\RequestException;
+use Sebdesign\VivaPayments\Requests\CreateRecurringTransaction;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\Transaction;
+use Sebdesign\VivaPayments\VivaException;
 
+/** @covers \Sebdesign\VivaPayments\Transaction */
 class TransactionTest extends TestCase
 {
     /**
      * @test
      * @group functional
+     * @covers \Sebdesign\VivaPayments\Responses\Transaction
      */
-    public function createTransaction()
+    public function it_cannot_retrieve_a_transaction_that_does_not_exist(): void
     {
-        $this->markTestSkipped('Charge tokens fail 3DS authentication in demo environment.');
+        /** @var Transaction */
+        $transaction = $this->app?->make(Transaction::class);
 
-        $token = $this->getToken();
-
-        $original = app(Transaction::class)->create(['PaymentToken' => $token]);
-
-        $this->assertEquals(Transaction::COMPLETED, $original->StatusId, 'The transaction was not completed.');
-        $this->assertEquals(15, $original->Amount);
-
-        return $original;
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends createTransaction
-     */
-    public function createRecurringTransaction($original)
-    {
-        $installments = $this->getInstallments();
-
-        $recurring = app(Transaction::class)->createRecurring($original->TransactionId, 1500, [
-            'sourceCode'    => env('VIVA_SOURCE_CODE'),
-            'installments'  => $installments,
-        ]);
-
-        $this->assertEquals(Transaction::COMPLETED, $recurring->StatusId, 'The transaction was not completed.');
-        $this->assertEquals(15, $recurring->Amount);
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends createTransaction
-     */
-    public function getById($original)
-    {
-        $transactions = app(Transaction::class)->get($original->TransactionId);
-
-        $this->assertNotEmpty($transactions);
-        $this->assertCount(1, $transactions, 'There should be 1 transaction.');
-        $this->assertEquals(Transaction::COMPLETED, $transactions[0]->StatusId, 'The transaction was not completed.');
-        $this->assertEquals($original->TransactionId, $transactions[0]->TransactionId, "The transaction ID should be {$original->TransactionId}.");
-
-        return $transactions[0];
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends getById
-     */
-    public function getByOrderCode($original)
-    {
-        $orderCode = $original->Order->OrderCode;
-
-        $transactions = app(Transaction::class)->getByOrder($orderCode);
-
-        $this->assertNotEmpty($transactions);
-
-        foreach ($transactions as $key => $trns) {
-            $this->assertEquals($orderCode, $trns->Order->OrderCode, "Transaction #{$key} should have order code {$orderCode}");
+        try {
+            $transaction->retrieve('c90d4902-6245-449f-b2b0-51d99cd09cfe');
+            $this->fail();
+        } catch (RequestException $e) {
+            $this->assertEquals(404, $e->getCode());
         }
     }
 
     /**
      * @test
      * @group functional
-     * @depends getById
+     * @covers \Sebdesign\VivaPayments\Requests\CreateRecurringTransaction
+     * @covers \Sebdesign\VivaPayments\Responses\RecurringTransaction
+     *
+     * @see https://developer.vivawallet.com/tutorials/payments/create-a-recurring-payment/#via-the-api
      */
-    public function getByDate($original)
+    public function it_cannot_create_a_recurring_transaction_that_does_not_exist(): void
     {
-        $date = Carbon::parse($original->InsDate);
+        /** @var Transaction */
+        $transaction = $this->app?->make(Transaction::class);
 
-        $transactions = app(Transaction::class)->getByDate($date);
+        $this->expectException(VivaException::class);
+        $this->expectExceptionCode(404);
 
-        $this->assertNotEmpty($transactions);
-
-        foreach ($transactions as $transaction) {
-            $this->assertTrue(Carbon::parse($transaction->InsDate)->isSameDay($date));
-        }
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends getById
-     */
-    public function getByClearanceDate($original)
-    {
-        $this->markTestSkipped('Clearance date is null.');
-
-        $date = Carbon::parse($original->InsDate);
-
-        $transactions = app(Transaction::class)->getByClearanceDate($date);
-
-        $this->assertNotEmpty($transactions);
-
-        foreach ($transactions as $key => $trns) {
-            $this->assertTrue(Carbon::parse($trns->ClearanceDate)->isSameDay($date));
-        }
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends getById
-     */
-    public function getBySourceCode($original)
-    {
-        $date = Carbon::parse($original->InsDate);
-
-        $transactions = app(Transaction::class)->getBySourceCode(env('VIVA_SOURCE_CODE'), $date);
-
-        $this->assertNotEmpty($transactions);
-
-        foreach ($transactions as $key => $trns) {
-            $this->assertEquals(env('VIVA_SOURCE_CODE'), $trns->sourceCode);
-            $this->assertTrue(Carbon::parse($trns->InsDate)->isSameDay($date));
-        }
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends createTransaction
-     */
-    public function cancelTransaction($original)
-    {
-        $transaction = app(Transaction::class);
-
-        $response = $transaction->cancel($original->TransactionId, env('VIVA_SOURCE_CODE'));
-
-        $this->assertEquals(Transaction::COMPLETED, $response->StatusId, 'The cancel transaction was not completed.');
-        $this->assertEquals(15, $response->Amount);
-
-        $transactions = $transaction->get($original->TransactionId);
-
-        $this->assertNotEmpty($transactions);
-        $this->assertCount(1, $transactions, 'There should be 1 transaction.');
-        $this->assertEquals(Transaction::CANCELED, $transactions[0]->StatusId, 'The original transaction should be canceled.');
-        $this->assertEquals(15, $transactions[0]->Amount);
-    }
-
-    protected function getOrderCode()
-    {
-        return app(Order::class)->create(1500, [
-            'customerTrns' => 'Test Transaction',
-            'sourceCode' => env('VIVA_SOURCE_CODE'),
-            'allowRecurring' => true,
-        ]);
-    }
-
-    protected function getToken()
-    {
-        app(OAuth::class)->requestToken();
-
-        return app(NativeCheckout::class)->chargeToken(
-            1500,
-            'Customer name',
-            '4111 1111 1111 1111',
-            111,
-            10,
-            2030,
-            'https://www.example.com'
+        $transaction->createRecurring(
+            '252b950e-27f2-4300-ada1-4dedd7c17904',
+            new CreateRecurringTransaction(
+                amount: 100,
+                installments: 1,
+                customerTrns: 'A description of products / services that is displayed to the customer',
+                merchantTrns: 'Your merchant reference',
+                sourceCode: '6054',
+                tipAmount: 0,
+            )
         );
-    }
-
-    protected function getInstallments()
-    {
-        app(OAuth::class)->requestToken();
-
-        return app(NativeCheckout::class)->installments('4111 1111 1111 1111');
     }
 }

@@ -3,68 +3,37 @@
 namespace Sebdesign\VivaPayments\Test\Functional;
 
 use Sebdesign\VivaPayments\Order;
+use Sebdesign\VivaPayments\Requests\CreatePaymentOrder;
+use Sebdesign\VivaPayments\Requests\Customer;
 use Sebdesign\VivaPayments\Test\TestCase;
 
+/** @cover \Sebdesign\VivaPayments\Order */
 class OrderTest extends TestCase
 {
     /**
      * @test
      * @group functional
+     * @covers \Sebdesign\VivaPayments\Requests\CreatePaymentOrder
      */
-    public function it_creates_an_order()
+    public function it_creates_a_payment_order(): void
     {
-        // POST
+        /** @var Order */
+        $order = $this->app?->make(Order::class);
 
-        $orderCode = app(Order::class)->create(1500, [
-            'CustomerTrns' => 'Test Transaction',
-            'SourceCode' => env('VIVA_SOURCE_CODE'),
-            'AllowRecurring' => true,
-        ]);
+        $orderCode = $order->create(new CreatePaymentOrder(
+            amount: 1000,
+            customerTrns: 'Test customer description',
+            customer: new Customer(
+                email: 'johdoe@vivawallet.com',
+                fullName: 'John Doe',
+                phone: '+30999999999',
+                countryCode: 'GB',
+                requestLang: 'en-GB',
+            ),
+            sourceCode: strval(env('VIVA_SOURCE_CODE')),
+            merchantTrns: 'Test merchant description',
+        ));
 
-        $this->assertTrue(is_int($orderCode), "Failed asserting that '{$orderCode}' is of type \"int\".");
-
-        return $orderCode;
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends it_creates_an_order
-     */
-    public function it_gets_an_order($orderCode)
-    {
-        $response = app(Order::class)->get($orderCode);
-
-        $this->assertEquals(Order::PENDING, $response->StateId);
-        $this->assertEquals(15, $response->RequestAmount);
-        $this->assertEquals('Test Transaction', $response->CustomerTrns);
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends it_creates_an_order
-     */
-    public function it_updates_an_order($orderCode)
-    {
-        app(Order::class)->update($orderCode, ['Amount' => 50]);
-
-        $response = app(Order::class)->get($orderCode);
-
-        $this->assertEquals(0.5, $response->RequestAmount);
-    }
-
-    /**
-     * @test
-     * @group functional
-     * @depends it_creates_an_order
-     */
-    public function it_cancels_an_order($orderCode)
-    {
-        app(Order::class)->cancel($orderCode);
-
-        $response = app(Order::class)->get($orderCode);
-
-        $this->assertEquals(Order::CANCELED, $response->StateId);
+        $this->assertIsNumeric($orderCode);
     }
 }

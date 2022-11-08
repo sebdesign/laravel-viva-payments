@@ -2,45 +2,46 @@
 
 namespace Sebdesign\VivaPayments\Test\Functional;
 
-use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\OAuth;
+use Sebdesign\VivaPayments\Responses\AccessToken;
 use Sebdesign\VivaPayments\Test\TestCase;
 
+/** @covers \Sebdesign\VivaPayments\OAuth */
 class OAuthTest extends TestCase
 {
-    /**
-     * @test
-     * @group functional
-     */
-    public function it_requests_an_access_token_and_sets_it_to_the_client()
+    protected OAuth $oauth;
+
+    protected function setUp(): void
     {
-        $token = app(OAuth::class)->requestToken();
+        parent::setUp();
 
-        $this->assertTrue(is_object($token));
-        $this->assertObjectHasAttribute('access_token', $token);
-        $this->assertObjectHasAttribute('expires_in', $token);
-        $this->assertObjectHasAttribute('token_type', $token);
-
-        $bearer = app(Client::class)->authenticateWithBearerToken();
-
-        $this->assertEquals([
-            'headers' => [
-                'Authorization' => "Bearer {$token->access_token}",
-            ],
-        ], $bearer);
+        /** @phpstan-ignore-next-line */
+        $this->oauth = $this->app->make(OAuth::class);
     }
 
     /**
      * @test
      * @group functional
      */
-    public function it_requests_an_access_token()
+    public function it_requests_an_access_token_with_the_default_credentials(): void
     {
-        $token = app(OAuth::class)->token(env('VIVA_CLIENT_ID'), env('VIVA_CLIENT_SECRET'));
+        $token = $this->oauth->requestToken();
 
-        $this->assertTrue(is_object($token));
-        $this->assertObjectHasAttribute('access_token', $token);
-        $this->assertObjectHasAttribute('expires_in', $token);
-        $this->assertObjectHasAttribute('token_type', $token);
+        $this->assertInstanceOf(AccessToken::class, $token);
+    }
+
+    /**
+     * @test
+     * @group functional
+     * @covers \Sebdesign\VivaPayments\Responses\AccessToken
+     */
+    public function it_requests_an_access_token_with_the_given_credentials(): void
+    {
+        $token = $this->oauth->requestToken(
+            clientId: strval(env('VIVA_CLIENT_ID')),
+            clientSecret: strval(env('VIVA_CLIENT_SECRET')),
+        );
+
+        $this->assertInstanceOf(AccessToken::class, $token);
     }
 }

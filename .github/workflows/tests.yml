@@ -1,0 +1,69 @@
+name: PHP Tests
+
+on: ['push', 'pull_request']
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.1, 8.2]
+        stability: [prefer-lowest, prefer-stable]
+        laravel: [^9.0]
+        include:
+          - laravel: ^9.0
+            testbench: ^7.0
+
+    name: Tests P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.stability }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Install Composer dependencies
+        run: composer update --${{ matrix.stability }} --no-interaction --prefer-dist
+
+      - name: Execute tests
+        env:
+          VIVA_API_KEY: ${{ secrets.VIVA_API_KEY }}
+          VIVA_CLIENT_ID: ${{ secrets.VIVA_CLIENT_ID }}
+          VIVA_CLIENT_SECRET: ${{ secrets.VIVA_CLIENT_SECRET }}
+          VIVA_ENVIRONMENT: demo
+          VIVA_MERCHANT_ID: ${{ secrets.VIVA_MERCHANT_ID }}
+          VIVA_SOURCE_CODE: ${{ secrets.VIVA_SOURCE_CODE }}
+        run: vendor/bin/phpunit --verbose --whitelist=src --coverage-clover=build/coverage/coverage.clover
+
+      - name: Upload coverage
+        uses: sudo-bot/action-scrutinizer@latest
+        with:
+          cli-args: "--format=php-clover build/coverage/coverage.clover"

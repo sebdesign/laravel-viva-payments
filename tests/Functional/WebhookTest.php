@@ -5,17 +5,18 @@ namespace Sebdesign\VivaPayments\Test\Functional;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\Webhook;
 
+/** @covers \Sebdesign\VivaPayments\Webhook */
 class WebhookTest extends TestCase
 {
     /**
      * @test
      * @group functional
      */
-    public function it_gets_an_authorization_code()
+    public function it_gets_a_verification_key(): void
     {
-        $code = app(Webhook::class)->getAuthorizationCode();
+        $verification = app(Webhook::class)->getVerificationKey();
 
-        $this->assertObjectHasAttribute('Key', $code);
-        $this->assertTrue(is_string($code->Key), "Failed asserting that that '{$code->Key}' is of type \"string\".");
+        $this->assertObjectHasAttribute('Key', $verification);
+        $this->assertNotEmpty($verification->Key, "Failed asserting that '{$verification->Key}' is not empty.");
     }
 }

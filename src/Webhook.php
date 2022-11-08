@@ -2,45 +2,32 @@
 
 namespace Sebdesign\VivaPayments;
 
+use Sebdesign\VivaPayments\Responses\WebhookVerificationKey;
+
 class Webhook
 {
-    /**
-     * Create Transaction event.
-     */
-    const CREATE_TRANSACTION = 1796;
-
-    /**
-     * Cancel/Refund Transaction event.
-     */
-    const REFUND_TRANSACTION = 1797;
-
-    /**
-     * @var \Sebdesign\VivaPayments\Client
-     */
-    protected $client;
-
-    /**
-     * Constructor.
-     */
-    public function __construct(Client $client)
+    public function __construct(protected Client $client)
     {
-        $this->client = $client;
     }
 
     /**
      * Get a webhook authorization code.
      *
-     * @param  array  $guzzleOptions  Additional parameters for the Guzzle client
-     * @return \stdClass
+     * @see https://developer.vivawallet.com/webhooks-for-payments/#generate-a-webhook-verification-key
+     *
+     * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      */
-    public function getAuthorizationCode(array $guzzleOptions = [])
+    public function getVerificationKey(array $guzzleOptions = []): WebhookVerificationKey
     {
-        return $this->client->get(
+        $response = $this->client->get(
             $this->client->getUrl()->withPath('/api/messages/config/token'),
             array_merge_recursive(
                 $this->client->authenticateWithBasicAuth(),
                 $guzzleOptions
             )
         );
+
+        /** @phpstan-ignore-next-line */
+        return new WebhookVerificationKey(...$response);
     }
 }

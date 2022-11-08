@@ -3,77 +3,44 @@
 namespace Sebdesign\VivaPayments;
 
 use GuzzleHttp\RequestOptions;
+use Sebdesign\VivaPayments\Responses\AccessToken;
 
 class OAuth
 {
-    /**
-     * @var \Sebdesign\VivaPayments\Client
-     */
-    protected $client;
-
-    /**
-     * Constructor.
-     */
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * Request access token and set it to the client.
-     *
-     * @param  string|null  $clientId
-     * @param  string|null  $clientSecret
-     * @param  array  $guzzleOptions
-     * @return \stdClass
-     */
-    public function requestToken(
-        ?string $clientId = null,
-        ?string $clientSecret = null,
-        array $guzzleOptions = []
+    public function __construct(
+        public readonly Client $client,
+        public readonly string $clientId,
+        public readonly string $clientSecret,
     ) {
-        $response = $this->token(
-            $clientId ?? config('services.viva.client_id'),
-            $clientSecret ?? config('services.viva.client_secret'),
-            $guzzleOptions
-        );
-
-        $this->withToken($response->access_token);
-
-        return $response;
-    }
-
-    /**
-     * Set the given token to the client.
-     */
-    public function withToken(string $token): self
-    {
-        $this->client->withToken($token);
-
-        return $this;
     }
 
     /**
      * Request access token.
      *
-     * @param  string  $clientId
-     * @param  string  $clientSecret
-     * @param  array  $guzzleOptions  Additional options for the Guzzle client
-     * @return \stdClass
+     * @see https://developer.vivawallet.com/integration-reference/oauth2-authentication/
+     *
+     * @param  array<string,mixed>  $guzzleOptions  Additional options for the Guzzle client
      */
-    public function token(
-        string $clientId,
-        string $clientSecret,
+    public function requestToken(
+        #[\SensitiveParameter] ?string $clientId = null,
+        #[\SensitiveParameter] ?string $clientSecret = null,
         array $guzzleOptions = []
-    ) {
+    ): AccessToken {
         $parameters = ['grant_type' => 'client_credentials'];
 
-        return $this->client->post(
+        $response = $this->client->post(
             $this->client->getAccountsUrl()->withPath('/connect/token'),
-            array_merge([
+            [
                 RequestOptions::FORM_PARAMS => $parameters,
-                RequestOptions::AUTH => [$clientId, $clientSecret],
-            ], $guzzleOptions)
+                RequestOptions::AUTH => [
+                    $clientId ?? $this->clientId,
+                    $clientSecret ?? $this->clientSecret,
+                ],
+                ...$guzzleOptions,
+            ]
         );
+
+        /** @phpstan-ignore-next-line */
+        return new AccessToken(...$response);
     }
 }

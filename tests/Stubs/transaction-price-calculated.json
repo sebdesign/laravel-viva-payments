@@ -1,0 +1,19 @@
+{
+    "Url": "Your webhook URL",
+    "EventData": {
+        "OrderCode": 3962594733417127,
+        "MerchantId": "784e1924-0723-458d-9a17-d374fce5f9e8",
+        "IsvFee": 0.10,
+        "TransactionId": "07966712-9873-4863-95d3-f5f425ae3618",
+        "CurrencyCode": "826",
+        "Interchange": 0.00105,
+        "TotalCommission": 0.26
+    },
+    "Created": "2022-07-28T14:26:16.8743587Z",
+    "CorrelationId": "22-209-DEBD5F23",
+    "EventTypeId": 1799,
+    "Delay": null,
+    "MessageId": "1a0fda05-986e-4027-93e3-4b7ff0561425",
+    "RecipientId": "784e1924-0723-458d-9a17-d374fce5f9e8",
+    "MessageTypeId": 512
+}
