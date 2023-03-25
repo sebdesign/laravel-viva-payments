@@ -2,6 +2,10 @@
 
 All notable changes to `sebdesign/laravel-viva-payments` will be documented in this file
 
+## 5.3.1 - 2023-03-25
+
+-   Change minimum stability to `stable`
+
 ## 5.3.0 - 2023-03-25
 
 -   Add support for Laravel 10
