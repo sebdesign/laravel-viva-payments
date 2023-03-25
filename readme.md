@@ -16,52 +16,52 @@ Check out the official Viva Wallet Developer Portal for detailed instructions on
 
 ## Table of Contents
 
-- [Setup](#setup)
-    - [Installation](#installation)
-    - [Service Provider](#service-provider)
-    - [Configuration](#configuration)
-- [Simple Checkout](#simple-checkout)
-    - [Display the button](#display-the-button)
-    - [Make the charge](#make-the-charge)
-- [Native Checkout v2](#native-checkout-v2)
-    - [Build a custom payment form](#build-a-custom-payment-form)
-    - [Make the actual charge](#make-the-actual-charge)
-- [Redirect Checkout](#redirect-checkout)
-    - [Create a payment order](#create-a-payment-order)
-    - [Redirect to the Viva checkout page](#redirect-to-the-viva-checkout-page)
-    - [Confirm the transaction](#confirm-the-transaction)
-    - [Full example](#full-example)
-- [Handling Webhooks](#handling-webhooks)
-    - [Extend the controller](#extend-the-controller)
-    - [Define the route](#define-the-route)
-    - [Exclude from CSRF protection](exclude-from-csrf-protection)
-- [API Methods](#api-methods)
-    - [Orders](#orders)
-        - [Create a payment order](#create-a-payment-order)
-        - [Get an order](#get-an-order)
-        - [Update an order](#update-an-order)
-        - [Cancel an order](#cancel-an-order)
-    - [Transactions](#transactions)
-        - [Create a new transaction](#create-a-new-transaction)
-        - [Create a recurring transaction](#create-a-recurring-transaction)
-        - [Get transactions](#get-transactions)
-        - [Cancel a card payment / Make a refund](#cancel-a-card-payment-make-a-refund)
-    - [OAuth](#oauth)
-        - [Request access token](#request-access-token)
-        - [Use an existing access token](#use-an-existing-access-token)
-    - [Native Checkout](#native-checkout)
-        - [Generate a charge token using card details](#generate-a-charge-token-using-card-details)
-        - [Generate a card token using a charge token](#generate-a-card-token-using-a-charge-token)
-        - [Generate one-time charge token using card token](#generate-one-time-charge-token-using-card-token)
-        - [Create transaction](#create-transaction)
-        - [Capture a pre-auth](#capture-a-pre-auth)
-        - [Check for installments](#check-for-installments)
-    - [Payment Sources](#payment-sources)
-        - [Add a payment source](#add-a-payment-source)
-    - [Webhooks](#webhooks)
-        - [Get an authorization code](#get-an-authorization-code)
-- [Exceptions](#exceptions)
-- [Tests](#tests)
+-   [Setup](#setup)
+    -   [Installation](#installation)
+    -   [Service Provider](#service-provider)
+    -   [Configuration](#configuration)
+-   [Simple Checkout](#simple-checkout)
+    -   [Display the button](#display-the-button)
+    -   [Make the charge](#make-the-charge)
+-   [Native Checkout v2](#native-checkout-v2)
+    -   [Build a custom payment form](#build-a-custom-payment-form)
+    -   [Make the actual charge](#make-the-actual-charge)
+-   [Redirect Checkout](#redirect-checkout)
+    -   [Create a payment order](#create-a-payment-order)
+    -   [Redirect to the Viva checkout page](#redirect-to-the-viva-checkout-page)
+    -   [Confirm the transaction](#confirm-the-transaction)
+    -   [Full example](#full-example)
+-   [Handling Webhooks](#handling-webhooks)
+    -   [Extend the controller](#extend-the-controller)
+    -   [Define the route](#define-the-route)
+    -   [Exclude from CSRF protection](exclude-from-csrf-protection)
+-   [API Methods](#api-methods)
+    -   [Orders](#orders)
+        -   [Create a payment order](#create-a-payment-order)
+        -   [Get an order](#get-an-order)
+        -   [Update an order](#update-an-order)
+        -   [Cancel an order](#cancel-an-order)
+    -   [Transactions](#transactions)
+        -   [Create a new transaction](#create-a-new-transaction)
+        -   [Create a recurring transaction](#create-a-recurring-transaction)
+        -   [Get transactions](#get-transactions)
+        -   [Cancel a card payment / Make a refund](#cancel-a-card-payment-make-a-refund)
+    -   [OAuth](#oauth)
+        -   [Request access token](#request-access-token)
+        -   [Use an existing access token](#use-an-existing-access-token)
+    -   [Native Checkout](#native-checkout)
+        -   [Generate a charge token using card details](#generate-a-charge-token-using-card-details)
+        -   [Generate a card token using a charge token](#generate-a-card-token-using-a-charge-token)
+        -   [Generate one-time charge token using card token](#generate-one-time-charge-token-using-card-token)
+        -   [Create transaction](#create-transaction)
+        -   [Capture a pre-auth](#capture-a-pre-auth)
+        -   [Check for installments](#check-for-installments)
+    -   [Payment Sources](#payment-sources)
+        -   [Add a payment source](#add-a-payment-source)
+    -   [Webhooks](#webhooks)
+        -   [Get an authorization code](#get-an-authorization-code)
+-   [Exceptions](#exceptions)
+-   [Tests](#tests)
 
 ## Setup
 
@@ -71,17 +71,18 @@ Install the package through Composer.
 
 This package requires Laravel 5.0 or higher, and uses Guzzle to make API calls. Use the appropriate version according to your dependencies.
 
-| Viva Payments for Laravel   | Guzzle     | Laravel |
-|-----------------------------|------------|---------|
-| ~1.0                        | ~5.0       | ~5.0    |
-| ~2.0                        | ~6.0       | ~5.0    |
-| ~3.0                        | ~6.0       | ~5.5    |
-| ~4.0                        | ~6.0       | ~6.0    |
-| ~4.1                        | ~6.0       | ~7.0    |
-| ^4.3                        | ^6.0\|^7.0 | ^7.0    |
-| ^5.0                        | ^6.0\|^7.0 | ^7.0    |
-| ^5.1                        | ^7.0       | ^8.0    |
-| ^5.2                        | ^7.0       | ^9.0    |
+| Viva Payments for Laravel | Guzzle     | Laravel |
+| ------------------------- | ---------- | ------- |
+| ~1.0                      | ~5.0       | ~5.0    |
+| ~2.0                      | ~6.0       | ~5.0    |
+| ~3.0                      | ~6.0       | ~5.5    |
+| ~4.0                      | ~6.0       | ~6.0    |
+| ~4.1                      | ~6.0       | ~7.0    |
+| ^4.3                      | ^6.0\|^7.0 | ^7.0    |
+| ^5.0                      | ^6.0\|^7.0 | ^7.0    |
+| ^5.1                      | ^7.0       | ^8.0    |
+| ^5.2                      | ^7.0       | ^9.0    |
+| ^5.3                      | ^7.0       | ^10.0   |
 
 ```
 composer require sebdesign/laravel-viva-payments
@@ -114,11 +115,11 @@ Add the following array in your `config/services.php`.
 ],
 ```
 
-The `api_key`, `merchant_id`, and `public_key` can be found in the *Settings > API Access* section of your profile.
+The `api_key`, `merchant_id`, and `public_key` can be found in the _Settings > API Access_ section of your profile.
 
-The `public_key` is only needed for the *Simple Checkout*.
+The `public_key` is only needed for the _Simple Checkout_.
 
-The `client_id` and `client_secret` are needed for the *Native Checkout*. You can generate the *Native Checkout v2 credentials* in the *Settings > API Access* section of your profile.
+The `client_id` and `client_secret` are needed for the _Native Checkout_. You can generate the _Native Checkout v2 credentials_ in the _Settings > API Access_ section of your profile.
 
 > Read more about API authentication on the Developer Portal: https://developer.vivawallet.com/authentication
 
@@ -137,11 +138,13 @@ Follow these steps to complete setup of Simple Checkout.
 First, create a route that displays the payment button.
 
 In your `routes/web.php`:
+
 ```php
 Route::get('checkout', 'CheckoutController@create');
 ```
 
 In your `app/Http/Controllers/CheckoutController.php`:
+
 ```php
 <?php
 
@@ -166,6 +169,7 @@ class CheckoutContrroller extends Controller
 ```
 
 In your `resources/views/checkout.blade.php`:
+
 ```php
 <html>
     <head>
@@ -193,6 +197,7 @@ In your `resources/views/checkout.blade.php`:
 Then create a route to submit the `vivaWalletToken` from your form's `action` to the `CheckoutController`.
 
 In your `routes/web.php`:
+
 ```php
 Route::post('checkout', 'CheckoutController@store');
 ```
@@ -242,11 +247,13 @@ Follow the steps described in the Developer Portal: https://developer.vivawallet
 First, create a route to the controller that returns the view with the payment form.
 
 In your `routes/web.php`:
+
 ```php
 Route::get('checkout', 'CheckoutController@create');
 ```
 
 In your `app/Http/Controllers/CheckoutController.php`:
+
 ```php
 <?php
 
@@ -286,6 +293,7 @@ class CheckoutController extends Controller
 ```
 
 In your `resources/views/checkout.blade.php`:
+
 ```php
 <!DOCTYPE html>
 <html>
@@ -394,11 +402,13 @@ In your `resources/views/checkout.blade.php`:
 Then create a route to submit your form with the charge token to the `CheckoutController`.
 
 In your `routes/web.php`:
+
 ```php
 Route::post('checkout', 'CheckoutController@store');
 ```
 
 In your `app/Http/Controllers/CheckoutController.php`:
+
 ```php
 <?php
 
@@ -580,7 +590,7 @@ Viva Payments supports Webhooks, and this package offers a controller which can 
 
 You can make one controller to handle all the events, or make a controller for each event. Either way, your controllers must extend the `Sebdesign\VivaPayments\WebhookController`. The webhook verification is handled automatically.
 
-For the moment, Viva Payment offers the *Create Transaction* and *Cancel/Refund Transaction* events. To handle those events, you controller must extend the `handleCreateTransaction` and a `handleRefundTransaction` methods respectively. For any other event that might be available, extend the `handleEventNotification` method.
+For the moment, Viva Payment offers the _Create Transaction_ and _Cancel/Refund Transaction_ events. To handle those events, you controller must extend the `handleCreateTransaction` and a `handleRefundTransaction` methods respectively. For any other event that might be available, extend the `handleEventNotification` method.
 
 ```php
 <?php
