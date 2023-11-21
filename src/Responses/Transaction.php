@@ -9,7 +9,9 @@ class Transaction
 {
     public function __construct(
         public readonly string $email,
+        public readonly string $bankId,
         public readonly int $amount,
+        public readonly bool $switching,
         public readonly string $orderCode,
         public readonly TransactionStatus $statusId,
         public readonly string $fullName,
