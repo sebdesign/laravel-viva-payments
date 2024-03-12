@@ -80,7 +80,7 @@ jobs:
           VIVA_ENVIRONMENT: demo
           VIVA_MERCHANT_ID: ${{ secrets.VIVA_MERCHANT_ID }}
           VIVA_SOURCE_CODE: ${{ secrets.VIVA_SOURCE_CODE }}
-        run: vendor/bin/phpunit --whitelist=src --coverage-clover=build/coverage/coverage.clover
+        run: vendor/bin/phpunit --coverage-clover=build/coverage/coverage.clover
 
       - name: Upload coverage
         uses: sudo-bot/action-scrutinizer@latest
