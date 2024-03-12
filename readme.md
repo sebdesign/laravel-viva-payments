@@ -176,7 +176,7 @@ class CheckoutController extends Controller
             case TransactionStatus::PaymentPending: 'The order is pending.',
             case TransactionStatus::PaymentSuccessful: 'The order is paid.',
             case TransactionStatus::Error: 'The order was not paid.',
-        }
+        };
 
         return view('order/success', compact('status'));
     }
