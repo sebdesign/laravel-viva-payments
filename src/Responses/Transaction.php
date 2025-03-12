@@ -10,7 +10,7 @@ class Transaction extends Data
 {
     public function __construct(
         public readonly string $email,
-        public readonly string $bankId,
+        public readonly ?string $bankId,
         public readonly float $amount,
         public readonly bool $switching,
         public readonly string $orderCode,
