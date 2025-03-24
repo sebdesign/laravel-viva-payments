@@ -3,11 +3,12 @@
 namespace Sebdesign\VivaPayments\Events;
 
 use Sebdesign\VivaPayments\Enums\WebhookEventType;
+use Spatie\LaravelData\Data;
 
 /**
  * @template TEventData of object
  */
-class WebhookEvent
+class WebhookEvent extends Data
 {
     public function __construct(
         public readonly string $Url,
@@ -18,6 +19,7 @@ class WebhookEvent
         public readonly WebhookEventType $EventTypeId,
         public readonly ?string $Delay,
         public readonly ?int $RetryCount,
+        public readonly ?int $RetryDelayInSeconds,
         public readonly ?string $RetryDelay,
         public readonly string $MessageId,
         public readonly string $RecipientId,
@@ -40,12 +42,10 @@ class WebhookEvent
         };
 
         /** @phpstan-ignore-next-line */
-        return new self(...[
+        return self::from($attributes, [
             ...$attributes,
             'EventTypeId' => $eventType,
             'EventData' => $eventData,
-            'RetryCount' => $attributes['RetryCount'] ?? null,
-            'RetryDelay' => $attributes['RetryDelay'] ?? null,
         ]);
     }
 }
