@@ -1,5 +1,5 @@
 {
-    "name": "sebdesign/laravel-viva-payments",
+    "name": "threls/laravel-viva-payments",
     "description": "A Laravel package for integrating the Viva Payments gateway",
     "type": "library",
     "keywords": [
@@ -12,7 +12,7 @@
         "viva",
         "webhooks"
     ],
-    "homepage": "https://github.com/sebdesign/laravel-viva-payments",
+    "homepage": "https://github.com/threls/laravel-viva-payments",
     "license": "MIT",
     "authors": [
         {
