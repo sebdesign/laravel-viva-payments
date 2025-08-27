@@ -1,11 +1,5 @@
 # Viva Payments for Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://packagist.org/packages/sebdesign/laravel-viva-payments)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/github/workflow/status/sebdesign/laravel-viva-payments/PHP%20Tests?style=flat-square)](https://github.com/sebdesign/laravel-viva-payments/actions)
-[![Quality Score](https://img.shields.io/scrutinizer/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
-[![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
-
 [![VivaPayments logo](https://www.vivawallet.com/assets/vw-logo.svg "Viva Wallet logo")](https://www.vivawallet.com/)
 
 This package provides an interface for the Viva Wallet Payment API. It handles the **Smart Checkout** integration, the **ISV Payment API**, and **Webhooks**.
@@ -36,7 +30,7 @@ This package requires PHP 8.1 and Laravel 9.0 or higher, and uses Guzzle 7.0 to 
 | ~1.0                      | ~5.0       | ~5.0    |
 
 ```
-composer require sebdesign/laravel-viva-payments
+composer require threls/laravel-viva-payments
 ```
 
 #### Service Provider
@@ -321,7 +315,7 @@ $orderCode = Viva::orders()->create(
             countryCode: 'GB',
             requestLang: 'en-GB',
         ),
-        paymentTimeOut: 300,
+        paymentTimeout: 300,
         preauth: false,
         allowRecurring: false,
         maxInstallments: 12,
@@ -496,7 +490,7 @@ $orderCode = Viva::isv()->orders()->create(
             countryCode: 'GB',
             requestLang: 'en-GB',
         ),
-        paymentTimeOut: 300,
+        paymentTimeout: 300,
         preauth: false,
         allowRecurring: false,
         maxInstallments: 12,
