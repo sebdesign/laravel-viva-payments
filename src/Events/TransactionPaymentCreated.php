@@ -11,7 +11,7 @@ class TransactionPaymentCreated extends Data
 {
     public function __construct(
         public readonly bool $Moto,
-        public readonly string $Email,
+        public readonly ?string $Email,
         public readonly ?string $Phone,
         public readonly string $BankId,
         public readonly bool $Systemic,
