@@ -2,11 +2,11 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://packagist.org/packages/sebdesign/laravel-viva-payments)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/github/workflow/status/sebdesign/laravel-viva-payments/PHP%20Tests?style=flat-square)](https://github.com/sebdesign/laravel-viva-payments/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/sebdesign/laravel-viva-payments/tests.yml?style=flat-square)](https://github.com/sebdesign/laravel-viva-payments/actions)
 [![Quality Score](https://img.shields.io/scrutinizer/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
 [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
 
-[![VivaPayments logo](https://www.vivawallet.com/assets/vw-logo.svg "Viva Wallet logo")](https://www.vivawallet.com/)
+[![VivaPayments logo](https://developer.viva.com/images/vivacom_block_logo2.svg "Viva Wallet logo")](https://www.vivawallet.com/)
 
 This package provides an interface for the Viva Wallet Payment API. It handles the **Smart Checkout** integration, the **ISV Payment API**, and **Webhooks**.
 
@@ -173,10 +173,10 @@ class CheckoutController extends Controller
         }
 
         $status = match ($transaction->statusId) {
-            case TransactionStatus::PaymentPending: 'The order is pending.',
-            case TransactionStatus::PaymentSuccessful: 'The order is paid.',
-            case TransactionStatus::Error: 'The order was not paid.',
-        }
+            TransactionStatus::PaymentPending => 'The order is pending.',
+            TransactionStatus::PaymentSuccessful => 'The order is paid.',
+            TransactionStatus::Error => 'The order was not paid.',
+        };
 
         return view('order/success', compact('status'));
     }
@@ -303,7 +303,7 @@ All methods accept a `$guzzleOptions` array argument as their last parameter. Th
 
 #### Create a payment order
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1api~1orders~1{orderCode}/get
+> See: https://developer.viva.com/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -376,7 +376,7 @@ $transaction = Viva::transactions()->retrieve(
 
 #### Create a recurring transaction
 
-> See: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Transactions/paths/~1api~1transactions~1{Id}/post
+> See: https://developer.viva.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1api~1transactions~1{transaction_id}/post
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -400,7 +400,7 @@ $response = Viva::transactions()->createRecurring(
 
 #### Request access token
 
-> See: https://developer.vivawallet.com/authentication/#step-2-request-access-token
+> See: https://developer.viva.com/integration-reference/oauth2-authentication/#step-2-request-access-token
 
 You don't need to call this method, because the client requests the access token automatically when needed.
 However, you can specify the client credentials at runtime if you want.
@@ -458,7 +458,7 @@ $cardToken = Viva::cards()->createToken(
 
 ### Webhooks
 
-##### Get an authorization code
+##### Get a webhook verification key
 
 > See: https://developer.vivawallet.com/webhooks-for-payments/#generate-a-webhook-verification-key
 
