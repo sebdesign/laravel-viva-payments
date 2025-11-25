@@ -13,7 +13,7 @@ class TransactionFailed extends Data
         public readonly bool $Moto,
         public readonly string $Email,
         public readonly ?string $Phone,
-        public readonly string $BankId,
+        public readonly ?string $BankId,
         public readonly bool $Systemic,
         public readonly bool $Switching,
         public readonly ?string $ParentId,
