@@ -45,7 +45,7 @@ class TransactionPaymentCreated extends Data
         public readonly string $CurrencyCode,
         public readonly string $OrderCulture,
         public readonly ?string $MerchantTrns,
-        public readonly string $CustomerTrns,
+        public readonly ?string $CustomerTrns,
         public readonly bool $IsManualRefund,
         public readonly ?string $TargetPersonId,
         public readonly ?string $TargetWalletId,
