@@ -69,6 +69,7 @@
     "Delay": null,
     "RetryCount": 17,
     "RetryDelay": null,
+    "RetryDelayInSeconds": null,
     "MessageId": "b2b46d3c-5bdb-4622-b281-d105616033bb",
     "RecipientId": "11ac9cd4-c9ea-48d3-b414-1f10ce664aad",
     "MessageTypeId": 512
