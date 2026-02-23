@@ -2,6 +2,7 @@
 
 namespace Sebdesign\VivaPayments;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Uri;
@@ -43,7 +44,8 @@ class Client
      */
     public const PRODUCTION_API_URL = 'https://api.vivapayments.com';
 
-    protected string $token;
+    protected string|null $token = null;
+    protected Carbon|null $tokenExpiresAt = null;
 
     public function __construct(
         public readonly GuzzleClient $client,
@@ -219,7 +221,7 @@ class Client
      */
     public function authenticateWithBearerToken(): array
     {
-        $token = $this->token ??= $this->oauth()->requestToken()->access_token;
+        $token = $this->getAndCacheToken();
 
         return [
             RequestOptions::HEADERS => [
@@ -276,5 +278,27 @@ class Client
         $this->token = $token;
 
         return $this;
+    }
+
+    /**
+     * @throws VivaException
+     * @throws GuzzleException
+     */
+    private function getAndCacheToken(): string
+    {
+        if (
+            $this->token === null
+            || $this->tokenExpiresAt === null
+            || Carbon::now()->greaterThanOrEqualTo($this->tokenExpiresAt)
+        ) {
+            $accessToken = $this->oauth()->requestToken();
+
+            $this->token = $accessToken->access_token;
+
+            // Subtract a minute from the actual expiration time to account for any delays
+            $this->tokenExpiresAt = Carbon::now()->addSeconds($accessToken->expires_in - 60);
+        }
+
+        return $this->token;
     }
 }
