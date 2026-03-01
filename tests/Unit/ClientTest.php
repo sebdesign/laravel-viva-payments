@@ -16,6 +16,7 @@ use Sebdesign\VivaPayments\VivaException;
 #[CoversClass(VivaException::class)]
 class ClientTest extends TestCase
 {
+    /** @throws VivaException */
     #[Test]
     public function it_gets_the_demo_url(): void
     {
@@ -27,6 +28,7 @@ class ClientTest extends TestCase
         self::assertEquals(Client::DEMO_URL, $url, 'The URL should be '.Client::DEMO_URL);
     }
 
+    /** @throws VivaException */
     #[Test]
     public function it_gets_the_production_url(): void
     {
@@ -38,6 +40,7 @@ class ClientTest extends TestCase
         self::assertEquals(Client::PRODUCTION_URL, $url, 'The URL should be '.Client::PRODUCTION_URL);
     }
 
+    /** @throws VivaException */
     #[Test]
     public function it_gets_the_demo_accounts_url(): void
     {
@@ -49,6 +52,7 @@ class ClientTest extends TestCase
         self::assertEquals(Client::DEMO_ACCOUNTS_URL, $url, 'The URL should be '.Client::DEMO_ACCOUNTS_URL);
     }
 
+    /** @throws VivaException */
     #[Test]
     public function it_gets_the_production_accounts_url(): void
     {
@@ -60,6 +64,7 @@ class ClientTest extends TestCase
         self::assertEquals(Client::PRODUCTION_ACCOUNTS_URL, $url, 'The URL should be '.Client::PRODUCTION_ACCOUNTS_URL);
     }
 
+    /** @throws VivaException */
     #[Test]
     public function it_gets_the_demo_api_url(): void
     {
@@ -71,6 +76,7 @@ class ClientTest extends TestCase
         self::assertEquals(Client::DEMO_API_URL, $url, 'The URL should be '.Client::DEMO_API_URL);
     }
 
+    /** @throws VivaException */
     #[Test]
     public function it_gets_the_production_api_url(): void
     {

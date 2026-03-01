@@ -23,6 +23,9 @@ class OrderTest extends TestCase
     #[Test]
     public function it_creates_a_payment_order(): void
     {
+        /** @phpstan-ignore argument.type */
+        $config = fluent(config('services.viva'));
+
         $orderCode = Viva::orders()->create(new CreatePaymentOrder(
             amount: 1000,
             customerTrns: 'Test customer description',
@@ -33,7 +36,7 @@ class OrderTest extends TestCase
                 countryCode: 'GB',
                 requestLang: 'en-GB',
             ),
-            sourceCode: strval(config('services.viva.source_code')),
+            sourceCode: $config->string('source_code'),
             merchantTrns: 'Test merchant description',
         ));
 

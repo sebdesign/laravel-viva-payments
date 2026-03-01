@@ -35,9 +35,12 @@ class OAuthTest extends TestCase
     #[DoesNotPerformAssertions]
     public function it_requests_an_access_token_with_the_given_credentials(): void
     {
+        /** @phpstan-ignore argument.type */
+        $config = fluent(config('services.viva'));
+
         Viva::oauth()->requestToken(
-            clientId: strval(config('services.viva.client_id')),
-            clientSecret: strval(config('services.viva.client_secret')),
+            clientId: $config->string('client_id'),
+            clientSecret: $config->string('client_secret'),
         );
     }
 }

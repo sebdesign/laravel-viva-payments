@@ -58,7 +58,7 @@ class TransactionTest extends TestCase
 
         self::assertMethod('GET', $request);
         self::assertPath('/checkout/v2/isv/transactions/c90d4902-6245-449f-b2b0-51d99cd09cfe', $request);
-        self::assertQuery('merchantId', strval(config('services.viva.merchant_id')), $request);
+        self::assertQuery('merchantId', config('services.viva.merchant_id'), $request);
         self::assertEquals('someone@example.com', $transaction->email);
         self::assertEquals(30.00, $transaction->amount);
         self::assertEquals(6962462482972601, $transaction->orderCode);

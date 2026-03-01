@@ -43,6 +43,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function mockRequests(): void
     {
         /** @throws never */
+        /** @phpstan-ignore assign.propertyType */
         $history = Middleware::history($this->history);
 
         $this->handler->push($history);
@@ -76,13 +77,16 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'curl' => [CURLOPT_SSL_CIPHER_LIST => 'TLSv1'],
         ]);
 
+        /** @phpstan-ignore argument.type */
+        $config = fluent(config('services.viva'));
+
         $this->client = new Client(
             $mockClient,
             Environment::Demo,
-            strval(config('services.viva.merchant_id')),
-            strval(config('services.viva.api_key')),
-            strval(config('services.viva.client_id')),
-            strval(config('services.viva.client_secret')),
+            $config->string('merchant_id'),
+            $config->string('api_key'),
+            $config->string('client_id'),
+            $config->string('client_secret'),
         );
     }
 
@@ -108,8 +112,10 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         self::assertEquals($name, $request->getMethod(), "The request method should be [{$name}].");
     }
 
-    public static function assertQuery(string $name, string $value, RequestInterface $request): void
+    public static function assertQuery(string $name, mixed $expectedValue, RequestInterface $request): void
     {
+        self::assertIsString($expectedValue, "The expected value for query string parameter [{$name}] should be a string, but got [".get_debug_type($expectedValue).'].');
+
         $query = $request->getUri()->getQuery();
 
         parse_str($query, $output);
@@ -120,12 +126,14 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             "Did not see expected query string parameter [{$name}] in [{$query}]."
         );
 
-        self::assertIsString($output[$name]);
+        $value = $output[$name];
+
+        self::assertIsString($value, "Query string parameter [{$name}] should be a string, but got [".get_debug_type($value).'].');
 
         self::assertEquals(
+            $expectedValue,
             $value,
-            $output[$name],
-            "Query string parameter [{$name}] had value [{$output[$name]}], but expected [{$value}]."
+            "Query string parameter [{$name}] had value [{$value}], but expected [{$expectedValue}]."
         );
     }
 

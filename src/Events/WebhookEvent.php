@@ -33,7 +33,7 @@ class WebhookEvent extends Data
      */
     public static function create(array $attributes): self
     {
-        $eventType = WebhookEventType::from($attributes['EventTypeId']);
+        $eventType = WebhookEventType::tryFrom($attributes['EventTypeId']);
 
         $eventData = match ($eventType) {
             WebhookEventType::TransactionPaymentCreated => TransactionPaymentCreated::from($attributes['EventData']),
@@ -41,7 +41,6 @@ class WebhookEvent extends Data
             default => (object) $attributes['EventData'],
         };
 
-        /** @phpstan-ignore-next-line */
         return self::from($attributes, [
             ...$attributes,
             'EventTypeId' => $eventType,

@@ -27,14 +27,17 @@ class TransactionTest extends TestCase
     #[Test]
     public function it_cannot_retrieve_an_isv_transaction_that_does_not_exist(): void
     {
+        /** @phpstan-ignore argument.type */
+        $config = fluent(config('services.viva'));
+
         Viva::withOAuthCredentials(
-            strval(config('services.viva.isv_client_id')),
-            strval(config('services.viva.isv_client_secret')),
+            $config->string('isv_client_id'),
+            $config->string('isv_client_secret'),
         );
 
         try {
             Viva::isv()->transactions()->retrieve(fake()->uuid());
-            $this->fail();
+            self::fail();
         } catch (RequestException $e) {
             self::assertEquals(404, $e->getCode());
         }
@@ -52,9 +55,12 @@ class TransactionTest extends TestCase
         $this->expectException(VivaException::class);
         $this->expectExceptionCode(404);
 
+        /** @phpstan-ignore argument.type */
+        $config = fluent(config('services.viva'));
+
         Viva::withBasicAuthCredentials(
-            strval(config('services.viva.isv_partner_id')).':'.strval(config('services.viva.merchant_id')),
-            strval(config('services.viva.isv_partner_api_key')),
+            $config->string('isv_partner_id').':'.$config->string('merchant_id'),
+            $config->string('isv_partner_api_key'),
         );
 
         Viva::isv()->transactions()->createRecurring(

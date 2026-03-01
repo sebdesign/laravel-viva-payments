@@ -34,6 +34,6 @@ class Card
             )
         );
 
-        return strval($response['token'] ?? '');
+        return fluent($response)->string('token');
     }
 }

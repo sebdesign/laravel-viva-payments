@@ -24,7 +24,7 @@ class CardTest extends TestCase
         try {
             Viva::cards()->createToken('6cffe5bf-909c-4d69-b6dc-2bef1a6202f7');
 
-            $this->fail();
+            self::fail();
         } catch (ClientException $e) {
             self::assertEquals(403, $e->getCode());
         }

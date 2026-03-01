@@ -234,11 +234,13 @@ class Client
     /**
      * Use the production or demo environment.
      *
-     * @param  Environment|'production'|'demo'  $environment
+     * @throws VivaException
      */
     public function withEnvironment(Environment|string $environment): self
     {
-        $this->environment = is_string($environment) ? Environment::from($environment) : $environment;
+        $this->environment = is_string($environment)
+            ? Environment::tryFrom($environment) ?? throw new VivaException("Invalid environment: {$environment}")
+            : $environment;
 
         return $this;
     }

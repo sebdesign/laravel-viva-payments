@@ -68,7 +68,7 @@ class OrderTest extends TestCase
         $request = $this->getLastRequest();
 
         self::assertMethod('POST', $request);
-        self::assertQuery('merchantId', strval(config('services.viva.merchant_id')), $request);
+        self::assertQuery('merchantId', config('services.viva.merchant_id'), $request);
         self::assertJsonBody('amount', 1000, $request);
         self::assertJsonBody('customerTrns', 'Short description of purchased items/services to display to your customer', $request);
         self::assertJsonBody('customer', [

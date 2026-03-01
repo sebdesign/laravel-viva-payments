@@ -34,6 +34,6 @@ class Order
             )
         );
 
-        return strval($response['orderCode'] ?? '');
+        return fluent($response)->string('orderCode');
     }
 }
