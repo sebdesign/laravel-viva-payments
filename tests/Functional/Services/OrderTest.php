@@ -14,7 +14,7 @@ use Sebdesign\VivaPayments\VivaException;
 
 #[CoversClass(Order::class)]
 #[CoversClass(CreatePaymentOrder::class)]
-class OrderTest extends TestCase
+final class OrderTest extends TestCase
 {
     /**
      * @throws GuzzleException

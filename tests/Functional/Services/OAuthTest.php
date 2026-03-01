@@ -14,7 +14,7 @@ use Sebdesign\VivaPayments\VivaException;
 
 #[CoversClass(OAuth::class)]
 #[CoversClass(AccessToken::class)]
-class OAuthTest extends TestCase
+final class OAuthTest extends TestCase
 {
     /**
      * @throws GuzzleException

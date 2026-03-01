@@ -13,7 +13,7 @@ use Sebdesign\VivaPayments\VivaException;
 
 #[CoversClass(Client::class)]
 #[CoversClass(Card::class)]
-class CardTest extends TestCase
+final class CardTest extends TestCase
 {
     /**
      * @throws GuzzleException

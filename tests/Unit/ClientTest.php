@@ -14,7 +14,7 @@ use Sebdesign\VivaPayments\VivaException;
 
 #[CoversClass(Client::class)]
 #[CoversClass(VivaException::class)]
-class ClientTest extends TestCase
+final class ClientTest extends TestCase
 {
     #[Test]
     public function it_gets_the_demo_url(): void

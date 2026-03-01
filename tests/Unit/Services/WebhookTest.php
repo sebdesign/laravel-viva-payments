@@ -14,7 +14,7 @@ use Sebdesign\VivaPayments\VivaException;
 #[CoversClass(Client::class)]
 #[CoversClass(Webhook::class)]
 #[CoversClass(WebhookVerificationKey::class)]
-class WebhookTest extends TestCase
+final class WebhookTest extends TestCase
 {
     /**
      * @throws GuzzleException

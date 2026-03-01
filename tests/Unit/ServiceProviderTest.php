@@ -11,7 +11,7 @@ use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaPaymentsServiceProvider;
 
 #[CoversClass(VivaPaymentsServiceProvider::class)]
-class ServiceProviderTest extends TestCase
+final class ServiceProviderTest extends TestCase
 {
     #[Test]
     public function it_is_deferred(): void

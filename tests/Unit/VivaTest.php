@@ -9,7 +9,7 @@ use Sebdesign\VivaPayments\Facades\Viva;
 use Sebdesign\VivaPayments\Test\TestCase;
 
 #[CoversClass(Viva::class)]
-class VivaTest extends TestCase
+final class VivaTest extends TestCase
 {
     #[Test]
     public function it_proxies_the_client(): void

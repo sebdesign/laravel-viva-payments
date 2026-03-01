@@ -18,7 +18,7 @@ use Sebdesign\VivaPayments\VivaException;
 #[CoversClass(ISV\Transaction::class)]
 #[CoversClass(CreateRecurringTransaction::class)]
 #[CoversClass(RecurringTransaction::class)]
-class TransactionTest extends TestCase
+final class TransactionTest extends TestCase
 {
     /**
      * @throws GuzzleException
