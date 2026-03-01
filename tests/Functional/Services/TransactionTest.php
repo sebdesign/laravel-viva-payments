@@ -24,7 +24,7 @@ class TransactionTest extends TestCase
     public function it_cannot_retrieve_a_transaction_that_does_not_exist(): void
     {
         try {
-            Viva::transactions()->retrieve('c90d4902-6245-449f-b2b0-51d99cd09cfe');
+            Viva::transactions()->retrieve(fake()->uuid());
             self::fail();
         } catch (RequestException $e) {
             self::assertEquals(404, $e->getCode());
