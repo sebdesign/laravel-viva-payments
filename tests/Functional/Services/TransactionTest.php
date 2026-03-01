@@ -44,7 +44,7 @@ class TransactionTest extends TestCase
         $this->expectExceptionCode(404);
 
         Viva::transactions()->createRecurring(
-            '252b950e-27f2-4300-ada1-4dedd7c17904',
+            fake()->uuid(),
             new CreateRecurringTransaction(
                 amount: 100,
                 installments: 1,

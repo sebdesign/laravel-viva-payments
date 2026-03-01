@@ -58,7 +58,7 @@ class TransactionTest extends TestCase
         );
 
         Viva::isv()->transactions()->createRecurring(
-            '252b950e-27f2-4300-ada1-4dedd7c17904',
+            fake()->uuid(),
             new CreateRecurringTransaction(
                 amount: 100,
                 isvAmount: 1,
