@@ -22,7 +22,7 @@ parameters:
         WebhookEventArray: 'array{Url:string, EventData:WebhookEventDataArray, Created:string, CorrelationId:string, EventTypeId:value-of<\Sebdesign\VivaPayments\Enums\WebhookEventType>, Delay:?string, RetryCount:?int, RetryDelay:?string, MessageId:string, RecipientId:string, MessageTypeId:int}'
 
     strictRules:
-        strictCalls: false
+        strictFunctionCalls: false
 
     exceptions:
         check:
