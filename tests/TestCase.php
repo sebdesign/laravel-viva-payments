@@ -7,6 +7,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Fluent;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Sebdesign\VivaPayments\Client;
@@ -78,7 +79,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ]);
 
         /** @phpstan-ignore argument.type */
-        $config = fluent(config('services.viva'));
+        $config = new Fluent(config('services.viva'));
 
         $this->client = new Client(
             $mockClient,

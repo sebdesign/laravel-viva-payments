@@ -3,6 +3,7 @@
 namespace Sebdesign\VivaPayments\Test\Functional\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Fluent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
@@ -36,7 +37,7 @@ class OAuthTest extends TestCase
     public function it_requests_an_access_token_with_the_given_credentials(): void
     {
         /** @phpstan-ignore argument.type */
-        $config = fluent(config('services.viva'));
+        $config = new Fluent(config('services.viva'));
 
         Viva::oauth()->requestToken(
             clientId: $config->string('client_id'),

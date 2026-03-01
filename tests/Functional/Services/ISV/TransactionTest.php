@@ -4,6 +4,7 @@ namespace Sebdesign\VivaPayments\Test\Functional\Services\ISV;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Fluent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -28,7 +29,7 @@ class TransactionTest extends TestCase
     public function it_cannot_retrieve_an_isv_transaction_that_does_not_exist(): void
     {
         /** @phpstan-ignore argument.type */
-        $config = fluent(config('services.viva'));
+        $config = new Fluent(config('services.viva'));
 
         Viva::withOAuthCredentials(
             $config->string('isv_client_id'),
@@ -56,7 +57,7 @@ class TransactionTest extends TestCase
         $this->expectExceptionCode(404);
 
         /** @phpstan-ignore argument.type */
-        $config = fluent(config('services.viva'));
+        $config = new Fluent(config('services.viva'));
 
         Viva::withBasicAuthCredentials(
             $config->string('isv_partner_id').':'.$config->string('merchant_id'),

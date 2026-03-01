@@ -3,6 +3,7 @@
 namespace Sebdesign\VivaPayments\Test\Functional\Services\ISV;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Fluent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Client;
@@ -27,7 +28,7 @@ class OrderTest extends TestCase
     public function it_creates_an_isv_payment_order(): void
     {
         /** @phpstan-ignore argument.type */
-        $config = fluent(config('services.viva'));
+        $config = new Fluent(config('services.viva'));
 
         Viva::withOAuthCredentials(
             $config->string('isv_client_id'),

@@ -5,6 +5,7 @@ namespace Sebdesign\VivaPayments\Services;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Fluent;
 use Psr\Http\Message\UriInterface;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Requests;
@@ -35,7 +36,7 @@ class Order
             )
         );
 
-        return fluent($response)->string('orderCode');
+        return (new Fluent($response))->string('orderCode');
     }
 
     /**
