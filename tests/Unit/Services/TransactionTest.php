@@ -3,24 +3,29 @@
 namespace Sebdesign\VivaPayments\Test\Unit\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Carbon;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Requests\CreateRecurringTransaction;
+use Sebdesign\VivaPayments\Responses\RecurringTransaction;
+use Sebdesign\VivaPayments\Responses\Transaction;
+use Sebdesign\VivaPayments\Services\Transaction as TransactionService;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/**
- * @covers \Sebdesign\VivaPayments\Client
- * @covers \Sebdesign\VivaPayments\Services\Transaction
- */
+#[CoversClass(Client::class)]
+#[CoversClass(CreateRecurringTransaction::class)]
+#[CoversClass(TransactionService::class)]
+#[CoversClass(Transaction::class)]
+#[CoversClass(RecurringTransaction::class)]
 class TransactionTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Responses\Transaction
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_retrieves_a_transaction(): void
     {
         $this->mockJsonResponses([
@@ -47,7 +52,7 @@ class TransactionTest extends TestCase
         ]);
         $this->mockRequests();
 
-        $transaction = $this->client->withToken('test')
+        $transaction = $this->client->withToken('test', Carbon::now()->addHour())
             ->transactions()->retrieve('c90d4902-6245-449f-b2b0-51d99cd09cfe');
 
         $request = $this->getLastRequest();
@@ -77,16 +82,12 @@ class TransactionTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Requests\CreateRecurringTransaction
-     * @covers \Sebdesign\VivaPayments\Responses\RecurringTransaction
-     *
      * @throws GuzzleException
      * @throws VivaException
      *
      * @see https://developer.vivawallet.com/tutorials/payments/create-a-recurring-payment/#via-the-api
      */
+    #[Test]
     public function it_creates_a_recurring_transaction(): void
     {
         $this->mockJsonResponses([

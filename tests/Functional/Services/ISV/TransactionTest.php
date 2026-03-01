@@ -4,24 +4,27 @@ namespace Sebdesign\VivaPayments\Test\Functional\Services\ISV;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
+use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Facades\Viva;
 use Sebdesign\VivaPayments\Requests\CreateRecurringTransaction;
+use Sebdesign\VivaPayments\Services\ISV;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/**
- * @covers \Sebdesign\VivaPayments\Client
- * @covers \Sebdesign\VivaPayments\Services\ISV
- * @covers \Sebdesign\VivaPayments\Services\ISV\Transaction
- */
+#[CoversClass(Client::class)]
+#[CoversClass(ISV::class)]
+#[CoversClass(ISV\Transaction::class)]
+#[UsesClass(CreateRecurringTransaction::class)]
 class TransactionTest extends TestCase
 {
     /**
-     * @test
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_cannot_retrieve_an_isv_transaction_that_does_not_exist(): void
     {
         Viva::withOAuthCredentials(
@@ -38,15 +41,12 @@ class TransactionTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Requests\CreateRecurringTransaction
-     *
      * @throws GuzzleException
      * @throws VivaException
      *
      * @see https://developer.vivawallet.com/isv-partner-program/payment-isv-api/#tag/Recurring-Payments/paths/~1api~1transactions~1{id}/post
      */
+    #[Test]
     public function it_cannot_create_a_recurring_transaction_that_does_not_exist(): void
     {
         $this->expectException(VivaException::class);

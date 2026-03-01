@@ -3,6 +3,9 @@
 namespace Sebdesign\VivaPayments\Test\Unit\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Carbon;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Requests\CreatePaymentOrder;
 use Sebdesign\VivaPayments\Requests\Customer;
@@ -10,27 +13,23 @@ use Sebdesign\VivaPayments\Services\Order;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/**
- * @covers \Sebdesign\VivaPayments\Client
- * @covers \Sebdesign\VivaPayments\Services\Order
- */
+#[CoversClass(Client::class)]
+#[CoversClass(Order::class)]
+#[CoversClass(CreatePaymentOrder::class)]
+#[CoversClass(Customer::class)]
 class OrderTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Requests\CreatePaymentOrder
-     * @covers \Sebdesign\VivaPayments\Requests\Customer
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_creates_a_payment_order(): void
     {
         $this->mockJsonResponses(['orderCode' => '1272214778972604']);
         $this->mockRequests();
 
-        $this->client->withToken('test');
+        $this->client->withToken('test', Carbon::now()->addHour());
 
         $order = new Order($this->client);
 
@@ -101,9 +100,7 @@ class OrderTest extends TestCase
         $this->assertSame('1272214778972604', $orderCode, 'The order code should be 1272214778972604');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_a_redirect_url(): void
     {
         $this->mockJsonResponses([]);

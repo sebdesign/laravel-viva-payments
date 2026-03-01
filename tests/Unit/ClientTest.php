@@ -4,17 +4,19 @@ namespace Sebdesign\VivaPayments\Test\Unit;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Carbon;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Enums\Environment;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/** @covers \Sebdesign\VivaPayments\Client */
+#[CoversClass(Client::class)]
+#[CoversClass(VivaException::class)]
 class ClientTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_the_demo_url(): void
     {
         /** @var Client */
@@ -25,9 +27,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::DEMO_URL, $url, 'The URL should be '.Client::DEMO_URL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_the_production_url(): void
     {
         /** @var Client */
@@ -38,9 +38,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::PRODUCTION_URL, $url, 'The URL should be '.Client::PRODUCTION_URL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_the_demo_accounts_url(): void
     {
         /** @var Client */
@@ -51,9 +49,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::DEMO_ACCOUNTS_URL, $url, 'The URL should be '.Client::DEMO_ACCOUNTS_URL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_the_production_accounts_url(): void
     {
         /** @var Client */
@@ -64,9 +60,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::PRODUCTION_ACCOUNTS_URL, $url, 'The URL should be '.Client::PRODUCTION_ACCOUNTS_URL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_the_demo_api_url(): void
     {
         /** @var Client */
@@ -77,9 +71,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::DEMO_API_URL, $url, 'The URL should be '.Client::DEMO_API_URL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_the_production_api_url(): void
     {
         /** @var Client */
@@ -90,9 +82,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::PRODUCTION_API_URL, $url, 'The URL should be '.Client::PRODUCTION_API_URL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_authenticates_with_basic_auth(): void
     {
         /** @var Client */
@@ -104,9 +94,7 @@ class ClientTest extends TestCase
         $this->assertEquals(config('services.viva.api_key'), $basic['auth'][1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_the_basic_auth_credentials(): void
     {
         /** @var Client */
@@ -120,17 +108,16 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_authenticates_with_bearer_token(): void
     {
         /** @var Client */
         $client = $this->app?->make(Client::class);
 
-        $bearer = $client->withToken('foo')->authenticateWithBearerToken();
+        $bearer = $client->withToken('foo', Carbon::now()->addHour())->authenticateWithBearerToken();
 
         $this->assertEquals([
             'headers' => ['Authorization' => 'Bearer foo'],
@@ -138,11 +125,145 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
+    public function it_fetches_a_new_token_when_no_token_is_cached(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'new-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+
+        $bearer = $this->client->authenticateWithBearerToken();
+
+        $this->assertEquals([
+            'headers' => ['Authorization' => 'Bearer new-token'],
+        ], $bearer);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_fetches_a_new_token_when_token_expiry_is_null(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'new-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+
+        $bearer = $this->client->withToken('old-token')->authenticateWithBearerToken();
+
+        $this->assertEquals([
+            'headers' => ['Authorization' => 'Bearer new-token'],
+        ], $bearer);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_fetches_a_new_token_when_the_token_has_expired(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'new-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+
+        $bearer = $this->client
+            ->withToken('expired-token', Carbon::now()->subSecond())
+            ->authenticateWithBearerToken();
+
+        $this->assertEquals([
+            'headers' => ['Authorization' => 'Bearer new-token'],
+        ], $bearer);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_caches_the_token_and_does_not_re_request_it(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'cached-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+        $this->mockRequests();
+
+        $firstBearer = $this->client->authenticateWithBearerToken();
+        $secondBearer = $this->client->authenticateWithBearerToken();
+
+        $this->assertEquals($firstBearer, $secondBearer);
+        $this->assertCount(1, $this->history, 'The token should only be fetched once.');
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_subtracts_60_seconds_from_the_token_expiry(): void
+    {
+        Carbon::setTestNow('2026-01-01 00:00:00');
+
+        $this->mockJsonResponses(
+            [
+                'access_token' => 'first-token',
+                'expires_in' => 3600,
+                'token_type' => 'Bearer',
+                'scope' => 'test',
+            ],
+            [
+                'access_token' => 'second-token',
+                'expires_in' => 3600,
+                'token_type' => 'Bearer',
+                'scope' => 'test',
+            ],
+        );
+
+        // Initial fetch: caches 'first-token' with expiry at now + (3600 - 60) = now + 3540s
+        $this->client->authenticateWithBearerToken();
+
+        // 1 second before the adjusted expiry: token should still be valid
+        Carbon::setTestNow('2026-01-01 00:58:59');
+        $bearer = $this->client->authenticateWithBearerToken();
+        $this->assertEquals(
+            ['headers' => ['Authorization' => 'Bearer first-token']],
+            $bearer,
+            'Token should still be cached before the adjusted expiry.'
+        );
+
+        // At exactly the adjusted expiry: token should be refreshed
+        Carbon::setTestNow('2026-01-01 00:59:00');
+        $bearer = $this->client->authenticateWithBearerToken();
+        $this->assertEquals(
+            ['headers' => ['Authorization' => 'Bearer second-token']],
+            $bearer,
+            'Token should be refreshed at the adjusted expiry time.'
+        );
+
+        Carbon::setTestNow();
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
     public function it_sets_the_oauth_credentials(): void
     {
         $this->mockJsonResponses([
@@ -163,13 +284,10 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\VivaException
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_throws_an_exception_when_it_cannot_decode_an_invalid_response(): void
     {
         $this->mockResponses([new Response(body: 'invalid')]);
@@ -181,13 +299,10 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\VivaException
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_throws_an_exception_when_it_cannot_decode_a_response(): void
     {
         $this->mockResponses([new Response(body: 'null')]);
@@ -199,12 +314,11 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws \JsonException
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_decodes_a_json_response(): void
     {
         $json = json_encode([
@@ -222,13 +336,10 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\VivaException
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_throws_an_exception_when_the_response_has_errors(): void
     {
         $this->mockJsonResponses([
@@ -242,11 +353,10 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_sends_a_get_request(): void
     {
         $body = ['foo' => 'bar'];
@@ -265,11 +375,10 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_sends_a_post_request(): void
     {
         $body = ['foo' => 'bar'];

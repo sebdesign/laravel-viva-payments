@@ -44,8 +44,9 @@ class Client
      */
     public const PRODUCTION_API_URL = 'https://api.vivapayments.com';
 
-    protected string|null $token = null;
-    protected Carbon|null $tokenExpiresAt = null;
+    protected ?string $token = null;
+
+    protected ?Carbon $tokenExpiresAt = null;
 
     public function __construct(
         public readonly GuzzleClient $client,
@@ -273,9 +274,10 @@ class Client
     /**
      * Use the given access token to authenticate with OAuth 2.0.
      */
-    public function withToken(#[\SensitiveParameter] string $token): self
+    public function withToken(#[\SensitiveParameter] string $token, ?Carbon $tokenExpiresAt = null): self
     {
         $this->token = $token;
+        $this->tokenExpiresAt = $tokenExpiresAt;
 
         return $this;
     }

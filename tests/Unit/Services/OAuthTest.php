@@ -3,23 +3,24 @@
 namespace Sebdesign\VivaPayments\Test\Unit\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Sebdesign\VivaPayments\Client;
+use Sebdesign\VivaPayments\Responses\AccessToken;
+use Sebdesign\VivaPayments\Services\OAuth;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/**
- * @covers \Sebdesign\VivaPayments\Client
- * @covers \Sebdesign\VivaPayments\Services\OAuth
- */
+#[CoversClass(Client::class)]
+#[CoversClass(AccessToken::class)]
+#[CoversClass(OAuth::class)]
 class OAuthTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Responses\AccessToken
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_requests_an_access_token_with_the_default_credentials(): void
     {
         $this->mockJsonResponses([
@@ -45,13 +46,10 @@ class OAuthTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Responses\AccessToken
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_requests_an_access_token_with_the_given_credentials(): void
     {
         $this->mockJsonResponses([

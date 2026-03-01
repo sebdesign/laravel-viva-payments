@@ -3,23 +3,24 @@
 namespace Sebdesign\VivaPayments\Test\Functional\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Facades\Viva;
 use Sebdesign\VivaPayments\Requests\CreatePaymentOrder;
 use Sebdesign\VivaPayments\Requests\Customer;
+use Sebdesign\VivaPayments\Services\Order;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/** @covers \Sebdesign\VivaPayments\Services\Order */
+#[CoversClass(Order::class)]
+#[CoversClass(CreatePaymentOrder::class)]
 class OrderTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Requests\CreatePaymentOrder
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_creates_a_payment_order(): void
     {
         $orderCode = Viva::orders()->create(new CreatePaymentOrder(

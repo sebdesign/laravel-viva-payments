@@ -2,16 +2,16 @@
 
 namespace Sebdesign\VivaPayments\Test\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Facades\Viva;
 use Sebdesign\VivaPayments\Test\TestCase;
 
-/** @covers \Sebdesign\VivaPayments\Facades\Viva */
+#[CoversClass(Viva::class)]
 class VivaTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_proxies_the_client(): void
     {
         $viva = Viva::getFacadeRoot();

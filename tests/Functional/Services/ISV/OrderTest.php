@@ -3,27 +3,27 @@
 namespace Sebdesign\VivaPayments\Test\Functional\Services\ISV;
 
 use GuzzleHttp\Exception\GuzzleException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Facades\Viva;
 use Sebdesign\VivaPayments\Requests\CreatePaymentOrder;
 use Sebdesign\VivaPayments\Requests\Customer;
+use Sebdesign\VivaPayments\Services\ISV;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/**
- * @covers \Sebdesign\VivaPayments\Client
- * @covers \Sebdesign\VivaPayments\Services\ISV
- * @covers \Sebdesign\VivaPayments\Services\ISV\Order
- */
+#[CoversClass(Client::class)]
+#[CoversClass(ISV::class)]
+#[CoversClass(ISV\Order::class)]
+#[CoversClass(CreatePaymentOrder::class)]
 class OrderTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Requests\CreatePaymentOrder
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_creates_an_isv_payment_order(): void
     {
         Viva::withOAuthCredentials(

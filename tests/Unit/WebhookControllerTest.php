@@ -5,6 +5,8 @@ namespace Sebdesign\VivaPayments\Test\Unit;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Events\TransactionFailed;
 use Sebdesign\VivaPayments\Events\TransactionPaymentCreated;
 use Sebdesign\VivaPayments\Events\WebhookEvent;
@@ -13,15 +15,17 @@ use Sebdesign\VivaPayments\Services\Webhook;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/** @covers \Sebdesign\VivaPayments\Http\Controllers\WebhookController */
+#[CoversClass(WebhookController::class)]
+#[CoversClass(WebhookEvent::class)]
+#[CoversClass(TransactionPaymentCreated::class)]
+#[CoversClass(TransactionFailed::class)]
 class WebhookControllerTest extends TestCase
 {
     /**
-     * @test
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_verifies_a_webhook(): void
     {
         $this->mockJsonResponses(['Key' => 'foo']);
@@ -36,11 +40,7 @@ class WebhookControllerTest extends TestCase
         $this->assertEquals(['Key' => 'foo'], $response->getData(assoc: true));
     }
 
-    /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Events\WebhookEvent
-     */
+    #[Test]
     public function it_handles_a_notification_event(): void
     {
         Event::fake();
@@ -58,11 +58,7 @@ class WebhookControllerTest extends TestCase
         Event::assertDispatched(WebhookEvent::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Events\TransactionPaymentCreated
-     */
+    #[Test]
     public function it_handles_a_create_transaction_notification_event(): void
     {
         Event::fake();
@@ -81,11 +77,7 @@ class WebhookControllerTest extends TestCase
         Event::assertDispatched(TransactionPaymentCreated::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Events\TransactionFailed
-     */
+    #[Test]
     public function it_handles_a_transaction_failed_notification_event(): void
     {
         Event::fake();

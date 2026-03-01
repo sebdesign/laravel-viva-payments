@@ -3,33 +3,34 @@
 namespace Sebdesign\VivaPayments\Test\Unit\Services\ISV;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Carbon;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Requests\CreatePaymentOrder;
 use Sebdesign\VivaPayments\Requests\Customer;
+use Sebdesign\VivaPayments\Services\ISV;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaException;
 
-/**
- * @covers \Sebdesign\VivaPayments\Client
- * @covers \Sebdesign\VivaPayments\Services\ISV
- * @covers \Sebdesign\VivaPayments\Services\ISV\Order
- */
+#[CoversClass(Client::class)]
+#[CoversClass(ISV::class)]
+#[CoversClass(ISV\Order::class)]
+#[CoversClass(CreatePaymentOrder::class)]
+#[CoversClass(Customer::class)]
 class OrderTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers \Sebdesign\VivaPayments\Requests\CreatePaymentOrder
-     * @covers \Sebdesign\VivaPayments\Requests\Customer
-     *
      * @throws GuzzleException
      * @throws VivaException
      */
+    #[Test]
     public function it_creates_an_isv_payment_order(): void
     {
         $this->mockJsonResponses(['orderCode' => '1272214778972604']);
         $this->mockRequests();
 
-        $order = $this->client->withToken('test')->isv()->orders();
+        $order = $this->client->withToken('test', Carbon::now()->addHour())->isv()->orders();
 
         $orderCode = $order->create(new CreatePaymentOrder(
             amount: 1000,

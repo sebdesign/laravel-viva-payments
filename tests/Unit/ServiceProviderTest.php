@@ -2,17 +2,17 @@
 
 namespace Sebdesign\VivaPayments\Test\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Services\OAuth;
 use Sebdesign\VivaPayments\Test\TestCase;
 use Sebdesign\VivaPayments\VivaPaymentsServiceProvider;
 
-/** @covers \Sebdesign\VivaPayments\VivaPaymentsServiceProvider */
+#[CoversClass(VivaPaymentsServiceProvider::class)]
 class ServiceProviderTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_is_deferred(): void
     {
         /** @var VivaPaymentsServiceProvider */
@@ -21,9 +21,7 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue($provider->isDeferred());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_merges_the_configuration(): void
     {
         /** @var \Illuminate\Contracts\Config\Repository */
@@ -37,9 +35,7 @@ class ServiceProviderTest extends TestCase
         $this->assertArrayHasKey('environment', $config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_provides_the_client(): void
     {
         /** @var VivaPaymentsServiceProvider */
@@ -48,9 +44,7 @@ class ServiceProviderTest extends TestCase
         $this->assertContains(Client::class, $provider->provides());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_resolves_the_client_as_a_singleton(): void
     {
         $client = $this->app?->make(Client::class);
@@ -59,9 +53,7 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue($this->app?->isShared(Client::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_resolves_the_oauth(): void
     {
         $oauth = $this->app?->make(OAuth::class);
@@ -69,9 +61,7 @@ class ServiceProviderTest extends TestCase
         $this->assertInstanceOf(OAuth::class, $oauth);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_doesnt_use_tlsv1_for_nss(): void
     {
         $client = app(Client::class);
