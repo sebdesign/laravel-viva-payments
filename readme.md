@@ -2,11 +2,11 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://packagist.org/packages/sebdesign/laravel-viva-payments)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/github/workflow/status/sebdesign/laravel-viva-payments/tests.yml?style=flat-square)](https://github.com/sebdesign/laravel-viva-payments/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/sebdesign/laravel-viva-payments/tests.yml?branch=main&style=flat-square)](https://github.com/sebdesign/laravel-viva-payments/actions)
 [![Quality Score](https://img.shields.io/scrutinizer/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
 [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
 
-[![VivaPayments logo](https://developer.viva.com/images/vivacom_block_logo2.svg "Viva Wallet logo")](https://www.vivawallet.com/)
+[![VivaPayments logo](https://images.prismic.io/vivadotcom/Z5o4WZbqstJ99_q3_1200x630_Logo1.png "Viva Wallet logo")](https://www.vivawallet.com/)
 
 This package provides an interface for the Viva Wallet Payment API. It handles the **Smart Checkout** integration, the **ISV Payment API**, and **Webhooks**.
 
@@ -20,10 +20,11 @@ Check out the official Viva Wallet Developer Portal for detailed instructions on
 
 Install the package through Composer.
 
-This package requires PHP 8.1 and Laravel 9.0 or higher, and uses Guzzle 7.0 to make API calls. Use the appropriate version according to your dependencies.
+This package requires PHP 8.1 and Laravel 10 or higher, and uses Guzzle 7.0 to make API calls. Use the appropriate version according to your dependencies.
 
 | Viva Payments for Laravel | Guzzle     | Laravel |
 | ------------------------- | ---------- | ------- |
+| ^6.2                      | ^7.0       | ^10.0   |
 | ^6.0                      | ^7.0       | ^9.0    |
 | ^5.2                      | ^7.0       | ^9.0    |
 | ^5.1                      | ^7.0       | ^8.0    |
