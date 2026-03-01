@@ -7,7 +7,6 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Fluent;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Sebdesign\VivaPayments\Client;
@@ -78,16 +77,16 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'curl' => [CURLOPT_SSL_CIPHER_LIST => 'TLSv1'],
         ]);
 
-        /** @phpstan-ignore argument.type */
-        $config = new Fluent(config('services.viva'));
+        /** @var array<string,string> $config */
+        $config = config('services.viva');
 
         $this->client = new Client(
             $mockClient,
             Environment::Demo,
-            $config->string('merchant_id'),
-            $config->string('api_key'),
-            $config->string('client_id'),
-            $config->string('client_secret'),
+            $config['merchant_id'],
+            $config['api_key'],
+            $config['client_id'],
+            $config['client_secret'],
         );
     }
 

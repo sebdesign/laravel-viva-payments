@@ -4,7 +4,6 @@ namespace Sebdesign\VivaPayments\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Fluent;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\VivaException;
 
@@ -35,6 +34,7 @@ class Card
             )
         );
 
-        return (new Fluent($response))->string('token');
+        /** @phpstan-ignore return.type */
+        return $response['token'] ?? '';
     }
 }

@@ -3,7 +3,6 @@
 namespace Sebdesign\VivaPayments\Test\Functional\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Fluent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -24,8 +23,8 @@ class OrderTest extends TestCase
     #[Test]
     public function it_creates_a_payment_order(): void
     {
-        /** @phpstan-ignore argument.type */
-        $config = new Fluent(config('services.viva'));
+        /** @var array<string,string> $config */
+        $config = config('services.viva');
 
         $orderCode = Viva::orders()->create(new CreatePaymentOrder(
             amount: 1000,
@@ -37,7 +36,7 @@ class OrderTest extends TestCase
                 countryCode: 'GB',
                 requestLang: 'en-GB',
             ),
-            sourceCode: $config->string('source_code'),
+            sourceCode: $config['source_code'],
             merchantTrns: 'Test merchant description',
         ));
 

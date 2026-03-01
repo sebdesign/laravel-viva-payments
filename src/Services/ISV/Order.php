@@ -4,7 +4,6 @@ namespace Sebdesign\VivaPayments\Services\ISV;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Fluent;
 use Sebdesign\VivaPayments\Client;
 use Sebdesign\VivaPayments\Requests;
 use Sebdesign\VivaPayments\VivaException;
@@ -35,6 +34,7 @@ class Order
             )
         );
 
-        return (new Fluent($response))->string('orderCode');
+        /** @phpstan-ignore return.type */
+        return $response['orderCode'] ?? '';
     }
 }
