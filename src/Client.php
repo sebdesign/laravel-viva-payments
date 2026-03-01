@@ -160,7 +160,7 @@ class Client
             throw new VivaException('Invalid response: '.var_export($decoded, return: true), 0);
         }
 
-        if (isset($decoded['ErrorCode']) && $decoded['ErrorCode'] !== 0) {
+        if (isset($decoded['ErrorCode']) && is_int($decoded['ErrorCode']) && $decoded['ErrorCode'] !== 0) {
             throw new VivaException($decoded['ErrorText'], $decoded['ErrorCode']);
         }
 
@@ -215,7 +215,7 @@ class Client
     /**
      * Authenticate using the bearer token as an authorization header.
      *
-     * @return array{headers:array{Authorization:string}};
+     * @return array{headers:array{Authorization:string}}
      *
      * @throws GuzzleException
      * @throws VivaException
@@ -233,6 +233,8 @@ class Client
 
     /**
      * Use the production or demo environment.
+     *
+     * @param  Environment|'production'|'demo'  $environment
      */
     public function withEnvironment(Environment|string $environment): self
     {

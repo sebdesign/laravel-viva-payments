@@ -67,38 +67,38 @@ class OrderTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertMethod('POST', $request);
-        $this->assertQuery('merchantId', strval(env('VIVA_MERCHANT_ID')), $request);
-        $this->assertJsonBody('amount', 1000, $request);
-        $this->assertJsonBody('customerTrns', 'Short description of purchased items/services to display to your customer', $request);
-        $this->assertJsonBody('customer', [
+        self::assertMethod('POST', $request);
+        self::assertQuery('merchantId', strval(config('services.viva.merchant_id')), $request);
+        self::assertJsonBody('amount', 1000, $request);
+        self::assertJsonBody('customerTrns', 'Short description of purchased items/services to display to your customer', $request);
+        self::assertJsonBody('customer', [
             'email' => 'johdoe@vivawallet.com',
             'fullName' => 'John Doe',
             'phone' => '+30999999999',
             'countryCode' => 'GB',
             'requestLang' => 'en-GB',
         ], $request);
-        $this->assertJsonBody('paymentTimeOut', 300, $request);
-        $this->assertJsonBody('currencyCode', '978', $request);
-        $this->assertJsonBody('preauth', false, $request);
-        $this->assertJsonBody('allowRecurring', false, $request);
-        $this->assertJsonBody('maxInstallments', 12, $request);
-        $this->assertJsonBody('paymentNotification', true, $request);
-        $this->assertJsonBody('tipAmount', 100, $request);
-        $this->assertJsonBody('disableExactAmount', false, $request);
-        $this->assertJsonBody('disableCash', true, $request);
-        $this->assertJsonBody('disableWallet', true, $request);
-        $this->assertJsonBody('sourceCode', '1234', $request);
-        $this->assertJsonBody('merchantTrns', 'Short description of items/services purchased by customer', $request);
-        $this->assertJsonBody('tags', [
+        self::assertJsonBody('paymentTimeOut', 300, $request);
+        self::assertJsonBody('currencyCode', '978', $request);
+        self::assertJsonBody('preauth', false, $request);
+        self::assertJsonBody('allowRecurring', false, $request);
+        self::assertJsonBody('maxInstallments', 12, $request);
+        self::assertJsonBody('paymentNotification', true, $request);
+        self::assertJsonBody('tipAmount', 100, $request);
+        self::assertJsonBody('disableExactAmount', false, $request);
+        self::assertJsonBody('disableCash', true, $request);
+        self::assertJsonBody('disableWallet', true, $request);
+        self::assertJsonBody('sourceCode', '1234', $request);
+        self::assertJsonBody('merchantTrns', 'Short description of items/services purchased by customer', $request);
+        self::assertJsonBody('tags', [
             'tags for grouping and filtering the transactions',
             'this tag can be searched on VivaWallet sales dashboard',
             'Sample tag 1',
             'Sample tag 2',
             'Another string',
         ], $request);
-        $this->assertJsonBody('isvAmount', 1, $request);
-        $this->assertJsonBody('resellerSourceCode', 'Default', $request);
-        $this->assertSame('1272214778972604', $orderCode, 'The order code should be 1272214778972604');
+        self::assertJsonBody('isvAmount', 1, $request);
+        self::assertJsonBody('resellerSourceCode', 'Default', $request);
+        self::assertSame('1272214778972604', $orderCode, 'The order code should be 1272214778972604');
     }
 }

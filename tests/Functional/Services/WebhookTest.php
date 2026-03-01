@@ -22,6 +22,6 @@ class WebhookTest extends TestCase
     {
         $verification = Viva::webhooks()->getVerificationKey();
 
-        $this->assertNotEmpty($verification->Key, "Failed asserting that '{$verification->Key}' is not empty.");
+        self::assertNotEmpty($verification->Key, "Failed asserting that '{$verification->Key}' is not empty.");
     }
 }

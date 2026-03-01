@@ -57,28 +57,28 @@ class TransactionTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertMethod('GET', $request);
-        $this->assertPath('/checkout/v2/transactions/c90d4902-6245-449f-b2b0-51d99cd09cfe', $request);
-        $this->assertEquals('someone@example.com', $transaction->email);
-        $this->assertEquals(30.00, $transaction->amount);
-        $this->assertEquals(6962462482972601, $transaction->orderCode);
-        $this->assertEquals('F', $transaction->statusId->value);
-        $this->assertEquals('George Seferis', $transaction->fullName);
-        $this->assertEquals('2021-12-06T14:32:10.32+02:00', $transaction->insDate);
-        $this->assertEquals('523929XXXXXX0168', $transaction->cardNumber);
-        $this->assertEquals('978', $transaction->currencyCode);
-        $this->assertEquals('Short description of items/services purchased to display to your customer', $transaction->customerTrns);
-        $this->assertEquals('Short description of items/services purchased by customer', $transaction->merchantTrns);
-        $this->assertEquals('9521B4209B611B11E080964E09640F4EB3C3AA18', $transaction->cardUniqueReference);
-        $this->assertEquals(5, $transaction->transactionTypeId->value);
-        $this->assertEquals(false, $transaction->recurringSupport);
-        $this->assertEquals(0, $transaction->totalInstallments);
-        $this->assertEquals(null, $transaction->cardCountryCode);
-        $this->assertEquals(null, $transaction->cardIssuingBank);
-        $this->assertEquals(0, $transaction->currentInstallment);
-        $this->assertEquals(1, $transaction->cardTypeId);
-        $this->assertEquals('NET_VISA', $transaction->bankId);
-        $this->assertFalse($transaction->switching);
+        self::assertMethod('GET', $request);
+        self::assertPath('/checkout/v2/transactions/c90d4902-6245-449f-b2b0-51d99cd09cfe', $request);
+        self::assertEquals('someone@example.com', $transaction->email);
+        self::assertEquals(30.00, $transaction->amount);
+        self::assertEquals(6962462482972601, $transaction->orderCode);
+        self::assertEquals('F', $transaction->statusId->value);
+        self::assertEquals('George Seferis', $transaction->fullName);
+        self::assertEquals('2021-12-06T14:32:10.32+02:00', $transaction->insDate);
+        self::assertEquals('523929XXXXXX0168', $transaction->cardNumber);
+        self::assertEquals('978', $transaction->currencyCode);
+        self::assertEquals('Short description of items/services purchased to display to your customer', $transaction->customerTrns);
+        self::assertEquals('Short description of items/services purchased by customer', $transaction->merchantTrns);
+        self::assertEquals('9521B4209B611B11E080964E09640F4EB3C3AA18', $transaction->cardUniqueReference);
+        self::assertEquals(5, $transaction->transactionTypeId->value);
+        self::assertEquals(false, $transaction->recurringSupport);
+        self::assertEquals(0, $transaction->totalInstallments);
+        self::assertEquals(null, $transaction->cardCountryCode);
+        self::assertEquals(null, $transaction->cardIssuingBank);
+        self::assertEquals(0, $transaction->currentInstallment);
+        self::assertEquals(1, $transaction->cardTypeId);
+        self::assertEquals('NET_VISA', $transaction->bankId);
+        self::assertFalse($transaction->switching);
     }
 
     /**
@@ -126,31 +126,31 @@ class TransactionTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertMethod('POST', $request);
-        $this->assertPath('/api/transactions/14c59e93-f8e4-4f5c-8a63-60ae8f8807d1', $request);
-        $this->assertJsonBody('amount', 100, $request);
-        $this->assertJsonBody('installments', 1, $request);
-        $this->assertJsonBody('customerTrns', 'A description of products / services that is displayed to the customer', $request);
-        $this->assertJsonBody('merchantTrns', 'Your merchant reference', $request);
-        $this->assertJsonBody('sourceCode', '6054', $request);
-        $this->assertJsonBody('tipAmount', 0, $request);
-        $this->assertEquals(null, $response->Emv);
-        $this->assertEquals(1.00, $response->Amount);
-        $this->assertEquals('F', $response->StatusId->value);
-        $this->assertEquals(5, $response->TransactionTypeId->value);
-        $this->assertEquals(null, $response->RedirectUrl);
-        $this->assertEquals('826', $response->CurrencyCode);
-        $this->assertEquals('14c59e93-f8e4-4f5c-8a63-60ae8f8807d1', $response->TransactionId);
-        $this->assertEquals(838982, $response->ReferenceNumber);
-        $this->assertEquals('838982', $response->AuthorizationId);
-        $this->assertEquals('109012838982', $response->RetrievalReferenceNumber);
-        $this->assertEquals(null, $response->Loyalty);
-        $this->assertEquals(2, $response->ThreeDSecureStatusId);
-        $this->assertEquals(0, $response->ErrorCode);
-        $this->assertEquals(null, $response->ErrorText);
-        $this->assertEquals('2021-03-31T15:52:27.2029634+03:00', $response->TimeStamp);
-        $this->assertEquals(null, $response->CorrelationId);
-        $this->assertEquals(0, $response->EventId);
-        $this->assertEquals(true, $response->Success);
+        self::assertMethod('POST', $request);
+        self::assertPath('/api/transactions/14c59e93-f8e4-4f5c-8a63-60ae8f8807d1', $request);
+        self::assertJsonBody('amount', 100, $request);
+        self::assertJsonBody('installments', 1, $request);
+        self::assertJsonBody('customerTrns', 'A description of products / services that is displayed to the customer', $request);
+        self::assertJsonBody('merchantTrns', 'Your merchant reference', $request);
+        self::assertJsonBody('sourceCode', '6054', $request);
+        self::assertJsonBody('tipAmount', 0, $request);
+        self::assertEquals(null, $response->Emv);
+        self::assertEquals(1.00, $response->Amount);
+        self::assertEquals('F', $response->StatusId->value);
+        self::assertEquals(5, $response->TransactionTypeId->value);
+        self::assertEquals(null, $response->RedirectUrl);
+        self::assertEquals('826', $response->CurrencyCode);
+        self::assertEquals('14c59e93-f8e4-4f5c-8a63-60ae8f8807d1', $response->TransactionId);
+        self::assertEquals(838982, $response->ReferenceNumber);
+        self::assertEquals('838982', $response->AuthorizationId);
+        self::assertEquals('109012838982', $response->RetrievalReferenceNumber);
+        self::assertEquals(null, $response->Loyalty);
+        self::assertEquals(2, $response->ThreeDSecureStatusId);
+        self::assertEquals(0, $response->ErrorCode);
+        self::assertEquals(null, $response->ErrorText);
+        self::assertEquals('2021-03-31T15:52:27.2029634+03:00', $response->TimeStamp);
+        self::assertEquals(null, $response->CorrelationId);
+        self::assertEquals(0, $response->EventId);
+        self::assertEquals(true, $response->Success);
     }
 }

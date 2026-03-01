@@ -16,6 +16,6 @@ class VivaTest extends TestCase
     {
         $viva = Viva::getFacadeRoot();
 
-        $this->assertInstanceOf(Client::class, $viva);
+        self::assertInstanceOf(Client::class, $viva);
     }
 }

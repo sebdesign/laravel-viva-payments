@@ -26,7 +26,7 @@ class CardTest extends TestCase
 
             $this->fail();
         } catch (ClientException $e) {
-            $this->assertEquals(403, $e->getCode());
+            self::assertEquals(403, $e->getCode());
         }
     }
 }

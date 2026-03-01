@@ -25,9 +25,9 @@ class TransactionTest extends TestCase
     {
         try {
             Viva::transactions()->retrieve('c90d4902-6245-449f-b2b0-51d99cd09cfe');
-            $this->fail();
+            self::fail();
         } catch (RequestException $e) {
-            $this->assertEquals(404, $e->getCode());
+            self::assertEquals(404, $e->getCode());
         }
     }
 

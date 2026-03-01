@@ -98,72 +98,62 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     public function assertPath(string $path, RequestInterface $request): self
     {
-        $this->assertEquals($path, $request->getUri()->getPath());
+        self::assertEquals($path, $request->getUri()->getPath());
 
         return $this;
     }
 
-    public function assertMethod(string $name, RequestInterface $request): self
+    public static function assertMethod(string $name, RequestInterface $request): void
     {
-        $this->assertEquals($name, $request->getMethod(), "The request method should be [{$name}].");
-
-        return $this;
+        self::assertEquals($name, $request->getMethod(), "The request method should be [{$name}].");
     }
 
-    public function assertQuery(string $name, string $value, RequestInterface $request): self
+    public static function assertQuery(string $name, string $value, RequestInterface $request): void
     {
         $query = $request->getUri()->getQuery();
 
         parse_str($query, $output);
 
-        $this->assertArrayHasKey(
+        self::assertArrayHasKey(
             $name,
             $output,
             "Did not see expected query string parameter [{$name}] in [{$query}]."
         );
 
-        $this->assertIsString($output[$name]);
+        self::assertIsString($output[$name]);
 
-        $this->assertEquals(
+        self::assertEquals(
             $value,
             $output[$name],
             "Query string parameter [{$name}] had value [{$output[$name]}], but expected [{$value}]."
         );
-
-        return $this;
     }
 
-    public function assertBody(string $name, string $value, RequestInterface $request): self
+    public static function assertBody(string $name, string $value, RequestInterface $request): void
     {
         parse_str($request->getBody(), $body);
 
-        $this->assertArrayHasKey($name, $body);
+        self::assertArrayHasKey($name, $body);
 
-        $this->assertSame($value, $body[$name]);
-
-        return $this;
+        self::assertSame($value, $body[$name]);
     }
 
     /** @param  array<mixed>|string|int|bool  $value */
-    public function assertJsonBody(string $name, mixed $value, RequestInterface $request): self
+    public static function assertJsonBody(string $name, mixed $value, RequestInterface $request): void
     {
         $body = json_decode($request->getBody(), associative: true);
 
-        $this->assertIsArray($body);
+        self::assertIsArray($body);
 
-        $this->assertArrayHasKey($name, $body);
+        self::assertArrayHasKey($name, $body);
 
-        $this->assertSame($value, $body[$name]);
-
-        return $this;
+        self::assertSame($value, $body[$name]);
     }
 
-    public function assertHeader(string $name, string $value, RequestInterface $request): self
+    public static function assertHeader(string $name, string $value, RequestInterface $request): void
     {
-        $this->assertTrue($request->hasHeader($name), "The header [{$name}] should be passed as a header.");
+        self::assertTrue($request->hasHeader($name), "The header [{$name}] should be passed as a header.");
 
-        $this->assertEquals($value, $request->getHeader($name)[0], "The header [{$name}] should be [{$value}].");
-
-        return $this;
+        self::assertEquals($value, $request->getHeader($name)[0], "The header [{$name}] should be [{$value}].");
     }
 }

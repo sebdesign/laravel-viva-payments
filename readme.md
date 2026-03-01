@@ -54,8 +54,11 @@ Add the following array in your `config/services.php`.
     'environment' => env('VIVA_ENVIRONMENT', 'production'),
     'client_id' => env('VIVA_CLIENT_ID'),
     'client_secret' => env('VIVA_CLIENT_SECRET'),
+    'isv_client_id' => env('VIVA_ISV_CLIENT_ID'),
+    'isv_client_secret' => env('VIVA_ISV_CLIENT_SECRET'),
     'isv_partner_id' => env('VIVA_ISV_PARTNER_ID'),
     'isv_partner_api_key' => env('VIVA_ISV_PARTNER_API_KEY'),
+    'source_code' => env('VIVA_SOURCE_CODE'),
 ],
 ```
 
@@ -63,7 +66,7 @@ The `api_key` and `merchant_id` can be found in the _Settings > API Access_ sect
 
 The `client_id` and `client_secret` are needed for the _Smart Checkout_. You can generate the _Smart Checkout Credentials_ in the _Settings > API Access_ section of your profile.
 
-The `isv_partner_id` and `isv_partner_api_key` are required for using the **ISV Payment API** with Basic authentication.
+The `isv_client_id`, `isv_client_secret`, `isv_partner_id` and `isv_partner_api_key` are required for using the **ISV Payment API** with Basic authentication.
 
 > Read more about API authentication on the Developer Portal: https://developer.vivawallet.com/getting-started/find-your-account-credentials/client-smart-checkout-credentials/
 

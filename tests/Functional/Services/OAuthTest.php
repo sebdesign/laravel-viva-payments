@@ -36,8 +36,8 @@ class OAuthTest extends TestCase
     public function it_requests_an_access_token_with_the_given_credentials(): void
     {
         Viva::oauth()->requestToken(
-            clientId: strval(env('VIVA_CLIENT_ID')),
-            clientSecret: strval(env('VIVA_CLIENT_SECRET')),
+            clientId: strval(config('services.viva.client_id')),
+            clientSecret: strval(config('services.viva.client_secret')),
         );
     }
 }

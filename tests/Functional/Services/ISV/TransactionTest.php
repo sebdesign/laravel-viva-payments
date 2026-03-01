@@ -28,15 +28,15 @@ class TransactionTest extends TestCase
     public function it_cannot_retrieve_an_isv_transaction_that_does_not_exist(): void
     {
         Viva::withOAuthCredentials(
-            strval(env('VIVA_ISV_CLIENT_ID')),
-            strval(env('VIVA_ISV_CLIENT_SECRET')),
+            strval(config('services.viva.isv_client_id')),
+            strval(config('services.viva.isv_client_secret')),
         );
 
         try {
             Viva::isv()->transactions()->retrieve('c90d4902-6245-449f-b2b0-51d99cd09cfe');
             $this->fail();
         } catch (RequestException $e) {
-            $this->assertEquals(404, $e->getCode());
+            self::assertEquals(404, $e->getCode());
         }
     }
 
@@ -53,8 +53,8 @@ class TransactionTest extends TestCase
         $this->expectExceptionCode(404);
 
         Viva::withBasicAuthCredentials(
-            strval(env('VIVA_ISV_PARTNER_ID')).':'.strval(env('VIVA_MERCHANT_ID')),
-            strval(env('VIVA_ISV_PARTNER_API_KEY')),
+            strval(config('services.viva.isv_partner_id')).':'.strval(config('services.viva.merchant_id')),
+            strval(config('services.viva.isv_partner_api_key')),
         );
 
         Viva::isv()->transactions()->createRecurring(

@@ -36,8 +36,8 @@ class WebhookControllerTest extends TestCase
 
         $response = $controller->verify($webhook);
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(['Key' => 'foo'], $response->getData(assoc: true));
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertEquals(['Key' => 'foo'], $response->getData(assoc: true));
     }
 
     #[Test]
@@ -53,7 +53,7 @@ class WebhookControllerTest extends TestCase
 
         $response = $controller->handle($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
 
         Event::assertDispatched(WebhookEvent::class);
     }
@@ -71,7 +71,7 @@ class WebhookControllerTest extends TestCase
 
         $response = $controller->handle($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
 
         Event::assertDispatched(WebhookEvent::class);
         Event::assertDispatched(TransactionPaymentCreated::class);
@@ -90,7 +90,7 @@ class WebhookControllerTest extends TestCase
 
         $response = $controller->handle($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
 
         Event::assertDispatched(WebhookEvent::class);
         Event::assertDispatched(TransactionFailed::class);

@@ -24,7 +24,7 @@ class ClientTest extends TestCase
 
         $url = $client->withEnvironment(Environment::Demo)->getUrl();
 
-        $this->assertEquals(Client::DEMO_URL, $url, 'The URL should be '.Client::DEMO_URL);
+        self::assertEquals(Client::DEMO_URL, $url, 'The URL should be '.Client::DEMO_URL);
     }
 
     #[Test]
@@ -35,7 +35,7 @@ class ClientTest extends TestCase
 
         $url = $client->withEnvironment(Environment::Production)->getUrl();
 
-        $this->assertEquals(Client::PRODUCTION_URL, $url, 'The URL should be '.Client::PRODUCTION_URL);
+        self::assertEquals(Client::PRODUCTION_URL, $url, 'The URL should be '.Client::PRODUCTION_URL);
     }
 
     #[Test]
@@ -46,7 +46,7 @@ class ClientTest extends TestCase
 
         $url = $client->withEnvironment(Environment::Demo)->getAccountsUrl();
 
-        $this->assertEquals(Client::DEMO_ACCOUNTS_URL, $url, 'The URL should be '.Client::DEMO_ACCOUNTS_URL);
+        self::assertEquals(Client::DEMO_ACCOUNTS_URL, $url, 'The URL should be '.Client::DEMO_ACCOUNTS_URL);
     }
 
     #[Test]
@@ -57,7 +57,7 @@ class ClientTest extends TestCase
 
         $url = $client->withEnvironment(Environment::Production)->getAccountsUrl();
 
-        $this->assertEquals(Client::PRODUCTION_ACCOUNTS_URL, $url, 'The URL should be '.Client::PRODUCTION_ACCOUNTS_URL);
+        self::assertEquals(Client::PRODUCTION_ACCOUNTS_URL, $url, 'The URL should be '.Client::PRODUCTION_ACCOUNTS_URL);
     }
 
     #[Test]
@@ -68,7 +68,7 @@ class ClientTest extends TestCase
 
         $url = $client->withEnvironment(Environment::Demo)->getApiUrl();
 
-        $this->assertEquals(Client::DEMO_API_URL, $url, 'The URL should be '.Client::DEMO_API_URL);
+        self::assertEquals(Client::DEMO_API_URL, $url, 'The URL should be '.Client::DEMO_API_URL);
     }
 
     #[Test]
@@ -79,7 +79,7 @@ class ClientTest extends TestCase
 
         $url = $client->withEnvironment(Environment::Production)->getApiUrl();
 
-        $this->assertEquals(Client::PRODUCTION_API_URL, $url, 'The URL should be '.Client::PRODUCTION_API_URL);
+        self::assertEquals(Client::PRODUCTION_API_URL, $url, 'The URL should be '.Client::PRODUCTION_API_URL);
     }
 
     #[Test]
@@ -90,8 +90,8 @@ class ClientTest extends TestCase
 
         $basic = $client->authenticateWithBasicAuth();
 
-        $this->assertEquals(config('services.viva.merchant_id'), $basic['auth'][0]);
-        $this->assertEquals(config('services.viva.api_key'), $basic['auth'][1]);
+        self::assertEquals(config('services.viva.merchant_id'), $basic['auth'][0]);
+        self::assertEquals(config('services.viva.api_key'), $basic['auth'][1]);
     }
 
     #[Test]
@@ -104,7 +104,7 @@ class ClientTest extends TestCase
 
         $basic = $client->authenticateWithBasicAuth();
 
-        $this->assertEquals(['foo', 'bar'], $basic['auth']);
+        self::assertEquals(['foo', 'bar'], $basic['auth']);
     }
 
     /**
@@ -119,7 +119,7 @@ class ClientTest extends TestCase
 
         $bearer = $client->withToken('foo', Carbon::now()->addHour())->authenticateWithBearerToken();
 
-        $this->assertEquals([
+        self::assertEquals([
             'headers' => ['Authorization' => 'Bearer foo'],
         ], $bearer);
     }
@@ -140,7 +140,7 @@ class ClientTest extends TestCase
 
         $bearer = $this->client->authenticateWithBearerToken();
 
-        $this->assertEquals([
+        self::assertEquals([
             'headers' => ['Authorization' => 'Bearer new-token'],
         ], $bearer);
     }
@@ -161,7 +161,7 @@ class ClientTest extends TestCase
 
         $bearer = $this->client->withToken('old-token')->authenticateWithBearerToken();
 
-        $this->assertEquals([
+        self::assertEquals([
             'headers' => ['Authorization' => 'Bearer new-token'],
         ], $bearer);
     }
@@ -184,7 +184,7 @@ class ClientTest extends TestCase
             ->withToken('expired-token', Carbon::now()->subSecond())
             ->authenticateWithBearerToken();
 
-        $this->assertEquals([
+        self::assertEquals([
             'headers' => ['Authorization' => 'Bearer new-token'],
         ], $bearer);
     }
@@ -207,8 +207,8 @@ class ClientTest extends TestCase
         $firstBearer = $this->client->authenticateWithBearerToken();
         $secondBearer = $this->client->authenticateWithBearerToken();
 
-        $this->assertEquals($firstBearer, $secondBearer);
-        $this->assertCount(1, $this->history, 'The token should only be fetched once.');
+        self::assertEquals($firstBearer, $secondBearer);
+        self::assertCount(1, $this->history, 'The token should only be fetched once.');
     }
 
     /**
@@ -241,7 +241,7 @@ class ClientTest extends TestCase
         // 1 second before the adjusted expiry: token should still be valid
         Carbon::setTestNow('2026-01-01 00:58:59');
         $bearer = $this->client->authenticateWithBearerToken();
-        $this->assertEquals(
+        self::assertEquals(
             ['headers' => ['Authorization' => 'Bearer first-token']],
             $bearer,
             'Token should still be cached before the adjusted expiry.'
@@ -250,7 +250,7 @@ class ClientTest extends TestCase
         // At exactly the adjusted expiry: token should be refreshed
         Carbon::setTestNow('2026-01-01 00:59:00');
         $bearer = $this->client->authenticateWithBearerToken();
-        $this->assertEquals(
+        self::assertEquals(
             ['headers' => ['Authorization' => 'Bearer second-token']],
             $bearer,
             'Token should be refreshed at the adjusted expiry time.'
@@ -280,7 +280,7 @@ class ClientTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertHeader('Authorization', 'Basic '.base64_encode('foo:bar'), $request);
+        self::assertHeader('Authorization', 'Basic '.base64_encode('foo:bar'), $request);
     }
 
     /**
@@ -332,7 +332,7 @@ class ClientTest extends TestCase
 
         $response = $this->client->get('test');
 
-        $this->assertEquals(json_decode($json, associative: true), $response, 'The JSON response was not decoded.');
+        self::assertEquals(json_decode($json, associative: true), $response, 'The JSON response was not decoded.');
     }
 
     /**
@@ -368,10 +368,10 @@ class ClientTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertMethod('GET', $request);
-        $this->assertPath('test', $request);
-        $this->assertQuery('key', 'value', $request);
-        $this->assertEquals($body, $response);
+        self::assertMethod('GET', $request);
+        self::assertPath('test', $request);
+        self::assertQuery('key', 'value', $request);
+        self::assertEquals($body, $response);
     }
 
     /**
@@ -390,9 +390,9 @@ class ClientTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertMethod('POST', $request);
-        $this->assertPath('test', $request);
-        $this->assertJsonBody('key', 'value', $request);
-        $this->assertEquals($body, $response);
+        self::assertMethod('POST', $request);
+        self::assertPath('test', $request);
+        self::assertJsonBody('key', 'value', $request);
+        self::assertEquals($body, $response);
     }
 }

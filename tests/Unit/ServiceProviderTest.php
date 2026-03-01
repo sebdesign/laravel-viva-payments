@@ -2,6 +2,7 @@
 
 namespace Sebdesign\VivaPayments\Test\Unit;
 
+use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Sebdesign\VivaPayments\Client;
@@ -18,21 +19,19 @@ class ServiceProviderTest extends TestCase
         /** @var VivaPaymentsServiceProvider */
         $provider = $this->app?->getProvider(VivaPaymentsServiceProvider::class);
 
-        $this->assertTrue($provider->isDeferred());
+        self::assertTrue($provider->isDeferred());
     }
 
     #[Test]
     public function it_merges_the_configuration(): void
     {
-        /** @var \Illuminate\Contracts\Config\Repository */
-        $config = $this->app?->make('config');
-        $config = $config->get('services.viva');
+        $config = Config::get('services.viva');
 
-        $this->assertIsArray($config);
-        $this->assertNotEmpty($config);
-        $this->assertArrayHasKey('api_key', $config);
-        $this->assertArrayHasKey('merchant_id', $config);
-        $this->assertArrayHasKey('environment', $config);
+        self::assertIsArray($config);
+        self::assertNotEmpty($config);
+        self::assertArrayHasKey('api_key', $config);
+        self::assertArrayHasKey('merchant_id', $config);
+        self::assertArrayHasKey('environment', $config);
     }
 
     #[Test]
@@ -41,7 +40,7 @@ class ServiceProviderTest extends TestCase
         /** @var VivaPaymentsServiceProvider */
         $provider = $this->app?->getProvider(VivaPaymentsServiceProvider::class);
 
-        $this->assertContains(Client::class, $provider->provides());
+        self::assertContains(Client::class, $provider->provides());
     }
 
     #[Test]
@@ -49,8 +48,8 @@ class ServiceProviderTest extends TestCase
     {
         $client = $this->app?->make(Client::class);
 
-        $this->assertInstanceOf(Client::class, $client);
-        $this->assertTrue($this->app?->isShared(Client::class));
+        self::assertInstanceOf(Client::class, $client);
+        self::assertTrue($this->app?->isShared(Client::class));
     }
 
     #[Test]
@@ -58,7 +57,7 @@ class ServiceProviderTest extends TestCase
     {
         $oauth = $this->app?->make(OAuth::class);
 
-        $this->assertInstanceOf(OAuth::class, $oauth);
+        self::assertInstanceOf(OAuth::class, $oauth);
     }
 
     #[Test]
@@ -73,11 +72,12 @@ class ServiceProviderTest extends TestCase
         if (
             is_array($version) &&
             isset($version['ssl_version']) &&
+            is_string($version['ssl_version']) &&
             str_contains($version['ssl_version'], 'NSS')
         ) {
-            $this->assertEmpty($curl);
+            self::assertEmpty($curl);
         } else {
-            $this->assertEquals([CURLOPT_SSL_CIPHER_LIST => 'TLSv1.2'], $curl);
+            self::assertEquals([CURLOPT_SSL_CIPHER_LIST => 'TLSv1.2'], $curl);
         }
     }
 }

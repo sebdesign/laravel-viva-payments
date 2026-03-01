@@ -33,10 +33,10 @@ class OrderTest extends TestCase
                 countryCode: 'GB',
                 requestLang: 'en-GB',
             ),
-            sourceCode: strval(env('VIVA_SOURCE_CODE')),
+            sourceCode: strval(config('services.viva.source_code')),
             merchantTrns: 'Test merchant description',
         ));
 
-        $this->assertIsNumeric($orderCode);
+        self::assertIsNumeric($orderCode);
     }
 }

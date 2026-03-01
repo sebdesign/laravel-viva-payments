@@ -27,8 +27,8 @@ class OrderTest extends TestCase
     public function it_creates_an_isv_payment_order(): void
     {
         Viva::withOAuthCredentials(
-            strval(env('VIVA_ISV_CLIENT_ID')),
-            strval(env('VIVA_ISV_CLIENT_SECRET')),
+            strval(config('services.viva.isv_client_id')),
+            strval(config('services.viva.isv_client_secret')),
         );
 
         $orderCode = Viva::isv()->orders()->create(new CreatePaymentOrder(
@@ -41,12 +41,12 @@ class OrderTest extends TestCase
                 countryCode: 'GB',
                 requestLang: 'en-GB',
             ),
-            sourceCode: strval(env('VIVA_SOURCE_CODE')),
+            sourceCode: strval(config('services.viva.source_code')),
             merchantTrns: 'Test merchant description',
             isvAmount: 1,
             resellerSourceCode: 'Default',
         ));
 
-        $this->assertIsNumeric($orderCode);
+        self::assertIsNumeric($orderCode);
     }
 }

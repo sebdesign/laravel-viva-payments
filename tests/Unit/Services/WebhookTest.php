@@ -29,7 +29,7 @@ class WebhookTest extends TestCase
         $verification = $this->client->webhooks()->getVerificationKey();
         $request = $this->getLastRequest();
 
-        $this->assertMethod('GET', $request);
-        $this->assertEquals('foo', $verification->Key);
+        self::assertMethod('GET', $request);
+        self::assertEquals('foo', $verification->Key);
     }
 }

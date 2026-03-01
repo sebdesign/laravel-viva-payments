@@ -31,8 +31,8 @@ class CardTest extends TestCase
 
         $request = $this->getLastRequest();
 
-        $this->assertMethod('POST', $request);
-        $this->assertJsonBody('transactionId', '6cffe5bf-909c-4d69-b6dc-2bef1a6202f7', $request);
-        $this->assertEquals('ct_480c964156d949c19abe1b1061b21108', $token, 'The card token should be ct_480c964156d949c19abe1b1061b21108');
+        self::assertMethod('POST', $request);
+        self::assertJsonBody('transactionId', '6cffe5bf-909c-4d69-b6dc-2bef1a6202f7', $request);
+        self::assertEquals('ct_480c964156d949c19abe1b1061b21108', $token, 'The card token should be ct_480c964156d949c19abe1b1061b21108');
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Sebdesign\VivaPayments\Services\Card cards()
+ * @method static \Sebdesign\VivaPayments\Services\OAuth oauth()
  * @method static \Sebdesign\VivaPayments\Services\Order orders()
  * @method static \Sebdesign\VivaPayments\Services\Transaction transactions()
  * @method static \Sebdesign\VivaPayments\Services\Webhook webhooks()
