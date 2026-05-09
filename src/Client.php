@@ -160,7 +160,10 @@ class Client
             throw new VivaException('Invalid response: '.var_export($decoded, return: true), 0);
         }
 
-        if (isset($decoded['ErrorCode']) && is_int($decoded['ErrorCode']) && $decoded['ErrorCode'] !== 0) {
+        if (
+            isset($decoded['ErrorText']) && is_string($decoded['ErrorText']) &&
+            isset($decoded['ErrorCode']) && is_int($decoded['ErrorCode']) && $decoded['ErrorCode'] !== 0
+        ) {
             throw new VivaException($decoded['ErrorText'], $decoded['ErrorCode']);
         }
 
