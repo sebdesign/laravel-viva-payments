@@ -3,6 +3,7 @@
 namespace Sebdesign\VivaPayments\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Sebdesign\VivaPayments\Client;
 
 /**
  * @method static \Sebdesign\VivaPayments\Services\Card cards()
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Sebdesign\VivaPayments\Client withOAuthCredentials(string $clientId, string $clientSecret)
  * @method static \Sebdesign\VivaPayments\Client withToken(string $token)
  *
- * @see \Sebdesign\VivaPayments\Client
+ * @see Client
  */
 class Viva extends Facade
 {
@@ -27,6 +28,6 @@ class Viva extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return \Sebdesign\VivaPayments\Client::class;
+        return Client::class;
     }
 }

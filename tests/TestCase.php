@@ -7,6 +7,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Foundation\Application;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Sebdesign\VivaPayments\Client;
@@ -32,7 +33,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Get package providers.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return array<int, class-string>
      */
     protected function getPackageProviders($app)
@@ -57,7 +58,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Mock responses.
      *
-     * @param  \GuzzleHttp\Psr7\Response[]  $responses
+     * @param  Response[]  $responses
      */
     protected function mockResponses(array $responses): void
     {
