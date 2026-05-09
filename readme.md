@@ -567,6 +567,41 @@ $transaction = Viva::isv()->transactions()->createRecurring(
 );
 ```
 
+### Source
+
+#### Add a new source for merchants
+
+> See: https://developer.viva.com/isv-partner-program/payment-isv-api/#tag/Sources/paths/~1api~1sources/post
+
+```php
+use Sebdesign\VivaPayments\Facades\Viva;
+use Sebdesign\VivaPayments\Requests\CreateSource;
+
+Viva::withBasicAuthCredentials(
+    config('services.viva.isv_partner_id').':'.config('services.viva.merchant_id'),
+    config('services.viva.isv_partner_api_key'),
+);
+
+Viva::isv()->source()->create(
+    source: new CreateSource(
+        domain: 'www.example.com',
+        isSecure: true,
+        name: 'API test',
+        pathFail: 'fail',
+        pathSuccess: 'success',
+        sourceCode: '1234',
+        phone: '2102312111',
+        address: 'Amarousiou Chalandriou 18-20',
+        walletId: 100000000000,
+        isPhysical: true,
+        latitude: 38.0425,
+        longitude: 23.8086,
+        transactionDescriptor: 'my store coffee',
+    ),
+    guzzleOptions: [],
+);
+```
+
 ## Exceptions
 
 When the VivaPayments API returns an error, a `Sebdesign\VivaPayments\VivaException` is thrown.

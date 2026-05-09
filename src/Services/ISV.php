@@ -13,6 +13,11 @@ class ISV
         return new ISV\Order($this->client);
     }
 
+    public function sources(): ISV\Source
+    {
+        return new ISV\Source($this->client);
+    }
+
     public function transactions(): ISV\Transaction
     {
         return new ISV\Transaction($this->client);

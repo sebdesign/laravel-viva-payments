@@ -146,7 +146,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         self::assertSame($value, $body[$name]);
     }
 
-    /** @param  array<mixed>|string|int|bool  $value */
+    /** @param  array<mixed>|string|int|float|bool  $value */
     public static function assertJsonBody(string $name, mixed $value, RequestInterface $request): void
     {
         $body = json_decode($request->getBody(), associative: true);
