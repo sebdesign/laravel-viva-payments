@@ -15,7 +15,7 @@ class Order
     /**
      * Create payment order.
      *
-     * @see https://developer.vivawallet.com/isv-partner-program/payment-isv-api/#tag/Payments/paths/~1checkout~1v2~1isv~1orders/post
+     * @see https://developer.viva.com/isv-partner-program/payment-isv-api/#tag/Payments/paths/~1checkout~1v2~1isv~1orders/post
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      *

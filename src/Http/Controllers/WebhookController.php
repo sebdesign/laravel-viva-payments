@@ -17,7 +17,7 @@ class WebhookController extends Controller
     /**
      * Verify a webhook.
      *
-     * @see https://developer.vivawallet.com/webhooks-for-payments/#generate-a-webhook-verification-key
+     * @see https://developer.viva.com/webhooks-for-payments/#generate-a-webhook-verification-key
      *
      * @throws GuzzleException
      * @throws VivaException
@@ -28,9 +28,9 @@ class WebhookController extends Controller
     }
 
     /**
-     * Handle requests from Viva Wallet.
+     * Handle requests from Viva.
      *
-     * @see https://developer.vivawallet.com/webhooks-for-payments/#handle-requests-from-viva-wallet
+     * @see https://developer.viva.com/webhooks-for-payments/#handle-requests-from-viva
      */
     public function handle(Request $request): JsonResponse
     {

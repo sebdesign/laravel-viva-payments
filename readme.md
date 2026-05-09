@@ -6,13 +6,13 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
 [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/sebdesign/laravel-viva-payments.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-viva-payments)
 
-[![VivaPayments logo](https://images.prismic.io/vivadotcom/Z5o4WZbqstJ99_q3_1200x630_Logo1.png "Viva Wallet logo")](https://www.vivawallet.com/)
+[![VivaPayments logo](https://images.prismic.io/vivadotcom/Z5o4WZbqstJ99_q3_1200x630_Logo1.png "Viva.com logo")](https://www.viva.com/)
 
-This package provides an interface for the Viva Wallet Payment API. It handles the **Smart Checkout** integration, the **ISV Payment API**, and **Webhooks**.
+This package provides an interface for the Viva.com Payment API. It handles the **Smart Checkout** integration, the **ISV Payment API**, and **Webhooks**.
 
-Check out the official Viva Wallet Developer Portal for detailed instructions on the APIs and more: https://developer.vivawallet.com
+Check out the official Viva.com Developer Portal for detailed instructions on the APIs and more: https://developer.viva.com
 
-**Note:** This project is not a official package, and I'm not affiliated with Viva Payments in any way.
+**Note:** This project is not a official package, and I'm not affiliated with Viva.com in any way.
 
 ## Setup
 

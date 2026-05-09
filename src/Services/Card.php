@@ -14,7 +14,7 @@ class Card
     /**
      * Create card token.
      *
-     * @see https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1acquiring~1v1~1cards~1tokens/post
+     * @see https://developer.viva.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1acquiring~1v1~1cards~1tokens/post
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      *

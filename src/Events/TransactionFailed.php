@@ -6,7 +6,7 @@ use Sebdesign\VivaPayments\Enums\TransactionStatus;
 use Sebdesign\VivaPayments\Enums\TransactionType;
 use Spatie\LaravelData\Data;
 
-/** @see https://developer.vivawallet.com/webhooks-for-payments/transaction-failed/ */
+/** @see https://developer.viva.com/webhooks-for-payments/transaction-failed/ */
 class TransactionFailed extends Data
 {
     public function __construct(

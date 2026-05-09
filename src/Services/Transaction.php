@@ -16,7 +16,7 @@ class Transaction
     /**
      * Retrieve transaction.
      *
-     * @see https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1checkout~1v2~1transactions~1{transactionId}/get
+     * @see https://developer.viva.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1checkout~1v2~1transactions~1{transactionId}/get
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      *
@@ -40,7 +40,7 @@ class Transaction
     /**
      * Create a recurring transaction.
      *
-     * @see https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Transactions-(Deprecated)/paths/~1api~1transactions~1{transaction_id}/post
+     * @see https://developer.viva.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1api~1transactions~1{transaction_id}/post
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      *

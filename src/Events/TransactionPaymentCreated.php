@@ -6,7 +6,7 @@ use Sebdesign\VivaPayments\Enums\TransactionStatus;
 use Sebdesign\VivaPayments\Enums\TransactionType;
 use Spatie\LaravelData\Data;
 
-/** @see https://developer.vivawallet.com/webhooks-for-payments/transaction-payment-created/ */
+/** @see https://developer.viva.com/webhooks-for-payments/transaction-payment-created/ */
 class TransactionPaymentCreated extends Data
 {
     public function __construct(

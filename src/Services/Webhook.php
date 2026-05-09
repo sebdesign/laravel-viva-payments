@@ -14,7 +14,7 @@ class Webhook
     /**
      * Get a webhook authorization code.
      *
-     * @see https://developer.vivawallet.com/webhooks-for-payments/#generate-a-webhook-verification-key
+     * @see https://developer.viva.com/webhooks-for-payments/#generate-a-webhook-verification-key
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      *

@@ -248,7 +248,7 @@ class Client
     /**
      * Use the given Merchant ID and API key for basic authentication.
      *
-     * @see https://developer.vivawallet.com/getting-started/find-your-account-credentials/merchant-id-and-api-key/
+     * @see https://developer.viva.com/getting-started/find-your-account-credentials/merchant-id-and-api-key/
      */
     public function withBasicAuthCredentials(
         #[\SensitiveParameter] string $merchantId,
@@ -263,7 +263,7 @@ class Client
     /**
      * Use the given client credentials to authenticate with OAuth 2.0.
      *
-     * @see https://developer.vivawallet.com/getting-started/find-your-account-credentials/client-smart-checkout-credentials/
+     * @see https://developer.viva.com/getting-started/find-your-account-credentials/client-smart-checkout-credentials/
      */
     public function withOAuthCredentials(
         #[\SensitiveParameter] string $clientId,

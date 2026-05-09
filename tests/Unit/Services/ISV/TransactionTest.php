@@ -85,7 +85,7 @@ class TransactionTest extends TestCase
      * @throws GuzzleException
      * @throws VivaException
      *
-     * @see https://developer.vivawallet.com/tutorials/payments/create-a-recurring-payment/#via-the-api
+     * @see https://developer.viva.com/tutorials/payments/create-a-recurring-payment/#via-the-api
      */
     #[Test]
     public function it_creates_a_recurring_transaction(): void

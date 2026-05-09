@@ -36,7 +36,7 @@ class OrderTest extends TestCase
             amount: 1000,
             customerTrns: 'Short description of purchased items/services to display to your customer',
             customer: new Customer(
-                email: 'johdoe@vivawallet.com',
+                email: 'johdoe@viva.com',
                 fullName: 'John Doe',
                 phone: '+30999999999',
                 countryCode: 'GB',
@@ -56,7 +56,7 @@ class OrderTest extends TestCase
             merchantTrns: 'Short description of items/services purchased by customer',
             tags: [
                 'tags for grouping and filtering the transactions',
-                'this tag can be searched on VivaWallet sales dashboard',
+                'this tag can be searched on Viva sales dashboard',
                 'Sample tag 1',
                 'Sample tag 2',
                 'Another string',
@@ -72,7 +72,7 @@ class OrderTest extends TestCase
         self::assertJsonBody('amount', 1000, $request);
         self::assertJsonBody('customerTrns', 'Short description of purchased items/services to display to your customer', $request);
         self::assertJsonBody('customer', [
-            'email' => 'johdoe@vivawallet.com',
+            'email' => 'johdoe@viva.com',
             'fullName' => 'John Doe',
             'phone' => '+30999999999',
             'countryCode' => 'GB',
@@ -92,7 +92,7 @@ class OrderTest extends TestCase
         self::assertJsonBody('merchantTrns', 'Short description of items/services purchased by customer', $request);
         self::assertJsonBody('tags', [
             'tags for grouping and filtering the transactions',
-            'this tag can be searched on VivaWallet sales dashboard',
+            'this tag can be searched on Viva sales dashboard',
             'Sample tag 1',
             'Sample tag 2',
             'Another string',

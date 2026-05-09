@@ -47,7 +47,7 @@ class TransactionTest extends TestCase
      * @throws GuzzleException
      * @throws VivaException
      *
-     * @see https://developer.vivawallet.com/isv-partner-program/payment-isv-api/#tag/Recurring-Payments/paths/~1api~1transactions~1{id}/post
+     * @see https://developer.viva.com/isv-partner-program/payment-isv-api/#tag/Recurring-Payments/paths/~1api~1transactions~1{id}/post
      */
     #[Test]
     public function it_cannot_create_a_recurring_transaction_that_does_not_exist(): void

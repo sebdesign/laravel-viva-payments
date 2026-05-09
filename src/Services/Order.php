@@ -17,7 +17,7 @@ class Order
     /**
      * Create payment order.
      *
-     * @see https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post
+     * @see https://developer.viva.com/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional parameters for the Guzzle client
      *
@@ -42,7 +42,7 @@ class Order
     /**
      * Get the redirect URL to the Smart Checkout for an order.
      *
-     * @see https://developer.vivawallet.com/smart-checkout/smart-checkout-integration/#step-2-redirect-the-customer-to-smart-checkout-to-pay-the-payment-order
+     * @see https://developer.viva.com/smart-checkout/smart-checkout-integration/#step-2-redirect-the-customer-to-smart-checkout-to-pay-the-payment-order
      */
     public function redirectUrl(
         string $ref,

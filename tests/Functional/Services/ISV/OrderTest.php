@@ -38,7 +38,7 @@ class OrderTest extends TestCase
             amount: 1000,
             customerTrns: 'Test customer description',
             customer: new Customer(
-                email: 'test@vivawallet.com',
+                email: 'test@viva.com',
                 fullName: 'John Doe',
                 phone: '+30999999999',
                 countryCode: 'GB',

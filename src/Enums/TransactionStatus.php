@@ -3,7 +3,7 @@
 namespace Sebdesign\VivaPayments\Enums;
 
 /**
- * @see https://developer.vivawallet.com/integration-reference/response-codes/#statusid-parameter
+ * @see https://developer.viva.com/integration-reference/response-codes/#statusid-parameter
  */
 enum TransactionStatus: string
 {

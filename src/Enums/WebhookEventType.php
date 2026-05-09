@@ -11,7 +11,7 @@ enum WebhookEventType: int
     /** A customer’s payment failed (but the customer may retry and the customer’s payment may - eventually - be successful) */
     case TransactionFailed = 1798;
 
-    /** A commission payment has been withdrawn from your account by Viva Wallet */
+    /** A commission payment has been withdrawn from your account by Viva */
     case TransactionPriceCalculated = 1799;
 
     /** A customer refund has been successfully actioned */

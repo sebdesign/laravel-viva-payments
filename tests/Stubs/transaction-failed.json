@@ -2,7 +2,7 @@
     "Url": "Your webhook url",
     "EventData": {
         "Moto": false,
-        "Email": "jdoe@vivawallet.com",
+        "Email": "jdoe@viva.com",
         "Phone": "799999999999",
         "BankId": "NET_BNCT",
         "Systemic": false,

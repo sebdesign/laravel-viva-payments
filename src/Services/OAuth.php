@@ -19,7 +19,7 @@ class OAuth
     /**
      * Request access token.
      *
-     * @see https://developer.vivawallet.com/integration-reference/oauth2-authentication/
+     * @see https://developer.viva.com/integration-reference/oauth2-authentication/
      *
      * @param  array<string,mixed>  $guzzleOptions  Additional options for the Guzzle client
      *
