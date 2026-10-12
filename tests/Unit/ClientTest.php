@@ -482,6 +482,89 @@ class ClientTest extends TestCase
      * @throws VivaException
      */
     #[Test]
+    public function it_applies_the_request_options_to_requests(): void
+    {
+        $this->mockJsonResponses([]);
+        $this->mockRequests();
+
+        $this->client
+            ->withRequestOptions(['verify' => false, 'headers' => ['X-Foo' => 'bar']])
+            ->get('test');
+
+        self::assertFalse($this->history[0]['options']['verify']);
+        self::assertHeader('X-Foo', 'bar', $this->getLastRequest());
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_applies_the_request_options_to_access_token_requests(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'new-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+        $this->mockRequests();
+
+        $this->client
+            ->withRequestOptions(['verify' => false])
+            ->authenticateWithBearerToken();
+
+        self::assertPath('/connect/token', $this->getLastRequest());
+        self::assertFalse($this->history[0]['options']['verify']);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_prefers_the_options_of_individual_requests(): void
+    {
+        $this->mockJsonResponses([]);
+        $this->mockRequests();
+
+        $this->client
+            ->withRequestOptions(['verify' => false, 'headers' => ['X-Foo' => 'bar', 'X-Bar' => 'baz']])
+            ->get('test', ['verify' => true, 'headers' => ['X-Foo' => 'qux']]);
+
+        $request = $this->getLastRequest();
+
+        self::assertTrue($this->history[0]['options']['verify']);
+        self::assertHeader('X-Foo', 'qux', $request);
+        self::assertHeader('X-Bar', 'baz', $request);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_replaces_the_request_options(): void
+    {
+        $this->mockJsonResponses([]);
+        $this->mockRequests();
+
+        $this->client
+            ->withRequestOptions(['headers' => ['X-Foo' => 'bar']])
+            ->withRequestOptions(['headers' => ['X-Bar' => 'baz']])
+            ->get('test');
+
+        $request = $this->getLastRequest();
+
+        self::assertFalse($request->hasHeader('X-Foo'));
+        self::assertHeader('X-Bar', 'baz', $request);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
     public function it_sends_a_post_request(): void
     {
         $body = ['foo' => 'bar'];

@@ -15,7 +15,8 @@ use Sebdesign\VivaPayments\Client;
  * @method static \Sebdesign\VivaPayments\Client withEnvironment(\Sebdesign\VivaPayments\Enums\Environment|string $environment)
  * @method static \Sebdesign\VivaPayments\Client withBasicAuthCredentials(string $merchantId, string $apiKey)
  * @method static \Sebdesign\VivaPayments\Client withOAuthCredentials(string $clientId, string $clientSecret)
- * @method static \Sebdesign\VivaPayments\Client withToken(string $token)
+ * @method static \Sebdesign\VivaPayments\Client withToken(string $token, ?\Carbon\Carbon $tokenExpiresAt = null)
+ * @method static \Sebdesign\VivaPayments\Client withRequestOptions(array<string,mixed> $options)
  *
  * @see Client
  */

@@ -48,6 +48,13 @@ class Client
 
     protected ?Carbon $tokenExpiresAt = null;
 
+    /**
+     * The default Guzzle request options.
+     *
+     * @var array<string,mixed>
+     */
+    protected array $requestOptions = [];
+
     public function __construct(
         public readonly GuzzleClient $client,
         protected Environment $environment,
@@ -113,7 +120,7 @@ class Client
      */
     public function get(string $url, array $options = []): array
     {
-        $response = $this->client->get($url, $options);
+        $response = $this->client->get($url, $this->mergeRequestOptions($options));
 
         return $this->getBody($response);
     }
@@ -129,9 +136,20 @@ class Client
      */
     public function post(string $url, array $options = []): array
     {
-        $response = $this->client->post($url, $options);
+        $response = $this->client->post($url, $this->mergeRequestOptions($options));
 
         return $this->getBody($response);
+    }
+
+    /**
+     * Merge the given options into the default request options.
+     *
+     * @param  array<string,mixed>  $options
+     * @return array<string,mixed>
+     */
+    protected function mergeRequestOptions(array $options): array
+    {
+        return array_replace_recursive($this->requestOptions, $options);
     }
 
     /**
@@ -297,6 +315,22 @@ class Client
     {
         $this->token = $token;
         $this->tokenExpiresAt = $tokenExpiresAt;
+
+        return $this;
+    }
+
+    /**
+     * Use the given Guzzle request options for every request, including access token requests.
+     *
+     * Options passed to individual requests take precedence over these.
+     *
+     * @see https://docs.guzzlephp.org/en/stable/request-options.html
+     *
+     * @param  array<string,mixed>  $options
+     */
+    public function withRequestOptions(array $options): self
+    {
+        $this->requestOptions = $options;
 
         return $this;
     }

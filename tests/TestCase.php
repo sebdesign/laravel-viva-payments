@@ -26,7 +26,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * History of requests.
      *
-     * @var array<int,array{request:RequestInterface,response:ResponseInterface}>
+     * @var array<int,array{request:RequestInterface,response:ResponseInterface,options:array<string,mixed>}>
      */
     protected array $history = [];
 

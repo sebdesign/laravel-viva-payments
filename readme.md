@@ -73,6 +73,23 @@ The `isv_client_id` and `isv_client_secret` are required for using the **ISV Pay
 
 The `environment` can be either `production` or `demo`.
 
+#### Request options
+
+You can set default [Guzzle request options](https://docs.guzzlephp.org/en/stable/request-options.html) for every request, including the access token requests that are made automatically.
+The `guzzleOptions` passed to individual methods take precedence over these.
+
+```php
+use GuzzleHttp\RequestOptions;
+use Sebdesign\VivaPayments\Facades\Viva;
+
+Viva::withRequestOptions([
+    RequestOptions::TIMEOUT => 30,
+    RequestOptions::PROXY => 'http://proxy.example.com:8080',
+]);
+```
+
+> If you get a `cURL error 60: SSL certificate problem`, configure the CA bundle in your `php.ini` (`curl.cainfo` and `openssl.cafile`) instead of disabling the SSL verification.
+
 ## Smart Checkout
 
 > Read more about the Smart Checkout process on the Developer portal: https://developer.viva.com/smart-checkout/
