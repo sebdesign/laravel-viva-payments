@@ -39,8 +39,7 @@ class ISV
         $percentage = number_format($percentage, 10, '.', '');
 
         // Convert the percentage to a decimal (e.g., 0.05% → 0.0005)
-        /** @phpstan-ignore missingType.checkedException */
-        $feeDecimal = bcdiv($percentage, '100', scale: 10);
+        $feeDecimal = bcmul($percentage, '0.01', scale: 10);
 
         // Calculate the fee in cents with sufficient precision (e.g., 0.0005 × 1000 = 0.5)
         $fee = bcmul($feeDecimal, (string) $amount, scale: 10);
