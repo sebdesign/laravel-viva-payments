@@ -129,4 +129,13 @@ class ISVTest extends TestCase
 
         self::assertSame(0, $fee);
     }
+
+    #[Test]
+    public function it_handles_percentages_cast_to_scientific_notation(): void
+    {
+        // 0.00001% of €1,000,000.00 (100000000¢) = 10¢
+        $fee = $this->isv->fee(amount: 100000000, percentage: 0.00001);
+
+        self::assertSame(10, $fee);
+    }
 }

@@ -34,9 +34,13 @@ class ISV
      */
     public function fee(int $amount, float $percentage = 0.0, int $minimum = 0): int
     {
+        // Format the percentage as a plain decimal string, since casting small
+        // floats to strings uses scientific notation (e.g., 1.0E-5) which bcmath rejects
+        $percentage = number_format($percentage, 10, '.', '');
+
         // Convert the percentage to a decimal (e.g., 0.05% → 0.0005)
         /** @phpstan-ignore missingType.checkedException */
-        $feeDecimal = bcdiv((string) $percentage, '100', scale: 10);
+        $feeDecimal = bcdiv($percentage, '100', scale: 10);
 
         // Calculate the fee in cents with sufficient precision (e.g., 0.0005 × 1000 = 0.5)
         $fee = bcmul($feeDecimal, (string) $amount, scale: 10);
