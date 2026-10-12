@@ -241,9 +241,16 @@ class Client
      */
     public function withEnvironment(Environment|string $environment): self
     {
-        $this->environment = is_string($environment)
+        $environment = is_string($environment)
             ? Environment::tryFrom($environment) ?? throw new VivaException("Invalid environment: {$environment}")
             : $environment;
+
+        // Tokens are issued per environment, so discard the cached one
+        if ($environment !== $this->environment) {
+            $this->forgetToken();
+        }
+
+        $this->environment = $environment;
 
         return $this;
     }
@@ -272,6 +279,11 @@ class Client
         #[\SensitiveParameter] string $clientId,
         #[\SensitiveParameter] string $clientSecret,
     ): self {
+        // Tokens are issued per client, so discard the cached one
+        if ($clientId !== $this->clientId || $clientSecret !== $this->clientSecret) {
+            $this->forgetToken();
+        }
+
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
 
@@ -287,6 +299,15 @@ class Client
         $this->tokenExpiresAt = $tokenExpiresAt;
 
         return $this;
+    }
+
+    /**
+     * Forget the cached access token.
+     */
+    private function forgetToken(): void
+    {
+        $this->token = null;
+        $this->tokenExpiresAt = null;
     }
 
     /**

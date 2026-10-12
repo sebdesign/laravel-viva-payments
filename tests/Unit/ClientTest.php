@@ -294,6 +294,103 @@ class ClientTest extends TestCase
      * @throws VivaException
      */
     #[Test]
+    public function it_fetches_a_new_token_when_the_oauth_credentials_change(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'new-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+        $this->mockRequests();
+
+        $bearer = $this->client
+            ->withToken('old-token', Carbon::now()->addHour())
+            ->withOAuthCredentials('foo', 'bar')
+            ->authenticateWithBearerToken();
+
+        self::assertEquals([
+            'headers' => ['Authorization' => 'Bearer new-token'],
+        ], $bearer);
+        self::assertHeader('Authorization', 'Basic '.base64_encode('foo:bar'), $this->getLastRequest());
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_keeps_the_token_when_the_oauth_credentials_are_unchanged(): void
+    {
+        $this->mockJsonResponses([]);
+        $this->mockRequests();
+
+        /** @var array<string,string> $config */
+        $config = config('services.viva');
+
+        $bearer = $this->client
+            ->withToken('old-token', Carbon::now()->addHour())
+            ->withOAuthCredentials($config['client_id'], $config['client_secret'])
+            ->authenticateWithBearerToken();
+
+        self::assertEquals([
+            'headers' => ['Authorization' => 'Bearer old-token'],
+        ], $bearer);
+        self::assertCount(0, $this->history);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_fetches_a_new_token_when_the_environment_changes(): void
+    {
+        $this->mockJsonResponses([
+            'access_token' => 'new-token',
+            'expires_in' => 3600,
+            'token_type' => 'Bearer',
+            'scope' => 'test',
+        ]);
+        $this->mockRequests();
+
+        $bearer = $this->client
+            ->withToken('old-token', Carbon::now()->addHour())
+            ->withEnvironment(Environment::Production)
+            ->authenticateWithBearerToken();
+
+        self::assertEquals([
+            'headers' => ['Authorization' => 'Bearer new-token'],
+        ], $bearer);
+        self::assertSame(Client::PRODUCTION_ACCOUNTS_URL.'/connect/token', (string) $this->getLastRequest()->getUri());
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
+    public function it_keeps_the_token_when_the_environment_is_unchanged(): void
+    {
+        $this->mockJsonResponses([]);
+        $this->mockRequests();
+
+        $bearer = $this->client
+            ->withToken('old-token', Carbon::now()->addHour())
+            ->withEnvironment('demo')
+            ->authenticateWithBearerToken();
+
+        self::assertEquals([
+            'headers' => ['Authorization' => 'Bearer old-token'],
+        ], $bearer);
+        self::assertCount(0, $this->history);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws VivaException
+     */
+    #[Test]
     public function it_throws_an_exception_when_it_cannot_decode_an_invalid_response(): void
     {
         $this->mockResponses([new Response(body: 'invalid')]);
