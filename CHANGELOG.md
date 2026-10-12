@@ -5,6 +5,13 @@ All notable changes to `sebdesign/laravel-viva-payments` will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.4.1] - 2026-10-12
+
+### Fixes
+
+-   Fix `Viva::isv()->fee()` throwing a `ValueError` for very small percentages
+-   Forget the cached access token when the OAuth credentials or the environment change
+
 ## [6.4.0] - 2026-06-25
 
 ### Added

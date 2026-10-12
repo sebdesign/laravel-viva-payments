@@ -67,15 +67,15 @@ The `api_key` and `merchant_id` can be found in the _Settings > API Access_ sect
 
 The `client_id` and `client_secret` are needed for the _Smart Checkout_. You can generate the _Smart Checkout Credentials_ in the _Settings > API Access_ section of your profile.
 
-The `isv_client_id`, `isv_client_secret`, `isv_partner_id` and `isv_partner_api_key` are required for using the **ISV Payment API** with Basic authentication.
+The `isv_client_id` and `isv_client_secret` are required for using the **ISV Payment API** with OAuth 2.0, and the `isv_partner_id` and `isv_partner_api_key` with Basic authentication. These credentials are not applied automatically, see [ISV Payment API Reference](#isv-payment-api-reference).
 
-> Read more about API authentication on the Developer Portal: https://developer.vivawallet.com/getting-started/find-your-account-credentials/client-smart-checkout-credentials/
+> Read more about API authentication on the Developer Portal: https://developer.viva.com/getting-started/find-your-account-credentials/client-smart-checkout-credentials/
 
 The `environment` can be either `production` or `demo`.
 
 ## Smart Checkout
 
-> Read more about the Smart Checkout process on the Developer portal: https://developer.vivawallet.com/smart-checkout/
+> Read more about the Smart Checkout process on the Developer portal: https://developer.viva.com/smart-checkout/
 
 The `\Sebdesign\VivaPayments\Facades\Viva` facade provides all the methods needed to interact with the Smart Checkout integration.
 
@@ -83,7 +83,7 @@ The following guide will walk you through the necessary steps:
 
 #### Create the payment order
 
-The amount requested in cents is required. All the other parameters are optional. Check out the [request body schema](https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post).
+The amount requested in cents is required. All the other parameters are optional. Check out the [request body schema](https://developer.viva.com/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post).
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -191,7 +191,7 @@ class CheckoutController extends Controller
 
 Viva Payments supports Webhooks, and this package offers a controller which verifies and handles incoming notification events.
 
-> Read more about the Webhooks on the Developer Portal: https://developer.vivawallet.com/webhooks-for-payments/
+> Read more about the Webhooks on the Developer Portal: https://developer.viva.com/webhooks-for-payments/
 
 ### Define the route
 
@@ -351,7 +351,7 @@ $orderCode = Viva::orders()->create(
 
 ##### Get the redirect URL
 
-> See: https://developer.vivawallet.com/smart-checkout/smart-checkout-integration/#step-2-redirect-the-customer-to-smart-checkout-to-pay-the-payment-order
+> See: https://developer.viva.com/smart-checkout/smart-checkout-integration/#step-2-redirect-the-customer-to-smart-checkout-to-pay-the-payment-order
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -367,7 +367,7 @@ $url = Viva::orders()->redirectUrl(
 
 #### Retrieve a transaction
 
-> See: https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1checkout~1v2~1transactions~1{transactionId}/get
+> See: https://developer.viva.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1checkout~1v2~1transactions~1{transactionId}/get
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -449,7 +449,7 @@ Viva::withToken(token: 'eyJhbGciOiJSUzI1...');
 
 #### Create card token
 
-> See: https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1acquiring~1v1~1cards~1tokens/post
+> See: https://developer.viva.com/apis-for-payments/payment-api/#tag/Transactions/paths/~1acquiring~1v1~1cards~1tokens/post
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -464,7 +464,7 @@ $cardToken = Viva::cards()->createToken(
 
 ##### Get a webhook verification key
 
-> See: https://developer.vivawallet.com/webhooks-for-payments/#generate-a-webhook-verification-key
+> See: https://developer.viva.com/webhooks-for-payments/#generate-a-webhook-verification-key
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -478,11 +478,24 @@ $key = Viva::webhooks()->getVerificationKey(
 
 The ISV Payment API methods are available through the `Viva::isv()` service.
 
+Creating orders and retrieving transactions authenticate with OAuth 2.0. Set your ISV client credentials before calling these methods:
+
+```php
+use Sebdesign\VivaPayments\Facades\Viva;
+
+Viva::withOAuthCredentials(
+    config('services.viva.isv_client_id'),
+    config('services.viva.isv_client_secret'),
+);
+```
+
+Creating recurring transactions and sources authenticate with Basic authentication, using your ISV partner credentials as shown in the examples below.
+
 ### Orders
 
 #### Create a payment order
 
-> See: https://developer.vivawallet.com/isv-partner-program/payment-isv-api/#tag/Payments/paths/~1checkout~1v2~1isv~1orders/post
+> See: https://developer.viva.com/isv-partner-program/payment-isv-api/#tag/Payments/paths/~1checkout~1v2~1isv~1orders/post
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -529,7 +542,7 @@ $orderCode = Viva::isv()->orders()->create(
 
 #### Retrieve a transaction
 
-> See: https://developer.vivawallet.com/isv-partner-program/payment-isv-api/#tag/Retrieve-Transactions/paths/~1checkout~1v2~1isv~1transactions~1{transactionId}?merchantId={merchantId}/get
+> See: https://developer.viva.com/isv-partner-program/payment-isv-api/#tag/Retrieve-Transactions/paths/~1checkout~1v2~1isv~1transactions~1{transactionId}?merchantId={merchantId}/get
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -542,7 +555,7 @@ $transaction = Viva::isv()->transactions()->retrieve(
 
 #### Create a recurring transaction
 
-> See: https://developer.vivawallet.com/isv-partner-program/payment-isv-api/#tag/Recurring-Payments/paths/~1api~1transactions~1{id}/post
+> See: https://developer.viva.com/isv-partner-program/payment-isv-api/#tag/Recurring-Payments/paths/~1api~1transactions~1{id}/post
 
 ```php
 use Sebdesign\VivaPayments\Facades\Viva;
@@ -582,7 +595,7 @@ Viva::withBasicAuthCredentials(
     config('services.viva.isv_partner_api_key'),
 );
 
-Viva::isv()->source()->create(
+Viva::isv()->sources()->create(
     source: new CreateSource(
         domain: 'www.example.com',
         isSecure: true,

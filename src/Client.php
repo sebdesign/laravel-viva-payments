@@ -90,7 +90,7 @@ class Client
     }
 
     /**
-     * Verity webhooks.
+     * Verify webhooks.
      */
     public function webhooks(): Services\Webhook
     {
